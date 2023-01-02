@@ -1,0 +1,17 @@
+<nav class="container container--70">
+    <ul class="nav--actions">
+        <li class="logged-user">
+            Witaj Agata
+            <ul class="dropdown">
+                <li><a href="#">Profil</a></li>
+                {% block option %}
+                <li><a href="#">Ustawienia</a></li>
+                {% endblock option %}
+<!--                <li><a href="#">Moje zbiórki</a></li>-->
+<!--                dla form-confirmation-->
+                <li><a href="#">Wyloguj</a></li>
+            </ul>
+        </li>
+    </ul>
+    {% include '_menu.html' %}
+</nav>
