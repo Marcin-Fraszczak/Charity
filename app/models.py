@@ -11,12 +11,18 @@ TYPES = (
 class Category(models.Model):
     name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.name
+
 
 class Institution(models.Model):
     name = models.CharField(max_length=64)
-    description = models.CharField(max_length=128)
+    description = models.CharField(max_length=128, blank=True, null=True)
     type = models.IntegerField(choices=TYPES, default=1)
     categories = models.ManyToManyField('Category', related_name='institution')
+
+    def __str__(self):
+        return self.name
 
 
 class Donation(models.Model):
@@ -29,5 +35,8 @@ class Donation(models.Model):
     zip_code = models.CharField(max_length=6)
     pick_up_date = models.DateField()
     pick_up_time = models.TimeField()
-    pick_up_comment = models.CharField(max_length=128)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    pick_up_comment = models.CharField(max_length=128, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)
+
+    def __str__(self):
+        return f"{self.address}, {self.pick_up_date}"
