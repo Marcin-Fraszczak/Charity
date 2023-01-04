@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -48,9 +49,10 @@ class HomeView(View):
         return render(request, 'index.html', context)
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'form.html')
+        categories = models.Category.objects.all()
+        return render(request, 'form.html', context={"categories": categories})
 
 
 class LoginView(View):
