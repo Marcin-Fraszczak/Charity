@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -56,6 +56,20 @@ class AddDonationView(View):
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
+
+    def post(self, request):
+        print(request.POST)
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            print("jest zalogowany")
+            return redirect('app:home')
+        else:
+            print("nie ma takiego numeru")
+            messages.error(request, "Invalid data")
+            return redirect('app:register')
 
 
 class RegisterView(View):
