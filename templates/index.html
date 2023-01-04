@@ -83,28 +83,29 @@
       </ul>
 
       <!-- SLIDE 1 -->
-      <div class="help--slides active item-container" data-id="1">
+      <div class="help--slides active" data-id="1">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić, czym się zajmują, komu pomagają i czego potrzebują.</p>
 
-        <ul class="help--slides-items item-list">
-          {% for foundation in foundations %}
-          <li class="{{forloop.counter}} foundation-row">
+        <ul class="help--slides-items">
+            {% for page, values in pf_dict.items %}
+            {% for object in values.object_list %}
+          <li data-page="{{ page }}">
             <div class="col">
-              <div class="title">{{ foundation.name }}</div>
-              <div class="subtitle">{{ foundation.description }}</div>
+              <div class="title">{{ object.name }}</div>
+              <div class="subtitle">{{ object.description }}</div>
             </div>
-
-            <div class="col"><div class="text">{{ foundation.categories.all|join:", " }}</div></div>
+            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
           </li>
+          {% endfor %}
           {% endfor %}
         </ul>
 
-        <ul class="help--slides-pagination item-pagination">
-          {% for ip in foundations_pages %}
-          {% if ip == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ ip }}">{{ ip }}</a></li>
+        <ul class="help--slides-pagination">
+          {% for page in pf_dict %}
+          {% if page == 1 %}
+          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
           {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ ip }}">{{ ip }}</a></li>
+          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
           {% endif %}
           {% endfor %}
         </ul>
@@ -114,62 +115,60 @@
 
       <!-- SLIDE 2 -->
       <div class="help--slides item-container" data-id="2">
-        <p>
-          Są też organizacje pozarządowe.
-        </p>
-        <ul class="help--slides-items item-list">
-          {% for organization in organizations %}
-          <li>
-            <div class="col">
-              <div class="title">{{ organization.name }}</div>
-              <div class="subtitle">{{ organization.description }}</div>
-            </div>
+        <p>Są też organizacje pozarządowe.</p>
 
-            <div class="col"><div class="text">{{ organization.categories.all|join:", " }}</div></div>
+        <ul class="help--slides-items">
+            {% for page, values in po_dict.items %}
+            {% for object in values.object_list %}
+          <li data-page="{{ page }}">
+            <div class="col">
+              <div class="title">{{ object.name }}</div>
+              <div class="subtitle">{{ object.description }}</div>
+            </div>
+            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
           </li>
+          {% endfor %}
           {% endfor %}
         </ul>
 
-        <ul class="help--slides-pagination item-pagination">
-          {% for ip in organizations_pages %}
-          {% if ip == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ ip }}">{{ ip }}</a></li>
+        <ul class="help--slides-pagination">
+          {% for page in po_dict %}
+          {% if page == 1 %}
+          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
           {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ ip }}">{{ ip }}</a></li>
+          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
           {% endif %}
           {% endfor %}
         </ul>
       </div>
 
-      <!-- SLIDE 3 -->
+<!--       SLIDE 3 -->
       <div class="help--slides item-container" data-id="3">
         <p>Są jeszcze lokalne zbiórki, ale kto by o to dbał?</p>
-        <ul class="help--slides-items item-list">
-          {% for collection in collections %}
-          <li>
+        <ul class="help--slides-items">
+            {% for page, values in pc_dict.items %}
+            {% for object in values.object_list %}
+          <li data-page="{{ page }}">
             <div class="col">
-              <div class="title">{{ collection.name }}</div>
-              <div class="subtitle">{{ collection.description }}</div>
+              <div class="title">{{ object.name }}</div>
+              <div class="subtitle">{{ object.description }}</div>
             </div>
-
-            <div class="col"><div class="text">{{ collection.categories.all|join:", " }}</div></div>
+            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
           </li>
+          {% endfor %}
           {% endfor %}
         </ul>
 
-         <ul class="help--slides-pagination item-pagination">
-          {% for ip in collections_pages %}
-          {% if ip == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ ip }}">{{ ip }}</a></li>
+        <ul class="help--slides-pagination">
+          {% for page in pc_dict %}
+          {% if page == 1 %}
+          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
           {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ ip }}">{{ ip }}</a></li>
+          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
           {% endif %}
           {% endfor %}
         </ul>
       </div>
     </section>
 
-    <script>
-      const resultsPerPage = {{ results_per_page|escape }}
-    </script>
   {% endblock container %}
