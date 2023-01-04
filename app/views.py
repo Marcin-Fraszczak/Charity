@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -102,3 +102,9 @@ class RegisterView(View):
 
         messages.error(request, "Error saving form")
         return render(request, 'register.html', context={"form": form})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('app:home')
