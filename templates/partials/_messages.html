@@ -1,0 +1,17 @@
+{% if messages %}
+
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <p class="container-sm alert alert-danger timed-message">{{message}}</p>
+        {% else %}
+            <p class="container-sm alert alert-{{message.tags}} timed-message">{{message}}</p>
+        {% endif %}
+    {% endfor %}
+
+<script>
+    setTimeout(function () {
+        document.querySelector('.timed-message').remove()
+    }, 2000);
+</script>
+
+{% endif %}
