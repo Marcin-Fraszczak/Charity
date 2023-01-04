@@ -52,7 +52,11 @@ class HomeView(View):
 class AddDonationView(LoginRequiredMixin, View):
     def get(self, request):
         categories = models.Category.objects.all()
-        return render(request, 'form.html', context={"categories": categories})
+        institutions = models.Institution.objects.all()
+        return render(request, 'form.html', context={
+            "categories": categories,
+            "institutions": institutions,
+        })
 
 
 class LoginView(View):
