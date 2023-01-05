@@ -122,14 +122,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /**
      * Only for /add_donation/ endpoint
-     * Filtering institutions when donating
+     * Working with 5 steps of form input
      */
 
-    // getting list of chosen categories (step1)
-    if (window.location.pathname === '/add_donation/') {
+    if (window.location.pathname === '/add-donation/') {
+        // transition STEP 1 - STEP 2
         const buttonStep1 = document.querySelector(".step1");
-        let chosenCategories = [];
+        let chosenCategories;
         buttonStep1.addEventListener("click", (e) => {
+
+            // getting list of chosen categories
             chosenCategories = [];
             const inputs = e.target.parentElement.parentElement.querySelectorAll("input");
             inputs.forEach(input => {
@@ -139,58 +141,204 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // getting number of bags (step2) and filtering list of institutions (step3)
+        // Transition STEP 2 - STEP 3
         const buttonStep2 = document.querySelector(".step2");
         let bags = 0;
 
         buttonStep2.addEventListener("click", (e) => {
-            function displayInstitutions(institutions, chosenCategories, command) {
-                institutions.forEach(institution => {
+            function displayInstitutions(institutionsContainer, chosenCategories) {
+                const institutionsContainerAll = institutionsContainer.querySelector(".all-categories");
+                const institutionsAll = institutionsContainerAll.querySelectorAll(".form-group--checkbox");
+                const institutionsContainerSome = institutionsContainer.querySelector(".some-categories");
+                const institutionsSome = institutionsContainerSome.querySelectorAll(".form-group--checkbox");
+                let institutionsDuplicates = [];
+
+
+                institutionsAll.forEach(institution => {
                     const institutionCategories = institution.querySelector(".categories").dataset.cat;
-                    if (command === 'every') {
-                        // All categories match
-                        if (chosenCategories.every(cat => institutionCategories.includes(cat))) {
-                            institution.style.display = "flex";
-                        } else {
-                            // institution.style.display = "none";
-                            institution.parentElement.removeChild(institution);
-                        }
-                    } else if (command === 'some') {
-                        // Some categories match
-                        if (chosenCategories.some(cat => institutionCategories.includes(cat))) {
-                            institution.style.display = "flex";
-                        } else {
-                            // institution.style.display = "none";
-                            institution.parentElement.removeChild(institution);
-                        }
+                    // All categories match
+                    if (chosenCategories.every(cat => institutionCategories.includes(cat))) {
+                        institution.style.display = "flex";
+                        institutionsDuplicates.push(institution.querySelector(".title").textContent);
+                    } else {
+                        institution.style.display = "none";
                     }
                 });
-                const institutionContainers = document.querySelectorAll(".institution-data-container");
-                institutionContainers.forEach(cont => {
-                    displayEmptyContainer(cont);
-                });
+
+                // if only 1 category was selected, all- and some- lists are the same, so second one is not dispalyed
+                if (chosenCategories.length === 1) {
+                    institutionsContainerSome.style.display = "none";
+                    let h4Element = institutionsContainerSome.previousSibling.previousSibling;
+                    h4Element.style.display = "none";
+                } else {
+                    institutionsContainerSome.style.display = "flex";
+
+                    institutionsSome.forEach(institution => {
+                        const institutionCategories = institution.querySelector(".categories").dataset.cat;
+                        // Some categories match
+                        if (chosenCategories.some(cat => institutionCategories.includes(cat))
+                            && !institutionsDuplicates.includes(institution.querySelector(".title").textContent)) {
+                            institution.style.display = "flex";
+                        } else {
+                            institution.style.display = "none";
+                        }
+                    });
+                }
+
+                displayEmptyContainer(institutionsContainerAll);
+                displayEmptyContainer(institutionsContainerSome);
             }
 
             function displayEmptyContainer(container) {
-                if (container.children.length === 0) {
+                let infoTag = container.querySelectorAll("h4.text-bg-danger");
+                if (infoTag.length === 0) {
                     const infoTag = document.createElement("h4");
-                    infoTag.textContent = "Nic nie spełnia kryteriów wyszukiwania";
-                    infoTag.setAttribute("class", " text-bg-danger mb-4");
+                    infoTag.textContent = "Brak wyników";
+                    infoTag.setAttribute("class", "text-bg-danger mb-4");
+                    infoTag.setAttribute("style", "display: none;");
                     container.appendChild(infoTag);
+                }
+
+                let displayedData = [];
+
+                [...container.children].forEach(child => {
+                    if (child.style.display !== 'none' && child.tagName === 'DIV') {
+                        displayedData.push(child);
+                    }
+                });
+                if (displayedData.length === 0) {
+                    const infoTag = container.querySelector("h4.text-bg-danger");
+                    infoTag.style.display = "flex";
+                } else {
+                    const infoTag = container.querySelector("h4.text-bg-danger");
+                    infoTag.style.display = "none";
                 }
             }
 
+
+            // collecting and validating number of bags input from STEP 2
             const bagsInput = e.target.parentElement.parentElement.querySelector("input");
-            bags = bagsInput.value;
+
+            function isNumeric(num) {
+                return !isNaN(parseFloat(num)) && isFinite(num);
+            }
+
+            // if input in STEP 2 is correct bags will take its value, else stay at 0
+            if (isNumeric(bagsInput.value)) {
+                let bagsValue = Number(bagsInput.value);
+                if (bagsValue > 0) {
+                    bags = bagsValue;
+                }
+            }
+
             const institutionsContainer = document.querySelector(".data-step-3");
-            const institutionsAll = institutionsContainer.querySelectorAll(".form-group--checkbox.all-categories");
-            const institutionsSome = institutionsContainer.querySelectorAll(".form-group--checkbox.some-categories");
 
-            displayInstitutions(institutionsAll, chosenCategories, 'every');
-            displayInstitutions(institutionsSome, chosenCategories, 'some');
-
+            // Listing institutions in STEP 3 that matches the criteria from STEP 1
+            displayInstitutions(institutionsContainer, chosenCategories);
         });
 
+        // transition STEP 3 - STEP 4
+        const buttonStep3 = document.querySelector(".step3");
+        let chosenInstitution = [];
+        buttonStep3.addEventListener("click", e => {
+
+            // collecting chosen institution from STEP 3
+            const institutionsContainer = document.querySelector(".data-step-3");
+            [...institutionsContainer.querySelectorAll(".form-group--checkbox")].forEach(child => {
+                let input = child.querySelector("input");
+                if (input.checked) {
+                    chosenInstitution[0] = child.querySelector(".title").textContent;
+                    chosenInstitution[1] = child.querySelector(".inst-type").textContent;
+                }
+            });
+        });
+
+
+        // transition STEP 4 - STEP 5
+        const buttonStep4 = document.querySelector(".step4");
+        buttonStep4.addEventListener("click", e => {
+
+            // collecting all the info from STEP 4
+            const formContainer = document.querySelector(".data-step-4");
+            const addressInput = formContainer.querySelector("[name='address']");
+            const cityInput = formContainer.querySelector("[name='city']");
+            const postcodeInput = formContainer.querySelector("[name='postcode']");
+            const phoneInput = formContainer.querySelector("[name='phone']");
+            const dateInput = formContainer.querySelector("[name='date']");
+            const timeInput = formContainer.querySelector("[name='time']");
+            const infoInput = formContainer.querySelector("[name='more_info']");
+
+            // displaying data from previous inputs in STEP 5
+            const summaryContainer = document.querySelector(".data-step-5");
+
+            // Letting user know if there are any mistakes
+            const whatAndHowMany = summaryContainer.querySelector(".what-and-how-many");
+            if (chosenCategories.length === 0) {
+                whatAndHowMany.textContent = "Wróć do kroku 1 i wybierz poprawną kategorię darów (przynajmniej 1)"
+            } else if (bags <= 0) {
+                whatAndHowMany.textContent = "Wróć do kroku 2 i wpisz poprawną liczbę worków (więcej niż 0)"
+            } else {
+                whatAndHowMany.textContent = `Liczba worków: ${Math.ceil(bags)}, dary: ${chosenCategories}`;
+            }
+
+            let names = ["Inna organizacja", "Fundacja", "Organizacja pozarządowa", "Lokalna zbiórka"];
+            const toWho = summaryContainer.querySelector(".to-who");
+            if (!chosenInstitution) {
+                toWho.textContent = "Wróć do kroku 3 i wybierz poprawną instytucję (1)";
+            } else {
+                toWho.textContent = `Obdarowana: ${names[chosenInstitution[1]]} ${chosenInstitution[0]}`;
+            }
+
+            const address = summaryContainer.querySelector(".address");
+            if (!addressInput.value) {
+                address.textContent = "Wróć do kroku 4 i wpisz poprawny adres";
+            } else {
+                address.textContent = addressInput.value;
+            }
+
+            const city = summaryContainer.querySelector(".city");
+            if (!cityInput.value) {
+                city.textContent = "Wróć do kroku 4 i wpisz poprawne miasto";
+            } else {
+                city.textContent = cityInput.value;
+            }
+
+            const postcode = summaryContainer.querySelector(".postcode");
+            if (!postcodeInput.value) {
+                postcode.textContent = "Wróć do kroku 4 i wpisz poprawny kod pocztowy";
+            } else {
+                postcode.textContent = postcodeInput.value;
+            }
+
+            const phone = summaryContainer.querySelector(".phone");
+            if (!phoneInput.value) {
+                phone.textContent = "Wróć do kroku 4 i wpisz poprawny numer telefonu";
+            } else {
+                phone.textContent = phoneInput.value;
+            }
+
+            const date = summaryContainer.querySelector(".date");
+            if (!dateInput.value) {
+                date.textContent = "Wróć do kroku 4 i wpisz poprawną datę";
+            } else {
+                date.textContent = dateInput.value;
+            }
+
+            const time = summaryContainer.querySelector(".time");
+            if (!timeInput.value) {
+                time.textContent = "Wróć do kroku 4 i wpisz poprawny czas";
+            } else {
+                time.textContent = timeInput.value;
+            }
+
+            const info = summaryContainer.querySelector(".info");
+            if (!infoInput.value) {
+                info.textContent = "Brak uwag";
+            } else {
+                info.textContent = infoInput.value;
+            }
+
+        });
 
     }
 
@@ -336,7 +484,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             // Form submit
-            this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
+            // this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
         }
 
         /**

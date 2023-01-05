@@ -58,6 +58,15 @@ class AddDonationView(LoginRequiredMixin, View):
             "institutions": institutions,
         })
 
+    def post(self, request):
+        print(request.POST)
+        return redirect('app:donation_confirmation')
+
+
+class DonationConfirmedView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'form-confirmation.html')
+
 
 class LoginView(View):
     def get(self, request):

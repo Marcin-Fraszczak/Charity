@@ -1,14 +1,16 @@
 {% extends '_base.html' %}
 {% block title %}
-  Donation added
+Donation added
 {% endblock title %}
 
-    <header class="header--form-page">
-      {% include 'partials/_menu.html' %}
-      <div class="slogan container container--90">
-          <h2>
+{% block container %}
+<header class="header--form-page">
+    {% include 'partials/_menu.html' %}
+    <div class="slogan container container--90">
+        <h2>
             Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie
             informacje o odbiorze.
-          </h2>
-      </div>
-    </header>
+        </h2>
+    </div>
+</header>
+{% endblock container %}
