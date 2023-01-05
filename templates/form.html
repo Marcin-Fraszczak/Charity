@@ -68,7 +68,7 @@
                 <input
                   type="checkbox"
                   name="categories"
-                  value="{{ category.nme }}"
+                  value="{{ category.name }}"
                 />
                 <span class="checkbox"></span>
                 <span class="description">{{ category.name }}</span>
@@ -77,7 +77,7 @@
             {% endfor %}
 
             <div class="form-group form-group--buttons">
-              <button type="button" class="btn next-step">Dalej</button>
+              <button type="button" class="btn next-step step1">Dalej</button>
             </div>
           </div>
 
@@ -94,7 +94,7 @@
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>
-              <button type="button" class="btn next-step">Dalej</button>
+              <button type="button" class="btn next-step step2">Dalej</button>
             </div>
           </div>
 
@@ -103,22 +103,43 @@
           <!-- STEP 4 -->
           <div data-step="3" class="data-step-3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-
-            {% for institution in institutions %}
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input type="radio" name="organization" value="old" />
-                <span class="checkbox radio"></span>
-                <span class="description">
-                  <div class="title">{{ institution.name }}</div>
-                  <div class="subtitle">
-                    {{ institution.description}}
-                  </div>
-                  <div class="categories" data-cat="{{ institution.categories.all }}">{{ institution.categories.all }}</div>
-                </span>
-              </label>
+            <h4 class="mb-4">Organizacje, obsługujące wszystkie wybrane kategorie:</h4>
+            <div class="institution-data-container">
+              {% for institution in institutions %}
+                <div class="form-group form-group--checkbox all-categories">
+                  <label>
+                    <input type="radio" name="organization" value="old" />
+                    <span class="checkbox radio"></span>
+                    <span class="description">
+                      <div class="title">{{ institution.name }}</div>
+                      <div class="subtitle">
+                        {{ institution.description}}
+                      </div>
+                      <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
+                    </span>
+                  </label>
+                </div>
+              {% endfor %}
             </div>
-            {% endfor %}
+
+            <h4 class="mb-4">Organizacje, obsługujące niektóre z wybranych kategorii:</h4>
+            <div class="institution-data-container">
+              {% for institution in institutions %}
+                <div class="form-group form-group--checkbox some-categories">
+                  <label>
+                    <input type="radio" name="organization" value="old" />
+                    <span class="checkbox radio"></span>
+                    <span class="description">
+                      <div class="title">{{ institution.name }}</div>
+                      <div class="subtitle">
+                        {{ institution.description}}
+                      </div>
+                      <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
+                    </span>
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>

@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     el.classList.add("active");
                 }
             });
+            const triggerButton = document.querySelector(".help--slides-pagination").querySelector("a");
             triggerButton.click();
         }
 
@@ -69,12 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
             [...pageButtons.children].forEach(function (li) {
                 li.firstChild.classList.remove("active");
 
-                if (li.firstChild.dataset.page == page) {
+                if (li.firstChild.dataset.page === page) {
                     li.firstChild.classList.add("active");
                 }
 
                 listElements.forEach((el) => {
-                    if (el.dataset.page == page) {
+                    if (el.dataset.page === page) {
                         el.style.display = "flex";
                     } else {
                         el.style.display = "none";
@@ -89,12 +90,108 @@ document.addEventListener("DOMContentLoaded", function () {
         new Help(helpSection);
     }
 
-    const paginationContainer = document.querySelector(".help--slides-pagination");
-    if (paginationContainer) {
-        const triggerButton = paginationContainer.querySelector("a");
-        if (triggerButton) {
-            triggerButton.click();
-        }
+    if (window.location.pathname === '/') {
+        const triggerButton = document.querySelector(".help--slides-pagination").querySelector("a");
+        triggerButton.click();
+    }
+
+
+    /**
+     * Only for / endpoint
+     * Fetching bags and institutions
+     * numbers in real time
+     */
+
+    const totalBags = document.querySelector(".total_bags");
+    const totalInstitutions = document.querySelector(".total_institutions");
+
+    if (window.location.pathname === '/') {
+        let url = window.location.origin + window.location.pathname;
+        let urlHome = (url + "?fetch_stats=1").toString();
+        const intervalHome = setInterval(function () {
+            fetch(urlHome)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    totalBags.textContent = data["total_bags"];
+                    totalInstitutions.textContent = data["total_institutions"];
+                })
+        }, 5000);
+    }
+
+    /**
+     * Only for /add_donation/ endpoint
+     * Filtering institutions when donating
+     */
+
+    // getting list of chosen categories (step1)
+    if (window.location.pathname === '/add_donation/') {
+        const buttonStep1 = document.querySelector(".step1");
+        let chosenCategories = [];
+        buttonStep1.addEventListener("click", (e) => {
+            chosenCategories = [];
+            const inputs = e.target.parentElement.parentElement.querySelectorAll("input");
+            inputs.forEach(input => {
+                if (input.checked) {
+                    chosenCategories.push(input.value);
+                }
+            });
+        });
+
+        // getting number of bags (step2) and filtering list of institutions (step3)
+        const buttonStep2 = document.querySelector(".step2");
+        let bags = 0;
+
+        buttonStep2.addEventListener("click", (e) => {
+            function displayInstitutions(institutions, chosenCategories, command) {
+                institutions.forEach(institution => {
+                    const institutionCategories = institution.querySelector(".categories").dataset.cat;
+                    if (command === 'every') {
+                        // All categories match
+                        if (chosenCategories.every(cat => institutionCategories.includes(cat))) {
+                            institution.style.display = "flex";
+                        } else {
+                            // institution.style.display = "none";
+                            institution.parentElement.removeChild(institution);
+                        }
+                    } else if (command === 'some') {
+                        // Some categories match
+                        if (chosenCategories.some(cat => institutionCategories.includes(cat))) {
+                            institution.style.display = "flex";
+                        } else {
+                            // institution.style.display = "none";
+                            institution.parentElement.removeChild(institution);
+                        }
+                    }
+                });
+                const institutionContainers = document.querySelectorAll(".institution-data-container");
+                institutionContainers.forEach(cont => {
+                    displayEmptyContainer(cont);
+                });
+            }
+
+            function displayEmptyContainer(container) {
+                if (container.children.length === 0) {
+                    const infoTag = document.createElement("h4");
+                    infoTag.textContent = "Nic nie spełnia kryteriów wyszukiwania";
+                    infoTag.setAttribute("class", " text-bg-danger mb-4");
+                    container.appendChild(infoTag);
+                }
+            }
+
+            const bagsInput = e.target.parentElement.parentElement.querySelector("input");
+            bags = bagsInput.value;
+            const institutionsContainer = document.querySelector(".data-step-3");
+            const institutionsAll = institutionsContainer.querySelectorAll(".form-group--checkbox.all-categories");
+            const institutionsSome = institutionsContainer.querySelectorAll(".form-group--checkbox.some-categories");
+
+            displayInstitutions(institutionsAll, chosenCategories, 'every');
+            displayInstitutions(institutionsSome, chosenCategories, 'some');
+
+        });
+
+
     }
 
 
@@ -283,25 +380,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
-//Fetching bags and institutions numbers in real time
-const totalBags = document.querySelector(".total_bags");
-const totalInstitutions = document.querySelector(".total_institutions");
-
-if (window.location.pathname === '/') {
-    let url = window.location.origin + window.location.pathname;
-    let urlHome = (url + "?fetch_stats=1").toString();
-    const intervalHome = setInterval(function () {
-        fetch(urlHome)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                totalBags.textContent = data["total_bags"];
-                totalInstitutions.textContent = data["total_institutions"];
-            })
-    }, 60000);
-}
 
 // Help section
 // line 1429 in style.css
