@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 // if only 1 category was selected, all- and some- lists are the same, so second one is not dispalyed
-                if (chosenCategories.length === 1) {
+                if (chosenCategories.length <= 1) {
                     institutionsContainerSome.style.display = "none";
                     let h4Element = institutionsContainerSome.previousSibling.previousSibling;
                     h4Element.style.display = "none";
