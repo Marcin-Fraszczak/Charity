@@ -12,3 +12,5 @@ db.sqlite3
 app/migrations
 
 static/
+
+templates/partials/_navbar.html

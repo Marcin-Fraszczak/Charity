@@ -51,16 +51,26 @@ class HomeView(View):
 
 class AddDonationView(LoginRequiredMixin, View):
     def get(self, request):
+        form = forms.DonationForm
         categories = models.Category.objects.all()
         institutions = models.Institution.objects.all()
         return render(request, 'form.html', context={
             "categories": categories,
             "institutions": institutions,
+            "form": form,
         })
 
     def post(self, request):
         print(request.POST)
-        return redirect('app:donation_confirmation')
+        form = forms.DonationForm(request.POST)
+        if form.is_valid():
+            print("valid")
+            return redirect('app:donation_confirmation')
+        else:
+            print("not valid")
+            messages.error(request, "Niepoprawnie wypełniony formularz")
+            return redirect('app:add_donation')
+
 
 
 class DonationConfirmedView(LoginRequiredMixin, View):
@@ -76,13 +86,11 @@ class LoginView(View):
         print(request.POST)
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, username=email.split("@")[0], password=password)
         if user is not None:
             login(request, user)
-            print("jest zalogowany")
             return redirect('app:home')
         else:
-            print("nie ma takiego numeru")
             messages.error(request, "Invalid data")
             return redirect('app:register')
 
@@ -102,7 +110,7 @@ class RegisterView(View):
 
             user_exists = get_user_model().objects.filter(email=email)
             if user_exists:
-                messages.error(request, "User already exists")
+                messages.error(request, "Taki użytkownik już istnieje")
                 return render(request, 'register.html', context={"form": form})
 
             if password1 != password2:
@@ -110,9 +118,9 @@ class RegisterView(View):
 
             user = form.save(commit=False)
             user.set_password(password1)
-            user.username = email
+            user.username = email.split("@")[0]
             user.save()
-            messages.success(request, "User successfully created")
+            messages.success(request, "Utworzono nowe konto")
             return redirect('app:login')
 
         messages.error(request, "Error saving form")

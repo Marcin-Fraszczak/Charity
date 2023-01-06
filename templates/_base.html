@@ -1,33 +1,34 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>
-      {% block title %}
+        {% block title %}
         Document
-      {% endblock title %}
+        {% endblock title %}
     </title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
 
- {% block messages %}
-    <div class="" style="z-index: 99;">
-      {% include 'partials/_messages.html' %}
-    </div>
-    <div></div>
-  {% endblock messages %}
+{% block messages %}
+<div class="" style="z-index: 99;">
+    {% include 'partials/_messages.html' %}
+</div>
+<div></div>
+{% endblock messages %}
 
-  {% block container %}
 
-  {% endblock container %}
+{% block container %}
 
-  {% include 'partials/_footer.html' %}
+{% endblock container %}
 
-    <script src="{% static 'js/app.js' %}"></script>
-  </body>
+{% include 'partials/_footer.html' %}
+
+<script src="{% static 'js/app.js' %}"></script>
+</body>
 </html>

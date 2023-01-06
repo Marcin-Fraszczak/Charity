@@ -2,173 +2,183 @@
 {% load static %}
 
 {% block title %}
-  Home Page
+Home Page
 {% endblock title %}
 
 {% block container %}
-    <header class="header--main-page">
-      {% include 'partials/_menu.html' %}
-      <div class="slogan container container--90">
+<header class="header--main-page">
+    {% include 'partials/_menu.html' %}
+    <div class="slogan container container--90">
         <div class="slogan--item">
-          <h1>
-            Zacznij pomagać!<br />
-            Oddaj niechciane rzeczy w zaufane ręce
-          </h1>
+            <h1>
+                Zacznij pomagać!<br/>
+                Oddaj niechciane rzeczy w zaufane ręce
+            </h1>
         </div>
-      </div>
-    </header>
+    </div>
+</header>
 
-    <section id="stats" class="stats">
-      <div class="container container--85">
+<section id="stats" class="stats">
+    <div class="container container--85">
         <div class="stats--item">
-          <em class="total_bags">{{ total_bags }}</em>
-          <h3>Oddanych worków</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
+            <em class="total_bags">{{ total_bags }}</em>
+            <h3>Oddanych worków</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
+                tempora!</p>
         </div>
 
         <div class="stats--item">
-          <em class="total_institutions">{{ total_institutions }}</em>
-          <h3>Wspartych organizacji</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas quam.</p>
+            <em class="total_institutions">{{ total_institutions }}</em>
+            <h3>Wspartych organizacji</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
+                quam.</p>
         </div>
 
-      </div>
-    </section>
+    </div>
+</section>
 
-    <section id="steps" class="steps">
-      <h2>Wystarczą 4 proste kroki</h2>
+<section id="steps" class="steps">
+    <h2>Wystarczą 4 proste kroki</h2>
 
-      <div class="steps--container">
+    <div class="steps--container">
         <div class="steps--item">
-          <span class="icon icon--hands"></span>
-          <h3>Wybierz rzeczy</h3>
-          <p>ubrania, zabawki, sprzęt i inne</p>
-        </div>
-        <div class="steps--item">
-          <span class="icon icon--arrow"></span>
-          <h3>Spakuj je</h3>
-          <p>skorzystaj z worków na śmieci</p>
+            <span class="icon icon--hands"></span>
+            <h3>Wybierz rzeczy</h3>
+            <p>ubrania, zabawki, sprzęt i inne</p>
         </div>
         <div class="steps--item">
-          <span class="icon icon--glasses"></span>
-          <h3>Zdecyduj komu chcesz pomóc</h3>
-          <p>wybierz zaufane miejsce</p>
+            <span class="icon icon--arrow"></span>
+            <h3>Spakuj je</h3>
+            <p>skorzystaj z worków na śmieci</p>
         </div>
         <div class="steps--item">
-          <span class="icon icon--courier"></span>
-          <h3>Zamów kuriera</h3>
-          <p>kurier przyjedzie w dogodnym terminie</p>
+            <span class="icon icon--glasses"></span>
+            <h3>Zdecyduj komu chcesz pomóc</h3>
+            <p>wybierz zaufane miejsce</p>
         </div>
-      </div>
+        <div class="steps--item">
+            <span class="icon icon--courier"></span>
+            <h3>Zamów kuriera</h3>
+            <p>kurier przyjedzie w dogodnym terminie</p>
+        </div>
+    </div>
 
-      <a href="{% url 'app:register' %}" class="btn btn--large">Załóż konto</a>
-    </section>
+    <a href="{% url 'app:register' %}" class="btn btn--large">Załóż konto</a>
+</section>
 
-    <section id="about-us" class="about-us">
-      <div class="about-us--text">
+<section id="about-us" class="about-us">
+    <div class="about-us--text">
         <h2>O nas</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero optio esse quisquam illo omnis.</p>
-        <img src="{% static 'images/signature.svg' %}" class="about-us--text-signature" alt="Signature" />
-      </div>
-      <div class="about-us--image"><img src="{% static 'images/about-us.jpg' %}" alt="People in circle" /></div>
-    </section>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero
+            optio esse quisquam illo omnis.</p>
+        <img src="{% static 'images/signature.svg' %}" class="about-us--text-signature" alt="Signature"/>
+    </div>
+    <div class="about-us--image"><img src="{% static 'images/about-us.jpg' %}" alt="People in circle"/></div>
+</section>
 
-     <section id="help" class="help">
-      <h2>Komu pomagamy?</h2>
+<section id="help" class="help">
+    <h2>Komu pomagamy?</h2>
 
-      <ul class="help--buttons">
+    <ul class="help--buttons">
         <li data-id="1"><a href="#" class="btn btn--without-border active">Fundacjom</a></li>
         <li data-id="2"><a href="#" class="btn btn--without-border">Organizacjom pozarządowym</a></li>
         <li data-id="3"><a href="#" class="btn btn--without-border">Lokalnym zbiórkom</a></li>
-      </ul>
+    </ul>
 
-      <!-- SLIDE 1 -->
-      <div class="help--slides active" data-id="1">
-        <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić, czym się zajmują, komu pomagają i czego potrzebują.</p>
+    <!-- SLIDE 1 -->
+    <div class="help--slides active" data-id="1">
+        <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić, czym
+            się zajmują, komu pomagają i czego potrzebują.</p>
 
         <ul class="help--slides-items">
             {% for page, values in pf_dict.items %}
             {% for object in values.object_list %}
-          <li data-page="{{ page }}">
-            <div class="col">
-              <div class="title">{{ object.name }}</div>
-              <div class="subtitle">{{ object.description }}</div>
-            </div>
-            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
-          </li>
-          {% endfor %}
-          {% endfor %}
+            <li data-page="{{ page }}">
+                <div class="col">
+                    <div class="title">{{ object.name }}</div>
+                    <div class="subtitle">{{ object.description }}</div>
+                </div>
+                <div class="col">
+                    <div class="text">{{ object.categories.all|join:", " }}</div>
+                </div>
+            </li>
+            {% endfor %}
+            {% endfor %}
         </ul>
 
         <ul class="help--slides-pagination">
-          {% for page in pf_dict %}
-          {% if page == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
-          {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
-          {% endif %}
-          {% endfor %}
+            {% for page in pf_dict %}
+            {% if page == 1 %}
+            <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
+            {% else %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
         </ul>
 
-      </div>
+    </div>
 
 
-      <!-- SLIDE 2 -->
-      <div class="help--slides item-container" data-id="2">
+    <!-- SLIDE 2 -->
+    <div class="help--slides item-container" data-id="2">
         <p>Są też organizacje pozarządowe.</p>
 
         <ul class="help--slides-items">
             {% for page, values in po_dict.items %}
             {% for object in values.object_list %}
-          <li data-page="{{ page }}">
-            <div class="col">
-              <div class="title">{{ object.name }}</div>
-              <div class="subtitle">{{ object.description }}</div>
-            </div>
-            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
-          </li>
-          {% endfor %}
-          {% endfor %}
+            <li data-page="{{ page }}">
+                <div class="col">
+                    <div class="title">{{ object.name }}</div>
+                    <div class="subtitle">{{ object.description }}</div>
+                </div>
+                <div class="col">
+                    <div class="text">{{ object.categories.all|join:", " }}</div>
+                </div>
+            </li>
+            {% endfor %}
+            {% endfor %}
         </ul>
 
         <ul class="help--slides-pagination">
-          {% for page in po_dict %}
-          {% if page == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
-          {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
-          {% endif %}
-          {% endfor %}
+            {% for page in po_dict %}
+            {% if page == 1 %}
+            <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
+            {% else %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
         </ul>
-      </div>
+    </div>
 
-<!--       SLIDE 3 -->
-      <div class="help--slides item-container" data-id="3">
+    <!--       SLIDE 3 -->
+    <div class="help--slides item-container" data-id="3">
         <p>Są jeszcze lokalne zbiórki, ale kto by o to dbał?</p>
         <ul class="help--slides-items">
             {% for page, values in pc_dict.items %}
             {% for object in values.object_list %}
-          <li data-page="{{ page }}">
-            <div class="col">
-              <div class="title">{{ object.name }}</div>
-              <div class="subtitle">{{ object.description }}</div>
-            </div>
-            <div class="col"><div class="text">{{ object.categories.all|join:", " }}</div></div>
-          </li>
-          {% endfor %}
-          {% endfor %}
+            <li data-page="{{ page }}">
+                <div class="col">
+                    <div class="title">{{ object.name }}</div>
+                    <div class="subtitle">{{ object.description }}</div>
+                </div>
+                <div class="col">
+                    <div class="text">{{ object.categories.all|join:", " }}</div>
+                </div>
+            </li>
+            {% endfor %}
+            {% endfor %}
         </ul>
 
         <ul class="help--slides-pagination">
-          {% for page in pc_dict %}
-          {% if page == 1 %}
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
-          {% else %}
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
-          {% endif %}
-          {% endfor %}
+            {% for page in pc_dict %}
+            {% if page == 1 %}
+            <li><a href="#" class="btn btn--small btn--without-border active" data-page="{{ page }}">{{ page }}</a></li>
+            {% else %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ page }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
         </ul>
-      </div>
-    </section>
+    </div>
+</section>
 
-  {% endblock container %}
+{% endblock container %}

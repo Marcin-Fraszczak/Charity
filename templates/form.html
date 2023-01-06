@@ -71,7 +71,8 @@ Add donation
                             <input
                                     type="checkbox"
                                     name="categories"
-                                    value="{{ category.name }}"
+                                    value="{{ category.pk }}"
+                                    id="{{category.name}}"
                             />
                             <span class="checkbox"></span>
                             <span class="description">{{ category.name }}</span>
@@ -93,7 +94,8 @@ Add donation
                 <div class="form-group form-group--inline">
                     <label>
                         Liczba 60l worków:
-                        <input type="number" name="bags" step="1" min="1"/>
+                        <!--                        <input type="number" name="bags" step="1" min="1"/>-->
+                        {{form.bags}}
                     </label>
                 </div>
 
@@ -106,8 +108,9 @@ Add donation
             <!-- STEP 3 -->
 
             <div data-step="3" class="data-step-3">
+
+                <h3>Wybierz organizację, której chcesz pomóc:</h3>
                 <div class="custom-scrollbar" style="overflow-y: auto; overflow-x: hidden; max-height: 50vh">
-                    <h3>Wybierz organizację, której chcesz pomóc:</h3>
                     <h4 class="mb-4">Organizacje, obsługujące wszystkie wybrane kategorie:</h4>
                     <div class="institution-data-container all-categories">
                         {% for institution in institutions %}
@@ -163,22 +166,26 @@ Add donation
                     <div class="form-section--column">
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Ulica <input type="text" name="address"/> </label>
+                            <!--                            <label> Ulica <input type="text" name="address"/> </label>-->
+                            <label> Ulica {{form.address}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Miasto <input type="text" name="city"/> </label>
+                            <!--                            <label> Miasto <input type="text" name="city"/> </label>-->
+                            <label> Miasto {{form.city}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Kod pocztowy <input type="text" name="postcode"/>
+                                <!--                                Kod pocztowy <input type="text" name="postcode"/>-->
+                                Kod pocztowy {{form.zip_code}}
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Numer telefonu <input type="phone" name="phone"/>
+                                <!--                                Numer telefonu <input type="phone" name="phone"/>-->
+                                Numer telefonu {{form.phone_number}}
                             </label>
                         </div>
                     </div>
@@ -186,17 +193,20 @@ Add donation
                     <div class="form-section--column">
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Data <input type="date" name="date"/> </label>
+                            <!--                            <label> Data <input type="date" name="date"/> </label>-->
+                            <label> Data {{form.pick_up_date}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Godzina <input type="time" name="time"/> </label>
+                            <!--                            <label> Godzina <input type="time" name="time"/> </label>-->
+                            <label> Godzina {{form.pick_up_time}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 Uwagi dla kuriera
-                                <textarea name="more_info" rows="5"></textarea>
+                                <!--                                <textarea name="more_info" rows="5"></textarea>-->
+                                {{form.pick_up_comment}}
                             </label>
                         </div>
                     </div>
