@@ -10,6 +10,9 @@
                 {% endblock option %}
                 <!--                <li><a href="#">Moje zbiórki</a></li>-->
                 <!--                dla form-confirmation-->
+                {% if user.is_superuser %}
+                <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                {% endif %}
                 <li><a href="{% url 'app:logout' %}">Wyloguj</a></li>
             </ul>
         </li>
