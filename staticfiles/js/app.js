@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /**
-     * Only for / endpoint
+     * Only for / endpoint (Warning: hardcoded)
      * Fetching bags and institutions
      * numbers in real time
      */
@@ -121,11 +121,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
-     * Only for /add_donation/ endpoint
+     * Only for /add_donation/ endpoint (Warning: hardcoded)
      * Working with 5 steps of form input
      */
 
     if (window.location.pathname === '/add-donation/') {
+        // collecting div with error messages for later use
+        const errorMsg = document.querySelector(".error-message")
+
+        function manageError(command, message = "") {
+            if (command === "show") {
+                errorMsg.textContent = message;
+                errorMsg.style.display = "block";
+            } else {
+                errorMsg.style.display = "none";
+            }
+        }
+
+
         // transition STEP 1 - STEP 2
         const buttonStep1 = document.querySelector(".step1");
         let chosenCategories;
@@ -136,16 +149,42 @@ document.addEventListener("DOMContentLoaded", function () {
             const inputs = e.target.parentElement.parentElement.querySelectorAll("input");
             inputs.forEach(input => {
                 if (input.checked) {
-                    chosenCategories.push(input.value);
+                    chosenCategories.push(input.id);
                 }
             });
+
+            // validation before going to STEP 2
+            if (chosenCategories.length === 0) {
+                e.stopImmediatePropagation();
+                manageError("show", "Wybierz przynajmniej jedną kategorię");
+            } else {
+                manageError("hide");
+            }
         });
+
 
         // Transition STEP 2 - STEP 3
         const buttonStep2 = document.querySelector(".step2");
         let bags = 0;
 
         buttonStep2.addEventListener("click", (e) => {
+
+            // collecting and validating number of bags input from STEP 2
+            const bagsInput = e.target.parentElement.parentElement.querySelector("input");
+
+            function bagsValidator(num) {
+                return !isNaN(parseFloat(num)) && isFinite(num) && Math.floor(num) == num && num > 0;
+            }
+
+            // if input in STEP 2 is correct bags will take its value, proceed to STEP 3
+            if (bagsInput.value && bagsValidator(bagsInput.value)) {
+                bags = Number(bagsInput.value);
+                manageError("hide");
+            } else {
+                e.stopImmediatePropagation();
+                manageError("show", "Podaj poprawną liczbę worków");
+            }
+
             function displayInstitutions(institutionsContainer, chosenCategories) {
                 const institutionsContainerAll = institutionsContainer.querySelector(".all-categories");
                 const institutionsAll = institutionsContainerAll.querySelectorAll(".form-group--checkbox");
@@ -165,13 +204,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
-                // if only 1 category was selected, all- and some- lists are the same, so second one is not dispalyed
+                // if only 1 category was selected, all- and some- lists are the same, so second one is not displayed
+                let h4Element = institutionsContainerSome.previousSibling.previousSibling;
                 if (chosenCategories.length <= 1) {
                     institutionsContainerSome.style.display = "none";
-                    let h4Element = institutionsContainerSome.previousSibling.previousSibling;
                     h4Element.style.display = "none";
                 } else {
-                    institutionsContainerSome.style.display = "flex";
+                    institutionsContainerSome.style.display = "block";
+                    h4Element.style.display = "flex";
 
                     institutionsSome.forEach(institution => {
                         const institutionCategories = institution.querySelector(".categories").dataset.cat;
@@ -215,27 +255,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-
-            // collecting and validating number of bags input from STEP 2
-            const bagsInput = e.target.parentElement.parentElement.querySelector("input");
-
-            function isNumeric(num) {
-                return !isNaN(parseFloat(num)) && isFinite(num);
-            }
-
-            // if input in STEP 2 is correct bags will take its value, else stay at 0
-            if (isNumeric(bagsInput.value)) {
-                let bagsValue = Number(bagsInput.value);
-                if (bagsValue > 0) {
-                    bags = bagsValue;
-                }
-            }
-
             const institutionsContainer = document.querySelector(".data-step-3");
 
             // Listing institutions in STEP 3 that matches the criteria from STEP 1
             displayInstitutions(institutionsContainer, chosenCategories);
         });
+
 
         // transition STEP 3 - STEP 4
         const buttonStep3 = document.querySelector(".step3");
@@ -248,9 +273,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 let input = child.querySelector("input");
                 if (input.checked) {
                     chosenInstitution[0] = child.querySelector(".title").textContent;
-                    chosenInstitution[1] = child.querySelector(".inst-type").textContent;
+                    chosenInstitution[1] = child.querySelector(".inst-type").dataset.type;
                 }
             });
+
+            // validating selection
+            if (chosenInstitution.length !== 2) {
+                manageError("show", "Wybierz dokładnie jedną organizację");
+                e.stopImmediatePropagation();
+            } else {
+                manageError("hide");
+            }
         });
 
 
@@ -262,11 +295,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const formContainer = document.querySelector(".data-step-4");
             const addressInput = formContainer.querySelector("[name='address']");
             const cityInput = formContainer.querySelector("[name='city']");
-            const postcodeInput = formContainer.querySelector("[name='postcode']");
-            const phoneInput = formContainer.querySelector("[name='phone']");
-            const dateInput = formContainer.querySelector("[name='date']");
-            const timeInput = formContainer.querySelector("[name='time']");
-            const infoInput = formContainer.querySelector("[name='more_info']");
+            const postcodeInput = formContainer.querySelector("[name='zip_code']");
+            const phoneInput = formContainer.querySelector("[name='phone_number']");
+            const dateInput = formContainer.querySelector("[name='pick_up_date']");
+            const timeInput = formContainer.querySelector("[name='pick_up_time']");
+            const infoInput = formContainer.querySelector("[name='pick_up_comment']");
+
+
+
 
             // displaying data from previous inputs in STEP 5
             const summaryContainer = document.querySelector(".data-step-5");
@@ -277,11 +313,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 whatAndHowMany.textContent = "Wróć do kroku 1 i wybierz poprawną kategorię darów (przynajmniej 1)"
             } else if (bags <= 0) {
                 whatAndHowMany.textContent = "Wróć do kroku 2 i wpisz poprawną liczbę worków (więcej niż 0)"
+            } else if (Math.floor(bags) !== bags) {
+                whatAndHowMany.textContent = "Wróć do kroku 2 i wpisz poprawną liczbę worków (liczba całkowita)"
             } else {
-                whatAndHowMany.textContent = `Liczba worków: ${Math.ceil(bags)}, dary: ${chosenCategories}`;
+                whatAndHowMany.textContent = `Liczba worków: ${Math.ceil(bags)}, dary: ${chosenCategories.join(", ")}`;
             }
 
             let names = ["Inna organizacja", "Fundacja", "Organizacja pozarządowa", "Lokalna zbiórka"];
+
             const toWho = summaryContainer.querySelector(".to-who");
             if (!chosenInstitution) {
                 toWho.textContent = "Wróć do kroku 3 i wybierz poprawną instytucję (1)";
@@ -527,39 +566,3 @@ document.addEventListener("DOMContentLoaded", function () {
         new FormSteps(form);
     }
 });
-
-
-// Help section
-// line 1429 in style.css
-
-// function displayResults(section) {
-//     let container = section.querySelector(".item-list");
-//     let activePageElement = container.parentElement.querySelector(".help--slides-pagination").querySelector(".active");
-//     let page = Number(activePageElement.dataset.page);
-//     let lowerLimit = (page - 1) * resultsPerPage + 1;
-//
-//     [...container.children].forEach(function (child) {
-//         if (Number(child.classList[0]) >= lowerLimit && Number(child.classList[0]) <= lowerLimit + 4) {
-//             child.style.display = "flex";
-//         } else {
-//             child.style.display = "none";
-//         }
-//     });
-// }
-//
-// const containerPagination = document.querySelectorAll(".item-pagination > li");
-// containerPagination.forEach(function (button) {
-//     button.addEventListener("click", function (e) {
-//         console.log(e.target)
-//         if (![...e.target.classList].includes('active')) {
-//             console.log('active', e.target)
-//             let toRemove = this.parentElement.parentElement.querySelector(".active");
-//             toRemove.classList.remove("active");
-//             this.firstChild.classList.add("active");
-//             displayResults(this.parentElement.parentElement);
-//         }
-//     });
-// });
-//
-//
-// displayResults(document);

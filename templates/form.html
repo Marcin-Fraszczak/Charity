@@ -56,6 +56,7 @@ Add donation
 
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/5</div>
+        <div class="form--steps-counter error-message"> </div>
 
         <form method="post">
             {% csrf_token %}
@@ -91,7 +92,7 @@ Add donation
             <div data-step="2">
                 <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
-                <div class="form-group form-group--inline">
+                <div class="form-group narrow-form form-group--inline">
                     <label>
                         Liczba 60l worków:
                         <!--                        <input type="number" name="bags" step="1" min="1"/>-->
@@ -143,7 +144,7 @@ Add donation
                       <div class="subtitle">
                         {{ institution.description}}
                       </div>
-                      <div class="d-none inst-type">{{ institution.type }}</div>
+                      <div class="d-none inst-type" data-type="{{ institution.type }}"></div>
                       <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
                     </span>
                             </label>

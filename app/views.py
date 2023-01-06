@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,6 +9,29 @@ from django.shortcuts import render, redirect
 from django.views import View
 from . import models
 from . import forms
+
+
+def extract_digits(data):
+    return "".join([d for d in data if d.isdigit()])
+
+
+def length_validator(data, length):
+    return len(data) == length
+
+
+def validate_date_and_time(data):
+    today = datetime.today().date()
+    now = datetime.today().time()
+
+    try:
+        input_date = datetime.strptime(data, '%Y-%m-%d')
+
+    except ValueError as e:
+        print(e)
+        return False
+
+
+
 
 
 class HomeView(View):
