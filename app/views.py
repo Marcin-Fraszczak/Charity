@@ -1,37 +1,11 @@
-from datetime import datetime
-
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from . import models
-from . import forms
-
-
-def extract_digits(data):
-    return "".join([d for d in data if d.isdigit()])
-
-
-def length_validator(data, length):
-    return len(data) == length
-
-
-def validate_date_and_time(data):
-    today = datetime.today().date()
-    now = datetime.today().time()
-
-    try:
-        input_date = datetime.strptime(data, '%Y-%m-%d')
-
-    except ValueError as e:
-        print(e)
-        return False
-
-
-
+from . import models, forms, functions
 
 
 class HomeView(View):
@@ -90,9 +64,50 @@ class AddDonationView(LoginRequiredMixin, View):
         form = forms.DonationForm(request.POST)
         if form.is_valid():
             print("valid")
+            data = form.cleaned_data
+            print(data)
+
+            phone_number = data.get("phone_number")
+            zip_code = data.get("zip_code")
+            address = data.get("address")
+            city = data.get("city")
+            bags = data.get("bags")
+            pick_up_date = data.get("pick_up_date")
+            pick_up_time = data.get("pick_up_time")
+            pick_up_comment = data.get("pick_up_comment")
+
+            input_categories = request.POST.get("categories")
+            # print(input_categories)
+            cleaned_input_categories = [int(cat) for cat in input_categories if cat.isdigit()]
+            # print(cleaned_input_categories)
+            categories = [models.Category.objects.get(pk=pk) for pk in cleaned_input_categories]
+
+            input_institution = request.POST.get("organization")
+            if input_institution.isdigit():
+                institution = get_object_or_404(models.Institution, pk=int(input_institution))
+            else:
+                institution = None
+
+            # print("valid", categories)
+            # print("valid", institution)
+            # print("datetime", functions.validate_date_and_time(pick_up_date, pick_up_time))
+            # print("zip_code", functions.validate_zip_code(zip_code))
+            # print("phone_number", functions.validate_phone_number(phone_number))
+
+
+            if (categories and institution and
+                    functions.validate_phone_number(phone_number) and
+                    functions.validate_zip_code(zip_code) and
+                    functions.validate_date_and_time(pick_up_date, pick_up_time)
+                    and address and city and bags):
+                print("form validated")
+            else:
+                print("form not validated")
+
             return redirect('app:donation_confirmation')
         else:
             print("not valid")
+            print(form.errors)
             messages.error(request, "Niepoprawnie wypełniony formularz")
             return redirect('app:add_donation')
 

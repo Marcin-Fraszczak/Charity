@@ -72,7 +72,7 @@ Add donation
                             <input
                                     type="checkbox"
                                     name="categories"
-                                    value="{{ category.pk }}"
+                                    value="{{category.pk}}"
                                     id="{{category.name}}"
                             />
                             <span class="checkbox"></span>
@@ -80,6 +80,7 @@ Add donation
                         </label>
                     </div>
                     {% endfor %}
+
                 </div>
 
                 <div class="form-group form-group--buttons">
@@ -124,7 +125,7 @@ Add donation
                       <div class="subtitle">
                         {{ institution.description}}
                       </div>
-                      <div class="d-none inst-type">{{ institution.type }}</div>
+                      <div class="d-none inst-type" data-type="{{ institution.type }}"></div>
                       <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
                     </span>
                             </label>
@@ -168,7 +169,7 @@ Add donation
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
                             <!--                            <label> Ulica <input type="text" name="address"/> </label>-->
-                            <label> Ulica {{form.address}} </label>
+                            <label> Adres {{form.address}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">

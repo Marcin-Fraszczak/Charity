@@ -1,10 +1,8 @@
-from datetime import datetime
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from . import models
+from . import models, functions
 
 pass_help_text = """
 <br>- Przynajmniej 8 znaków 
@@ -37,7 +35,7 @@ class DonationForm(forms.ModelForm):
     phone_number = forms.CharField(min_length=9)
     city = forms.CharField(min_length=3)
     zip_code = forms.CharField(min_length=5)
-    pick_up_date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date', "min": datetime.today().date()}))
+    pick_up_date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date', "min": functions.get_tomorrow()}))
     pick_up_time = forms.TimeField(widget=forms.widgets.TimeInput(attrs={
         "type": "time", "min": "09:00:00", "max": "20:00:00"}))
     pick_up_comment = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 3}))
