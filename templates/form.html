@@ -118,14 +118,14 @@ Add donation
                         {% for institution in institutions %}
                         <div class="form-group form-group--checkbox">
                             <label>
-                                <input type="radio" name="organization" value="{{ institution.pk }}"/>
+                                <input type="radio" name="organization" value=""/>
                                 <span class="checkbox radio"></span>
                                 <span class="description">
                       <div class="title">{{ institution.name }}</div>
                       <div class="subtitle">
                         {{ institution.description}}
                       </div>
-                      <div class="d-none inst-type" data-type="{{ institution.type }}"></div>
+                      <div class="d-none inst-type" data-type="{{ institution.type }}" data-pk="{{ institution.pk }}"></div>
                       <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
                     </span>
                             </label>
@@ -145,7 +145,7 @@ Add donation
                       <div class="subtitle">
                         {{ institution.description}}
                       </div>
-                      <div class="d-none inst-type" data-type="{{ institution.type }}"></div>
+                      <div class="d-none inst-type" data-type="{{ institution.type }}" data-pk="{{ institution.pk }}"></div>
                       <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
                     </span>
                             </label>
@@ -190,6 +190,18 @@ Add donation
                                 Numer telefonu {{form.phone_number}}
                             </label>
                         </div>
+
+                        <div class="form-group form-group--inline">
+                            <label>
+                                Kraj
+                                <select name="country">
+                                    {% for country in countries %}
+                                        <option value="{{ country.number }}"> {{country.number }} {{ country.country }} </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </div>
+
                     </div>
 
                     <div class="form-section--column">

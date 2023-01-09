@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -53,62 +55,73 @@ class AddDonationView(LoginRequiredMixin, View):
         form = forms.DonationForm
         categories = models.Category.objects.all()
         institutions = models.Institution.objects.all()
+        countries = [
+            {"country": "Polska", "number": "+48"},
+            {"country": "Niemcy", "number": "+49"},
+            {"country": "Ukraina", "number": "+380"},
+        ]
         return render(request, 'form.html', context={
             "categories": categories,
             "institutions": institutions,
             "form": form,
+            "countries": countries,
         })
 
     def post(self, request):
-        print(request.POST)
-        form = forms.DonationForm(request.POST)
+        data = json.loads(request.body)
+        form = forms.DonationForm(data)
         if form.is_valid():
-            print("valid")
-            data = form.cleaned_data
-            print(data)
-
-            phone_number = data.get("phone_number")
-            zip_code = data.get("zip_code")
-            address = data.get("address")
-            city = data.get("city")
-            bags = data.get("bags")
-            pick_up_date = data.get("pick_up_date")
-            pick_up_time = data.get("pick_up_time")
-            pick_up_comment = data.get("pick_up_comment")
-
-            input_categories = request.POST.get("categories")
-            # print(input_categories)
-            cleaned_input_categories = [int(cat) for cat in input_categories if cat.isdigit()]
-            # print(cleaned_input_categories)
-            categories = [models.Category.objects.get(pk=pk) for pk in cleaned_input_categories]
-
-            input_institution = request.POST.get("organization")
+            form = form.cleaned_data
+            user = request.user
+            phone_number = form.get("phone_number")
+            address = form.get("address")
+            zip_code = form.get("zip_code")
+            city = form.get("city")
+            bags = form.get("bags")
+            pick_up_date = form.get("pick_up_date")
+            pick_up_time = form.get("pick_up_time")
+            pick_up_comment = form.get("pick_up_comment")
+            input_institution = data.get("institution")
             if input_institution.isdigit():
                 institution = get_object_or_404(models.Institution, pk=int(input_institution))
             else:
                 institution = None
 
-            # print("valid", categories)
-            # print("valid", institution)
-            # print("datetime", functions.validate_date_and_time(pick_up_date, pick_up_time))
-            # print("zip_code", functions.validate_zip_code(zip_code))
-            # print("phone_number", functions.validate_phone_number(phone_number))
-
+            input_categories = data.get("categories")
+            if input_categories:
+                cleaned_input_categories = [int(cat) for cat in input_categories if cat.isdigit()]
+                categories = [models.Category.objects.get(pk=pk) for pk in cleaned_input_categories]
+            else:
+                categories = None
 
             if (categories and institution and
                     functions.validate_phone_number(phone_number) and
                     functions.validate_zip_code(zip_code) and
                     functions.validate_date_and_time(pick_up_date, pick_up_time)
                     and address and city and bags):
-                print("form validated")
+                donation = models.Donation.objects.create(
+                    quantity=bags,
+                    institution=institution,
+                    address=address,
+                    phone_number=phone_number,
+                    city=city,
+                    zip_code=zip_code,
+                    pick_up_date=pick_up_date,
+                    pick_up_time=pick_up_time,
+                    pick_up_comment=pick_up_comment,
+                    user=user,
+                )
+                donation.save()
+                donation.categories.set(categories)
+                donation.save()
+                return redirect('app:donation_confirmation')
             else:
-                print("form not validated")
-
-            return redirect('app:donation_confirmation')
+                messages.error(request, "Formularz nie został zapisany. Popraw dane")
+                return redirect('app:home')
         else:
-            print("not valid")
-            print(form.errors)
-            messages.error(request, "Niepoprawnie wypełniony formularz")
+            # print("not valid")
+            # print(form.errors)
+            messages.error(request, form.errors)
             return redirect('app:add_donation')
 
 

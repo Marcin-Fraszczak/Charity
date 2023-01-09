@@ -38,7 +38,7 @@ class DonationForm(forms.ModelForm):
     pick_up_date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date', "min": functions.get_tomorrow()}))
     pick_up_time = forms.TimeField(widget=forms.widgets.TimeInput(attrs={
         "type": "time", "min": "09:00:00", "max": "20:00:00"}))
-    pick_up_comment = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 3}))
+    pick_up_comment = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5}))
 
     class Meta:
         model = models.Donation

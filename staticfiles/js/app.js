@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
         changePage(e) {
             e.preventDefault();
             const page = e.target.dataset.page;
-            const pageButtons = document.querySelector(".help--slides-pagination");
+            // stara wersja, raczej błędna
+            // const pageButtons = document.querySelector(".help--slides-pagination");
+            const pageButtons = e.target.parentElement.parentElement.parentElement.querySelector(".help--slides-pagination");
             const listElements = document.querySelector(".help--slides.active").querySelector("ul").querySelectorAll("li");
 
             [...pageButtons.children].forEach(function (li) {
@@ -102,10 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
      * numbers in real time
      */
 
-    function bagsValidator(num) {
-        return !isNaN(parseFloat(num)) && isFinite(num) && Math.floor(num) == num && num > 0;
-    }
-
     const totalBags = document.querySelector(".total_bags");
     const totalInstitutions = document.querySelector(".total_institutions");
 
@@ -129,6 +127,10 @@ document.addEventListener("DOMContentLoaded", function () {
      * Working with 5 steps of form input
      */
 
+    function bagsValidator(num) {
+        return !isNaN(parseFloat(num)) && isFinite(num) && Math.floor(num) == num && num > 0;
+    }
+
     if (window.location.pathname === '/add-donation/') {
         // collecting div with error messages for later use
         const errorMsg = document.querySelector(".error-message")
@@ -148,20 +150,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // transition STEP 1 - STEP 2
         const buttonStep1 = document.querySelector(".step1");
-        let chosenCategories;
+        let chosenCategoriesNames;
+        let chosenCategoriesIds;
         buttonStep1.addEventListener("click", (e) => {
 
             // getting list of chosen categories
-            chosenCategories = [];
+            chosenCategoriesNames = [];
+            chosenCategoriesIds = [];
             const inputs = e.target.parentElement.parentElement.querySelectorAll("input");
             inputs.forEach(input => {
                 if (input.checked) {
-                    chosenCategories.push(input.id);
+                    chosenCategoriesNames.push(input.id);
+                    chosenCategoriesIds.push(input.value);
                 }
             });
 
             // validation before going to STEP 2
-            if (chosenCategories.length === 0) {
+            if (chosenCategoriesNames.length === 0) {
                 e.stopImmediatePropagation();
                 manageError("show", ["Wybierz przynajmniej jedną kategorię"]);
             } else {
@@ -261,27 +266,29 @@ document.addEventListener("DOMContentLoaded", function () {
             const institutionsContainer = document.querySelector(".data-step-3");
 
             // Listing institutions in STEP 3 that matches the criteria from STEP 1
-            displayInstitutions(institutionsContainer, chosenCategories);
+            displayInstitutions(institutionsContainer, chosenCategoriesNames);
         });
 
 
         // transition STEP 3 - STEP 4
         const buttonStep3 = document.querySelector(".step3");
-        let chosenInstitution = [];
+        let chosenInstitutionName = [];
+        let chosenInstitutionId;
         buttonStep3.addEventListener("click", e => {
 
             // collecting chosen institution from STEP 3
             const institutionsContainer = document.querySelector(".data-step-3");
-            [...institutionsContainer.querySelectorAll(".form-group--checkbox")].forEach(child => {
-                let input = child.querySelector("input");
+            [...institutionsContainer.querySelectorAll(".form-group--checkbox")].forEach(box => {
+                let input = box.querySelector("input");
                 if (input.checked) {
-                    chosenInstitution[0] = child.querySelector(".title").textContent;
-                    chosenInstitution[1] = child.querySelector(".inst-type").dataset.type;
+                    chosenInstitutionName[0] = box.querySelector(".title").textContent;
+                    chosenInstitutionName[1] = box.querySelector(".inst-type").dataset.type;
+                    chosenInstitutionId = box.querySelector(".inst-type").dataset.pk;
                 }
             });
 
             // validating selection
-            if (chosenInstitution.length !== 2) {
+            if (chosenInstitutionName.length !== 2) {
                 manageError("show", ["Wybierz dokładnie jedną organizację"]);
                 e.stopImmediatePropagation();
             } else {
@@ -303,6 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const dateInput = formContainer.querySelector("[name='pick_up_date']");
             const timeInput = formContainer.querySelector("[name='pick_up_time']");
             const infoInput = formContainer.querySelector("[name='pick_up_comment']");
+            const countryInput = formContainer.querySelector("[name='country']");
 
             // validators for the input
             function validateAddress(data) {
@@ -372,6 +380,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 return hour >= 9 && (hour < 20 || (hour === 20 && minute === 0));
             }
 
+            let countriesArray = [
+                {"country": "Polska", "number": "+48"},
+                {"country": "Niemcy", "number": "+49"},
+                {"country": "Ukraina", "number": "+380"},
+            ];
+            let countriesNumbers = countriesArray.map(item => item.number);
+
+            function validateCountry(data) {
+                return countriesNumbers.includes(data);
+            }
+
             // input validation before going to STEP 5
             let errors = [];
             if (!addressInput.value) {
@@ -388,6 +407,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 errors.push("Wpisz poprawny kod pocztowy");
             } else if (!validateZipCode(postcodeInput.value)) {
                 errors.push("Wpisz poprawny kod pocztowy");
+            }
+            if (!countryInput.value) {
+                errors.push("Wybierz kraj");
+            } else if (!validateCountry(countryInput.value)) {
+                errors.push("Wybierz kraj");
             }
             if (!phoneInput.value) {
                 errors.push("Wpisz poprawny numer telefonu");
@@ -414,32 +438,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 lastTransition();
             }
 
+            // setting variable to count errors in summary
+            let errorCount = 0;
+
             function lastTransition() {
                 // displaying data from previous inputs in STEP 5
                 const summaryContainer = document.querySelector(".data-step-5");
 
-                // Letting user know if there are any mistakes
+                // letting user know if there are any mistakes
                 const whatAndHowMany = summaryContainer.querySelector(".what-and-how-many");
-                if (chosenCategories.length === 0) {
-                    whatAndHowMany.textContent = "Wróć do kroku 1 i wybierz poprawną kategorię darów (przynajmniej 1)"
+                if (chosenCategoriesNames.length === 0) {
+                    whatAndHowMany.textContent = "Wróć do kroku 1 i wybierz poprawną kategorię darów (przynajmniej 1)";
+                    errorCount++;
                 } else if (!bagsValidator(bags)) {
-                    whatAndHowMany.textContent = "Wróć do kroku 2 i wpisz poprawną liczbę worków (więcej niż 0)"
+                    whatAndHowMany.textContent = "Wróć do kroku 2 i wpisz poprawną liczbę worków (więcej niż 0)";
+                    errorCount++;
                 } else {
-                    whatAndHowMany.textContent = `Liczba worków: ${bags}, dary: ${chosenCategories.join(", ")}`;
+                    whatAndHowMany.textContent = `Liczba worków: ${bags}, dary: ${chosenCategoriesNames.join(", ")}`;
                 }
 
                 let names = ["Inna organizacja", "Fundacja", "Organizacja pozarządowa", "Lokalna zbiórka"];
 
                 const toWho = summaryContainer.querySelector(".to-who");
-                if (!chosenInstitution) {
+                if (!chosenInstitutionName) {
                     toWho.textContent = "Wróć do kroku 3 i wybierz poprawną instytucję (1)";
+                    errorCount++;
                 } else {
-                    toWho.textContent = `Obdarowana: ${names[chosenInstitution[1]]} ${chosenInstitution[0]}`;
+                    toWho.textContent = `Obdarowana: ${names[chosenInstitutionName[1]]} ${chosenInstitutionName[0]}`;
                 }
 
                 const address = summaryContainer.querySelector(".address");
                 if (!validateAddress(addressInput.value)) {
                     address.textContent = "Wróć do kroku 4 i wpisz poprawny adres";
+                    errorCount++;
                 } else {
                     address.textContent = addressInput.value;
                 }
@@ -447,6 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const city = summaryContainer.querySelector(".city");
                 if (!validateCity(cityInput.value)) {
                     city.textContent = "Wróć do kroku 4 i wpisz poprawne miasto";
+                    errorCount++;
                 } else {
                     city.textContent = cityInput.value;
                 }
@@ -454,20 +486,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 const postcode = summaryContainer.querySelector(".postcode");
                 if (!validateZipCode(postcodeInput.value)) {
                     postcode.textContent = "Wróć do kroku 4 i wpisz poprawny kod pocztowy";
+                    errorCount++;
                 } else {
-                    postcode.textContent = postcodeInput.value;
+                    postcode.textContent = extract(postcodeInput.value, ["-"]);
                 }
 
                 const phone = summaryContainer.querySelector(".phone");
-                if (!validatePhoneNumber(phoneInput.value)) {
-                    phone.textContent = "Wróć do kroku 4 i wpisz poprawny numer telefonu";
+                if (!validatePhoneNumber(phoneInput.value) || !validateCountry(countryInput.value)) {
+                    phone.textContent = "Wróć do kroku 4 i wpisz poprawny numer telefonu oraz kraj";
+                    errorCount++;
                 } else {
-                    phone.textContent = phoneInput.value;
+                    phone.textContent = countryInput.value + extract(phoneInput.value);
                 }
 
                 const date = summaryContainer.querySelector(".date");
                 if (!validateDate(dateInput.value)) {
                     date.textContent = "Wróć do kroku 4 i wpisz poprawną datę";
+                    errorCount++;
                 } else {
                     date.textContent = dateInput.value;
                 }
@@ -475,6 +510,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const time = summaryContainer.querySelector(".time");
                 if (!validateTime(timeInput.value)) {
                     time.textContent = "Wróć do kroku 4 i wpisz poprawny czas";
+                    errorCount++;
                 } else {
                     time.textContent = timeInput.value;
                 }
@@ -485,6 +521,66 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     info.textContent = infoInput.value;
                 }
+            }
+
+            // submitting the form
+            const submitButton = document.querySelector("button[type='submit']");
+            submitButton.addEventListener("click", e => {
+                if (errorCount > 0) {
+                    e.stopImmediatePropagation();
+                } else {
+                    e.preventDefault();
+                    let url = window.location.href;
+                    submitFetch(url);
+                }
+            });
+
+
+            function getCookie(name) {
+                if (!document.cookie) {
+                    return null;
+                }
+
+                const xsrfCookies = document.cookie.split(';')
+                    .map(c => c.trim())
+                    .filter(c => c.startsWith(name + '='));
+
+                if (xsrfCookies.length === 0) {
+                    return null;
+                }
+                return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+            }
+
+
+            function submitFetch(url) {
+                const csrfToken = getCookie('csrftoken');
+
+                fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        bags: bags,
+                        categories: chosenCategoriesIds,
+                        institution: chosenInstitutionId,
+                        address: addressInput.value,
+                        phone_number: countryInput.value + extract(phoneInput.value),
+                        city: cityInput.value,
+                        zip_code: extract(postcodeInput.value, ["-"]),
+                        pick_up_date: dateInput.value,
+                        pick_up_time: timeInput.value,
+                        pick_up_comment: infoInput.value,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                        'X-CSRFTOKEN': csrfToken,
+                    }
+                })
+                    .then(response => {
+                        window.location = response.url
+                        // return response.json()
+                    })
+                    .then(data => {
+                        // console.log(data)
+                    }).catch(error => console.error('Error:', error));
             }
 
 

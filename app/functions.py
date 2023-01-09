@@ -37,8 +37,5 @@ def validate_phone_number(data):
                        "65", "67", "68", "71", "74", "75", "76", "77", "81", "82", "83", "84", "85", "86", "87",
                        "89", "91", "94", "95"] + ["50", "51", "53", "57", "60", "66", "69", "72", "73",
                                                   "78", "79", "88"]
-    phone_number = extract(data)
-    if len(phone_number) == 9 and phone_number[:2] in polish_prefixes:
-        return True
-    else:
-        return False
+    phone_number = extract(data, ["+"])
+    return 12 <= len(phone_number) <= 13 and phone_number[1:3] in polish_prefixes
