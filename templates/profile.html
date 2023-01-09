@@ -45,35 +45,67 @@ Donation added
 
     <div class="custom-scrollbar" style="overflow-y: auto; overflow-x: hidden; max-height: 50vh"
          id="donation-container">
-        {% for donation in donations %}
-        {% if donation.is_taken %}
-        <h4 class="row m-3">
-            <div class="col-0 col-md-3">{{ donation.institution }}</div>
-            <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
-            <div class="col-0 col-md-3">{{ donation.pick_up_date }} {{ donation.pick_up_time }}</div>
-            <div class="col-0 col-md-4">{% for cat in donation.categories.all %} {{ cat.name }} {% endfor %}</div>
-            <div class="col-0 col-md-1 text-center p-0" id="{{ donation.pk }}">Tak</div>
-        </h4>
-        {% else %}
-        <h4 class="row m-3">
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="col-0 col-md-3">{{ donation.institution }}</div>
-                <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
-                <div class="col-0 col-md-3">{{ donation.pick_up_date }} {{ donation.pick_up_time }}</div>
-                <div class="col-0 col-md-4">{% for cat in donation.categories.all %} {{ cat.name }} {% endfor %}</div>
-                <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button" id="{{ donation.pk }}"
-                       value="Odbierz">
-            </form>
-        </h4>
-        {% endif %}
-        {% empty %}
-        <div class="row text-center">Brak darów do wyświetlenia</div>
-        {% endfor %}
+
+        <div class="active-donations">
+            {% for donation in donations %}
+            {% if not donation.is_taken %}
+            <h4 class="row m-3">
+                    <div class="col-0 col-md-3">{{ donation.institution }}</div>
+                    <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
+                    <div class="col-0 col-md-3">
+                        {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
+                    </div>
+                    <div class="col-0 col-md-4">{{ donation.categories.all|join:", " }}</div>
+                    <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
+                           data-id="{{ donation.pk }}"
+                           data-status="true" value="Zamknij">
+            </h4>
+            {% endif %}
+            {% empty %}
+            <div class="row text-center">Brak darów do wyświetlenia</div>
+            {% endfor %}
+        </div>
+
+        <div class="m-5"><p></p></div>
+
+        <!--        Version with two-way fetch-->
+        <div class="inactive-donations">
+            {% for donation in donations %}
+            {% if donation.is_taken %}
+            <h4 class="row m-3">
+                    <div class="col-0 col-md-3 text-decoration-line-through">{{ donation.institution }}</div>
+                    <div class="col-0 col-md-1 text-decoration-line-through text-center">{{ donation.quantity }}</div>
+                    <div class="col-0 col-md-3 text-decoration-line-through">
+                        {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
+                    </div>
+                    <div class="col-0 col-md-4 text-decoration-line-through">{{ donation.categories.all|join:", " }}
+                    </div>
+                    <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
+                           data-id="{{ donation.pk }}"
+                           data-status="false" value="Przywróć">
+            </h4>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <!--        Version without two-way fetch-->
+        <!--        <div class="inactive-donations">-->
+        <!--            {% for donation in donations %}-->
+        <!--            {% if donation.is_taken %}-->
+        <!--            <h4 class="row m-3">-->
+        <!--                <div class="col-0 col-md-3 text-decoration-line-through">{{ donation.institution }}</div>-->
+        <!--                <div class="col-0 col-md-1 text-center text-decoration-line-through">{{ donation.quantity }}</div>-->
+        <!--                <div class="col-0 col-md-3 text-decoration-line-through">{{ donation.pick_up_date|date:"d/m/Y" }} {{ donation.pick_up_time|time:"G:i" }}</div>-->
+        <!--                <div class="col-0 col-md-4 text-decoration-line-through">{{ donation.categories.all|join:", " }}</div>-->
+        <!--                <div class="col-0 col-md-1 text-center p-0" id="{{ donation.pk }}">Odebrane</div>-->
+        <!--            </h4>-->
+        <!--            {% endif %}-->
+        <!--            {% endfor %}-->
+        <!--        </div>-->
+
     </div>
 
 
 </div>
-
 
 {% endblock container %}

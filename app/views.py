@@ -39,7 +39,6 @@ class HomeView(View):
         paginated_collections = Paginator(collections, results_per_page)
         pc_dict = {page: paginated_collections.page(page) for page in paginated_collections.page_range}
 
-
         context.update({
             "pf_dict": pf_dict,
             "pf_page_range": pf_page_range,
@@ -125,7 +124,6 @@ class AddDonationView(LoginRequiredMixin, View):
             return redirect('app:add_donation')
 
 
-
 class DonationConfirmedView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'form-confirmation.html')
@@ -142,7 +140,7 @@ class LoginView(View):
         user = authenticate(request, username=email.split("@")[0], password=password)
         if user is not None:
             login(request, user)
-            return redirect('app:home')
+            return redirect('app:profile')
         else:
             messages.error(request, "Invalid data")
             return redirect('app:register')
@@ -186,6 +184,24 @@ class LogoutView(View):
         return redirect('app:home')
 
 
+def json_donation(donation, status):
+    donation = {
+            "pk": donation.pk,
+            "quantity": donation.quantity,
+            "categories": [cat.name for cat in donation.categories.all()],
+            "institution": donation.institution.name,
+            "pick_up_date": donation.pick_up_date,
+            "pick_up_time": donation.pick_up_time,
+            "is_taken": donation.is_taken,
+            "status": status,
+        }
+
+    data = {
+        "donation": donation,
+    }
+    return data
+
+
 class ProfileView(View):
     def get(self, request):
         User = get_user_model()
@@ -195,8 +211,49 @@ class ProfileView(View):
 
     def post(self, request):
         data = json.loads(request.body)
-        print(data)
+        donation = get_object_or_404(models.Donation, pk=data.get("donationId"))
         User = get_user_model()
         user = User.objects.get(pk=request.user.pk)
-        donations = models.Donation.objects.filter(user=user).order_by("pick_up_date")
-        return render(request, "profile.html", context={"user": user, "donations": donations})
+
+        if donation.user == user:
+            status = data.get("takenStatus")
+            if status == 'true':
+                donation.is_taken = True
+            else:
+                donation.is_taken = False
+            donation.save()
+            return JsonResponse(json_donation(donation, status))
+        else:
+            messages.error(request, "Nie masz uprawnień do modyfikacji")
+            return redirect('app:home')
+
+
+
+
+
+
+        #
+        # if 'json' in request.GET:
+        #     transactions = [
+        #         {
+        #             "date": transaction.date,
+        #             "value": transaction.value,
+        #             "counterparty": transaction.counterparty.name,
+        #             "category": transaction.category.name,
+        #             "description": transaction.description,
+        #             "wallet": [wallet.name for wallet in transaction.wallet.all()],
+        #         }
+        #         for transaction in transactions]
+        #
+        #     data = {
+        #         "transactions": transactions,
+        #         "parameters": {
+        #             "word_filter": word_filter,
+        #             "value_filter": value_filter,
+        #             "filter_by": filter_by,
+        #             "filter_val": filter_val,
+        #             "from_date": from_date,
+        #             "to_date": to_date,
+        #         }
+        #     }
+        #     return JsonResponse(data)
