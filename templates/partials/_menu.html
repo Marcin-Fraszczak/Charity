@@ -1,8 +1,10 @@
+{% load i18n %}
+
 <nav class="container container--90">
     <ul class="nav--actions">
         {% if user.is_authenticated %}
         <li class="logged-user">
-            Witaj {{ user.username }}
+            {% trans 'Witaj' %} {{ user.username }}
             <ul class="dropdown">
                 <li><a href="{% url 'app:profile' %}">Profil</a></li>
                 {% block option %}

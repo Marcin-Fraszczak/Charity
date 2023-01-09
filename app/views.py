@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from . import models, forms, functions
+from django.utils.translation import gettext_lazy as _
 
 
 class HomeView(View):
@@ -55,9 +56,9 @@ class AddDonationView(LoginRequiredMixin, View):
         categories = models.Category.objects.all()
         institutions = models.Institution.objects.all()
         countries = [
-            {"country": "Polska", "number": "+48"},
-            {"country": "Niemcy", "number": "+49"},
-            {"country": "Ukraina", "number": "+380"},
+            {"country": _("Polska"), "number": "+48"},
+            {"country": _("Niemcy"), "number": "+49"},
+            {"country": _("Ukraina"), "number": "+380"},
         ]
         return render(request, 'form.html', context={
             "categories": categories,
@@ -115,7 +116,7 @@ class AddDonationView(LoginRequiredMixin, View):
                 donation.save()
                 return redirect('app:donation_confirmation')
             else:
-                messages.error(request, "Formularz nie został zapisany. Popraw dane")
+                messages.error(request, _("Formularz nie został zapisany. Popraw dane"))
                 return redirect('app:home')
         else:
             # print("not valid")
@@ -142,7 +143,7 @@ class LoginView(View):
             login(request, user)
             return redirect('app:profile')
         else:
-            messages.error(request, "Invalid data")
+            messages.error(request, _("Niepoprawne dane"))
             return redirect('app:register')
 
 
@@ -161,7 +162,7 @@ class RegisterView(View):
 
             user_exists = get_user_model().objects.filter(email=email)
             if user_exists:
-                messages.error(request, "Taki użytkownik już istnieje")
+                messages.error(request, _("Taki użytkownik już istnieje"))
                 return render(request, 'register.html', context={"form": form})
 
             if password1 != password2:
@@ -171,10 +172,10 @@ class RegisterView(View):
             user.set_password(password1)
             user.username = email.split("@")[0]
             user.save()
-            messages.success(request, "Utworzono nowe konto")
+            messages.success(request, _("Utworzono nowe konto"))
             return redirect('app:login')
 
-        messages.error(request, "Error saving form")
+        messages.error(request, _("Błąd podczas zapisywania formularza"))
         return render(request, 'register.html', context={"form": form})
 
 
@@ -224,36 +225,5 @@ class ProfileView(View):
             donation.save()
             return JsonResponse(json_donation(donation, status))
         else:
-            messages.error(request, "Nie masz uprawnień do modyfikacji")
+            messages.error(request, _("Nie masz uprawnień do modyfikacji"))
             return redirect('app:home')
-
-
-
-
-
-
-        #
-        # if 'json' in request.GET:
-        #     transactions = [
-        #         {
-        #             "date": transaction.date,
-        #             "value": transaction.value,
-        #             "counterparty": transaction.counterparty.name,
-        #             "category": transaction.category.name,
-        #             "description": transaction.description,
-        #             "wallet": [wallet.name for wallet in transaction.wallet.all()],
-        #         }
-        #         for transaction in transactions]
-        #
-        #     data = {
-        #         "transactions": transactions,
-        #         "parameters": {
-        #             "word_filter": word_filter,
-        #             "value_filter": value_filter,
-        #             "filter_by": filter_by,
-        #             "filter_val": filter_val,
-        #             "from_date": from_date,
-        #             "to_date": to_date,
-        #         }
-        #     }
-        #     return JsonResponse(data)

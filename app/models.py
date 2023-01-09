@@ -1,10 +1,13 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+
 
 TYPES = (
-    (1, "fundacja"),
-    (2, "organizacja pozarządowa"),
-    (3, "zbiórka lokalna"),
+    (1, _("fundacja")),
+    (2, _("organizacja pozarządowa")),
+    (3, _("zbiórka lokalna")),
 )
 
 
