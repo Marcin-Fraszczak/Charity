@@ -184,3 +184,19 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('app:home')
+
+
+class ProfileView(View):
+    def get(self, request):
+        User = get_user_model()
+        user = User.objects.get(pk=request.user.pk)
+        donations = models.Donation.objects.filter(user=user).order_by("pick_up_date")
+        return render(request, "profile.html", context={"user": user, "donations": donations})
+
+    def post(self, request):
+        data = json.loads(request.body)
+        print(data)
+        User = get_user_model()
+        user = User.objects.get(pk=request.user.pk)
+        donations = models.Donation.objects.filter(user=user).order_by("pick_up_date")
+        return render(request, "profile.html", context={"user": user, "donations": donations})

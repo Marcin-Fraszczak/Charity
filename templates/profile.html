@@ -1,0 +1,79 @@
+{% extends '_base.html' %}
+{% block title %}
+Donation added
+{% endblock title %}
+
+{% block container %}
+<header>
+    {% include 'partials/_menu.html' %}
+    <div class="slogan container container--90"></div>
+</header>
+
+<div class="container-sm mt-5 mb-5">
+    <h3 class="p-4">
+        Witaj {{user.username}}!
+        To są informacje o Tobie.
+    </h3>
+    <div class="display-6 p-4">
+        <div class="row">
+            <div class="col-0 col-sm-2">Imię:</div>
+            <div class="col-0 col-sm-4">{{user.name | default:"-Nie podano-"}}</div>
+        </div>
+        <div class="row">
+            <div class="col-0 col-sm-2">Nazwisko:</div>
+            <div class="col-0 col-sm-2">{{user.surname | default:"-Nie podano-"}}</div>
+        </div>
+        <div class="row">
+            <div class="col-0 col-sm-2">Email:</div>
+            <div class="col-0 col-sm-2">{{user.email | default:"-Nie podano-"}}</div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-sm mt-5 mb-5">
+    <h3 class="p-4">
+        A poniżej lista przekazanych przez Ciebie darów:
+    </h3>
+    <h4 class="row m-5">
+        <div class="col-0 col-md-3"><strong>Organizacja</strong></div>
+        <div class="col-0 col-md-1"><strong>Worki</strong></div>
+        <div class="col-0 col-md-3"><strong>Data odbioru</strong></div>
+        <div class="col-0 col-md-4"><strong>Kategorie</strong></div>
+        <div class="col-0 col-md-1"><strong>Odebrane</strong></div>
+    </h4>
+
+    <div class="custom-scrollbar" style="overflow-y: auto; overflow-x: hidden; max-height: 50vh"
+         id="donation-container">
+        {% for donation in donations %}
+        {% if donation.is_taken %}
+        <h4 class="row m-3">
+            <div class="col-0 col-md-3">{{ donation.institution }}</div>
+            <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
+            <div class="col-0 col-md-3">{{ donation.pick_up_date }} {{ donation.pick_up_time }}</div>
+            <div class="col-0 col-md-4">{% for cat in donation.categories.all %} {{ cat.name }} {% endfor %}</div>
+            <div class="col-0 col-md-1 text-center p-0" id="{{ donation.pk }}">Tak</div>
+        </h4>
+        {% else %}
+        <h4 class="row m-3">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="col-0 col-md-3">{{ donation.institution }}</div>
+                <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
+                <div class="col-0 col-md-3">{{ donation.pick_up_date }} {{ donation.pick_up_time }}</div>
+                <div class="col-0 col-md-4">{% for cat in donation.categories.all %} {{ cat.name }} {% endfor %}</div>
+                <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button" id="{{ donation.pk }}"
+                       value="Odbierz">
+            </form>
+        </h4>
+        {% endif %}
+        {% empty %}
+        <div class="row text-center">Brak darów do wyświetlenia</div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+
+{% endblock container %}
