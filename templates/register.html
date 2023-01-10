@@ -10,7 +10,6 @@
       {% include 'partials/_menu.html' %}
     </header>
 
-
     <section class="login-page">
       <h2>{% trans 'Załóż konto' %}</h2>
 
@@ -19,7 +18,6 @@
 
         <div class="form-group form-wider">
              {{form.as_p}}
-
 <!--          <input type="text" name="name" placeholder="Imię" />-->
 <!--        </div>-->
 <!--         <div class="form-group">-->
@@ -35,7 +33,6 @@
 <!--          <input type="password" name="password2" placeholder="Powtórz hasło" />-->
         </div>
 
-
         <div class="form-group form-group--buttons">
           <a href="{% url 'app:login' %}" class="btn btn--without-border">{% trans 'Zaloguj się' %}</a>
           <button class="btn" type="submit">{% trans 'Załóż konto' %}</button>
@@ -43,7 +40,6 @@
       </form>
     </section>
     {% endblock container %}
-
 
   </body>
 </html>

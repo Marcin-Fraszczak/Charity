@@ -1,0 +1,20 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block title %}
+{% trans 'Email wysłany' %}
+{% endblock title %}
+
+{% block container %}
+<header>
+    {% include 'partials/_menu.html' %}
+</header>
+
+<section class="login-page">
+    <h2>{% trans 'Wysłaliśmy Tobie wiadomość z instrukcjami jak aktywować konto. Sprawdź swoją skrzynkę pocztową.' %}</h2>
+</section>
+{% endblock container %}
+
+
+</body>
+</html>

@@ -3,9 +3,14 @@ import json
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from . import models, forms, functions
 from django.utils.translation import gettext_lazy as _
@@ -52,7 +57,7 @@ class HomeView(View):
 
 class AddDonationView(LoginRequiredMixin, View):
     def get(self, request):
-        form = forms.DonationForm
+        form = forms.DonationForm()
         categories = models.Category.objects.all()
         institutions = models.Institution.objects.all()
         countries = [
@@ -149,7 +154,7 @@ class LoginView(View):
 
 class RegisterView(View):
     def get(self, request):
-        form = forms.CustomUserCreationForm
+        form = forms.CustomUserCreationForm()
         return render(request, 'register.html', context={"form": form})
 
     def post(self, request):
@@ -175,12 +180,43 @@ class RegisterView(View):
             user.username = email.split("@")[0]
             user.first_name = first_name
             user.last_name = last_name
+            user.is_active = False
             user.save()
+
+            # Send email
+            mail_subject = _("Aktywacja konta")
+            current_site = get_current_site(request)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activation_link = f"http://{current_site}/accounts/activate/{uid}/{token}/"
+            message = _(f"Cześć {user.username}!\n Kliknij w poniższy link, by aktywować konto:\n{activation_link}")
+            to_email = email
+            activation = EmailMessage(mail_subject, message, to=[to_email])
+            activation.send()
+
             messages.success(request, _("Utworzono nowe konto"))
-            return redirect('app:login')
+            return render(request, "registration/activation_link_sent.html")
 
         messages.error(request, _("Błąd podczas zapisywania formularza"))
         return render(request, 'register.html', context={"form": form})
+
+
+class ActivateView(View):
+    def get(self, request, uid, token):
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = get_user_model().objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+            user = None
+        if user is not None and default_token_generator.check_token(user, token):
+            # activate user and login:
+            user.is_active = True
+            user.save()
+            login(request, user)
+            messages.success(request, _("Pomyślnie aktywowano konto"))
+            return redirect("app:profile")
+        messages.error(request, _("Błędny link aktywacyjny"))
+        return redirect("app:register")
 
 
 class LogoutView(View):
