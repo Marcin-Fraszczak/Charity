@@ -1,7 +1,8 @@
 {% extends '_base.html' %}
+{% load i18n %}
 
 {% block title %}
-Login
+{% trans 'Logowanie' %}
 {% endblock title %}
 
 {% block container %}
@@ -10,20 +11,20 @@ Login
 </header>
 
 <section class="login-page">
-    <h2>Zaloguj się</h2>
+    <h2>{% trans 'Zaloguj się' %}</h2>
     <form method="post">
         {% csrf_token %}
         <div class="form-group form-wider">
             <input type="email" name="email" placeholder="Email"/>
         </div>
         <div class="form-group form-wider">
-            <input type="password" name="password" placeholder="Hasło"/>
-            <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
+            <input type="password" name="password" placeholder="{% trans 'Hasło' %}"/>
+            <a href="#" class="btn btn--small btn--without-border reset-password">{% trans 'Przypomnij hasło' %}</a>
         </div>
 
         <div class="form-group form-group--buttons">
-            <a href="{% url 'app:register' %}" class="btn btn--without-border">Załóż konto</a>
-            <button class="btn" type="submit">Zaloguj się</button>
+            <a href="{% url 'app:register' %}" class="btn btn--without-border">{% trans 'Załóż konto' %}</a>
+            <button class="btn" type="submit">{% trans 'Zaloguj się' %}</button>
         </div>
     </form>
 </section>

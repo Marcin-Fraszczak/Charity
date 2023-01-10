@@ -1,6 +1,8 @@
 {% extends '_base.html' %}
+{% load i18n %}
+
 {% block title %}
-Add donation
+{% trans 'Dodaj dar' %}
 {% endblock title %}
 
 {% block container %}
@@ -9,24 +11,24 @@ Add donation
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
-                Oddaj rzeczy, których już nie chcesz<br/>
-                <span class="uppercase">potrzebującym</span>
+                {% trans 'Oddaj rzeczy, których już nie chcesz' %}<br/>
+                <span class="uppercase">{% trans 'potrzebującym' %}</span>
             </h1>
 
             <div class="slogan--steps">
-                <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
+                <div class="slogan--steps-title">{% trans 'Wystarczą 4 proste kroki:' %}</div>
                 <ul class="slogan--steps-boxes">
                     <li>
-                        <div><em>1</em><span>Wybierz rzeczy</span></div>
+                        <div><em>1</em><span>{% trans 'Wybierz rzeczy' %}</span></div>
                     </li>
                     <li>
-                        <div><em>2</em><span>Spakuj je w worki</span></div>
+                        <div><em>2</em><span>{% trans 'Spakuj je w worki' %}</span></div>
                     </li>
                     <li>
-                        <div><em>3</em><span>Wybierz fundację</span></div>
+                        <div><em>3</em><span>{% trans 'Wybierz fundację' %}</span></div>
                     </li>
                     <li>
-                        <div><em>4</em><span>Zamów kuriera</span></div>
+                        <div><em>4</em><span>{% trans 'Zamów kuriera' %}</span></div>
                     </li>
                 </ul>
             </div>
@@ -37,25 +39,22 @@ Add donation
 <section class="form--steps">
     <div class="form--steps-instructions">
         <div class="form--steps-container">
-            <h3>Ważne!</h3>
+            <h3>{% trans 'Ważne!' %}</h3>
             <p data-step="1" class="active">
-                Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-                wiedzieć komu najlepiej je przekazać.
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
             </p>
             <p data-step="2">
-                Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-                wiedzieć komu najlepiej je przekazać.
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
             </p>
             <p data-step="3">
-                Wybierz jedną, do
-                której trafi Twoja przesyłka.
+                {% trans 'Wybierz jedną, do której trafi Twoja przesyłka.' %}
             </p>
-            <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
+            <p data-step="4">{% trans 'Podaj adres oraz termin odbioru rzeczy.' %}</p>
         </div>
     </div>
 
     <div class="form--steps-container">
-        <div class="form--steps-counter">Krok <span>1</span>/5</div>
+        <div class="form--steps-counter">{% trans 'Krok' %} <span>1</span>/5</div>
         <div class="form--steps-counter error-message"> </div>
 
         <form method="post">
@@ -64,7 +63,7 @@ Add donation
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <div class="custom-scrollbar" style="overflow-y: auto; overflow-x: hidden; max-height: 50vh">
-                    <h3>Zaznacz co chcesz oddać:</h3>
+                    <h3>{% trans 'Zaznacz co chcesz oddać:' %}</h3>
 
                     {% for category in categories %}
                     <div class="form-group form-group--checkbox">
@@ -84,26 +83,26 @@ Add donation
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn next-step step1">Dalej</button>
+                    <button type="button" class="btn next-step step1">{% trans 'Dalej' %}</button>
                 </div>
 
             </div>
 
             <!-- STEP 2 -->
             <div data-step="2">
-                <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+                <h3>{% trans 'Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:' %}</h3>
 
                 <div class="form-group narrow-form form-group--inline">
                     <label>
-                        Liczba 60l worków:
+                        {% trans 'Liczba 60l worków:' %}
                         <!--                        <input type="number" name="bags" step="1" min="1"/>-->
                         {{form.bags}}
                     </label>
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="button" class="btn next-step step2">Dalej</button>
+                    <button type="button" class="btn prev-step">{% trans 'Wstecz' %}</button>
+                    <button type="button" class="btn next-step step2">{% trans 'Dalej' %}</button>
                 </div>
             </div>
 
@@ -111,9 +110,9 @@ Add donation
 
             <div data-step="3" class="data-step-3">
 
-                <h3>Wybierz organizację, której chcesz pomóc:</h3>
+                <h3>{% trans 'Wybierz organizację, której chcesz pomóc:' %}</h3>
                 <div class="custom-scrollbar" style="overflow-y: auto; overflow-x: hidden; max-height: 50vh">
-                    <h4 class="mb-4">Organizacje, obsługujące wszystkie wybrane kategorie:</h4>
+                    <h4 class="mb-4">{% trans 'Organizacje, obsługujące wszystkie wybrane kategorie:' %}</h4>
                     <div class="institution-data-container all-categories">
                         {% for institution in institutions %}
                         <div class="form-group form-group--checkbox">
@@ -133,7 +132,7 @@ Add donation
                         {% endfor %}
                     </div>
 
-                    <h4 class="mb-4">Organizacje, obsługujące niektóre z wybranych kategorii:</h4>
+                    <h4 class="mb-4">{% trans 'Organizacje, obsługujące niektóre z wybranych kategorii:' %}</h4>
                     <div class="institution-data-container some-categories">
                         {% for institution in institutions %}
                         <div class="form-group form-group--checkbox">
@@ -155,45 +154,45 @@ Add donation
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="button" class="btn next-step step3">Dalej</button>
+                    <button type="button" class="btn prev-step">{% trans 'Wstecz' %}</button>
+                    <button type="button" class="btn next-step step3">{% trans 'Dalej' %}</button>
                 </div>
             </div>
 
             <!-- STEP 4 -->
             <div data-step="4" class="data-step-4">
-                <h3>Podaj adres oraz termin odbioru rzeczy przez kuriera:</h3>
+                <h3>{% trans 'Podaj adres oraz termin odbioru rzeczy przez kuriera:' %}</h3>
 
                 <div class="form-section form-section--columns">
                     <div class="form-section--column">
-                        <h4>Adres odbioru</h4>
+                        <h4>{% trans 'Adres odbioru' %}</h4>
                         <div class="form-group form-group--inline">
                             <!--                            <label> Ulica <input type="text" name="address"/> </label>-->
-                            <label> Adres {{form.address}} </label>
+                            <label> {% trans 'Adres' %} {{form.address}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <!--                            <label> Miasto <input type="text" name="city"/> </label>-->
-                            <label> Miasto {{form.city}} </label>
+                            <label> {% trans 'Miasto' %} {{form.city}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 <!--                                Kod pocztowy <input type="text" name="postcode"/>-->
-                                Kod pocztowy {{form.zip_code}}
+                                {% trans 'Kod pocztowy' %} {{form.zip_code}}
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 <!--                                Numer telefonu <input type="phone" name="phone"/>-->
-                                Numer telefonu {{form.phone_number}}
+                                {% trans 'Numer telefonu' %} {{form.phone_number}}
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Kraj
+                                {% trans 'Kraj' %}
                                 <select name="country">
                                     {% for country in countries %}
                                         <option value="{{ country.number }}"> {{country.number }} {{ country.country }} </option>
@@ -205,20 +204,20 @@ Add donation
                     </div>
 
                     <div class="form-section--column">
-                        <h4>Termin odbioru</h4>
+                        <h4>{% trans 'Termin odbioru' %}</h4>
                         <div class="form-group form-group--inline">
                             <!--                            <label> Data <input type="date" name="date"/> </label>-->
-                            <label> Data {{form.pick_up_date}} </label>
+                            <label> {% trans 'Data' %} {{form.pick_up_date}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <!--                            <label> Godzina <input type="time" name="time"/> </label>-->
-                            <label> Godzina {{form.pick_up_time}} </label>
+                            <label> {% trans 'Godzina' %} {{form.pick_up_time}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Uwagi dla kuriera
+                                {% trans 'Uwagi dla kuriera' %}
                                 <!--                                <textarea name="more_info" rows="5"></textarea>-->
                                 {{form.pick_up_comment}}
                             </label>
@@ -226,30 +225,30 @@ Add donation
                     </div>
                 </div>
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="button" class="btn next-step step4">Dalej</button>
+                    <button type="button" class="btn prev-step">{% trans 'Wstecz' %}</button>
+                    <button type="button" class="btn next-step step4">{% trans 'Dalej' %}</button>
                 </div>
             </div>
 
             <!-- STEP 5 -->
             <div data-step="5" class="data-step-5">
-                <h3>Podsumowanie Twojej darowizny</h3>
+                <h3>{% trans 'Podsumowanie Twojej darowizny' %}</h3>
 
                 <div class="summary">
                     <div class="form-section">
-                        <h4>Oddajesz:</h4>
+                        <h4>{% trans 'Oddajesz:' %}</h4>
                         <ul>
                             <li>
                                 <span class="icon icon-bag"></span>
                                 <span class="summary--text what-and-how-many">
-                      4 worki ubrań w dobrym stanie dla dzieci
+                      {% trans '4 worki ubrań w dobrym stanie dla dzieci' %}
                     </span>
                             </li>
 
                             <li>
                                 <span class="icon icon-hand"></span>
                                 <span class="summary--text to-who">
-                      Dla fundacji "Mam marzenie" w Warszawie
+                      {% trans 'Dla fundacji "Mam marzenie" w Warszawie' %}
                     </span>
                             </li>
                         </ul>
@@ -257,29 +256,29 @@ Add donation
 
                     <div class="form-section form-section--columns">
                         <div class="form-section--column">
-                            <h4>Adres odbioru:</h4>
+                            <h4>{% trans 'Adres odbioru:' %}</h4>
                             <ul>
-                                <li class="address">Prosta 51</li>
-                                <li class="city">Warszawa</li>
-                                <li class="postcode">99-098</li>
-                                <li class="phone">123 456 789</li>
+                                <li class="address">{% trans 'Prosta 51' %}</li>
+                                <li class="city">{% trans 'Warszawa' %}</li>
+                                <li class="postcode">{% trans '99-098' %}</li>
+                                <li class="phone">{% trans '123 456 789' %}</li>
                             </ul>
                         </div>
 
                         <div class="form-section--column">
-                            <h4>Termin odbioru:</h4>
+                            <h4>{% trans 'Termin odbioru:' %}</h4>
                             <ul>
-                                <li class="date">13/12/2018</li>
-                                <li class="time">15:40</li>
-                                <li class="info">Brak uwag</li>
+                                <li class="date">{% trans '13/12/2018' %}</li>
+                                <li class="time">{% trans '15:40' %}</li>
+                                <li class="info">{% trans 'Brak uwag' %}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="submit" class="btn">Potwierdzam</button>
+                    <button type="button" class="btn prev-step">{% trans 'Wstecz' %}</button>
+                    <button type="submit" class="btn">{% trans 'Potwierdzam' %}</button>
                 </div>
             </div>
         </form>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-09 22:20+0100\n"
+"POT-Creation-Date: 2023-01-10 09:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,6 +66,454 @@ msgstr "Error saving form"
 msgid "Nie masz uprawnień do modyfikacji"
 msgstr "You don't have permission to modify this"
 
-#: templates/partials/_menu.html:7
+#: templates/form-confirmation.html:5
+msgid "Dar dodano"
+msgstr ""
+
+#: templates/form-confirmation.html:13
+msgid ""
+"Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie informacje o "
+"odbiorze."
+msgstr ""
+
+#: templates/form.html:5
+msgid "Dodaj dar"
+msgstr ""
+
+#: templates/form.html:14
+msgid "Oddaj rzeczy, których już nie chcesz"
+msgstr ""
+
+#: templates/form.html:15
+msgid "potrzebującym"
+msgstr ""
+
+#: templates/form.html:19
+msgid "Wystarczą 4 proste kroki:"
+msgstr ""
+
+#: templates/form.html:22 templates/index.html:45
+msgid "Wybierz rzeczy"
+msgstr ""
+
+#: templates/form.html:25
+msgid "Spakuj je w worki"
+msgstr ""
+
+#: templates/form.html:28
+msgid "Wybierz fundację"
+msgstr ""
+
+#: templates/form.html:31 templates/index.html:60
+msgid "Zamów kuriera"
+msgstr ""
+
+#: templates/form.html:42
+msgid "Ważne!"
+msgstr ""
+
+#: templates/form.html:44 templates/form.html:47
+msgid ""
+"Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć "
+"komu najlepiej je przekazać."
+msgstr ""
+
+#: templates/form.html:50
+msgid "Wybierz jedną, do której trafi Twoja przesyłka."
+msgstr ""
+
+#: templates/form.html:52
+msgid "Podaj adres oraz termin odbioru rzeczy."
+msgstr ""
+
+#: templates/form.html:57
+msgid "Krok"
+msgstr ""
+
+#: templates/form.html:66
+msgid "Zaznacz co chcesz oddać:"
+msgstr ""
+
+#: templates/form.html:86 templates/form.html:105 templates/form.html:158
+#: templates/form.html:229
+msgid "Dalej"
+msgstr ""
+
+#: templates/form.html:93
+msgid "Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:"
+msgstr ""
+
+#: templates/form.html:97
+msgid "Liczba 60l worków:"
+msgstr ""
+
+#: templates/form.html:104 templates/form.html:157 templates/form.html:228
+#: templates/form.html:280
+msgid "Wstecz"
+msgstr ""
+
+#: templates/form.html:113
+msgid "Wybierz organizację, której chcesz pomóc:"
+msgstr ""
+
+#: templates/form.html:115
+msgid "Organizacje, obsługujące wszystkie wybrane kategorie:"
+msgstr ""
+
+#: templates/form.html:135
+msgid "Organizacje, obsługujące niektóre z wybranych kategorii:"
+msgstr ""
+
+#: templates/form.html:164
+msgid "Podaj adres oraz termin odbioru rzeczy przez kuriera:"
+msgstr ""
+
+#: templates/form.html:168
+msgid "Adres odbioru"
+msgstr ""
+
+#: templates/form.html:171
+msgid "Adres"
+msgstr ""
+
+#: templates/form.html:176
+msgid "Miasto"
+msgstr ""
+
+#: templates/form.html:182
+msgid "Kod pocztowy"
+msgstr ""
+
+#: templates/form.html:189
+msgid "Numer telefonu"
+msgstr ""
+
+#: templates/form.html:195
+msgid "Kraj"
+msgstr ""
+
+#: templates/form.html:207
+msgid "Termin odbioru"
+msgstr ""
+
+#: templates/form.html:210
+msgid "Data"
+msgstr ""
+
+#: templates/form.html:215
+msgid "Godzina"
+msgstr ""
+
+#: templates/form.html:220
+msgid "Uwagi dla kuriera"
+msgstr ""
+
+#: templates/form.html:235
+msgid "Podsumowanie Twojej darowizny"
+msgstr ""
+
+#: templates/form.html:239
+msgid "Oddajesz:"
+msgstr ""
+
+#: templates/form.html:244
+msgid "4 worki ubrań w dobrym stanie dla dzieci"
+msgstr ""
+
+#: templates/form.html:251
+msgid "Dla fundacji \"Mam marzenie\" w Warszawie"
+msgstr ""
+
+#: templates/form.html:259
+msgid "Adres odbioru:"
+msgstr ""
+
+#: templates/form.html:261
+msgid "Prosta 51"
+msgstr ""
+
+#: templates/form.html:262
+msgid "Warszawa"
+msgstr ""
+
+#: templates/form.html:263
+msgid "99-098"
+msgstr ""
+
+#: templates/form.html:264
+msgid "123 456 789"
+msgstr ""
+
+#: templates/form.html:269
+msgid "Termin odbioru:"
+msgstr ""
+
+#: templates/form.html:271
+msgid "13/12/2018"
+msgstr ""
+
+#: templates/form.html:272
+msgid "15:40"
+msgstr ""
+
+#: templates/form.html:273
+msgid "Brak uwag"
+msgstr ""
+
+#: templates/form.html:281
+msgid "Potwierdzam"
+msgstr ""
+
+#: templates/index.html:6
+msgid "Główna"
+msgstr ""
+
+#: templates/index.html:15
+msgid "Zacznij pomagać!"
+msgstr ""
+
+#: templates/index.html:16
+msgid "Oddaj niechciane rzeczy w zaufane ręce"
+msgstr ""
+
+#: templates/index.html:26
+msgid "Oddanych worków"
+msgstr ""
+
+#: templates/index.html:27
+msgid ""
+"Długi paragraf opisujący zalety worków na śmieci. Teksty typu: nie kupuj "
+"kota w worku."
+msgstr ""
+
+#: templates/index.html:32
+msgid "Wspartych organizacji"
+msgstr ""
+
+#: templates/index.html:33
+#, python-format
+msgid ""
+"W 2022 roku tylko 12%% organizacji współpracujących z naszym serwisem było "
+"organizacjami przestępczymi."
+msgstr ""
+
+#: templates/index.html:40
+msgid "Wystarczą 4 proste kroki"
+msgstr ""
+
+#: templates/index.html:46
+msgid "Ubrania, zabwaki, sprzęt i inne"
+msgstr ""
+
+#: templates/index.html:50
+msgid "Spakuj je"
+msgstr ""
+
+#: templates/index.html:51
+msgid "skorzystaj z worków na śmieci"
+msgstr ""
+
+#: templates/index.html:55
+msgid "Zdecyduj komu chcesz pomóc"
+msgstr ""
+
+#: templates/index.html:56
+msgid "wybierz zaufane miejsce"
+msgstr ""
+
+#: templates/index.html:61
+msgid "kurier przyjedzie w dogodnym terminie"
+msgstr ""
+
+#: templates/index.html:65 templates/login.html:26
+#: templates/partials/_menu.html:23 templates/register.html:15
+#: templates/register.html:41
+msgid "Załóż konto"
+msgstr ""
+
+#: templates/index.html:70 templates/partials/_menu.html:30
+msgid "O nas"
+msgstr ""
+
+#: templates/index.html:71
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae "
+"animi rem pariatur incidunt libero optio esse quisquam illo omnis."
+msgstr ""
+
+#: templates/index.html:78
+msgid "Komu pomagamy?"
+msgstr ""
+
+#: templates/index.html:81
+#, fuzzy
+#| msgid "fundacja"
+msgid "Fundacjom"
+msgstr "foundation"
+
+#: templates/index.html:82
+#, fuzzy
+#| msgid "organizacja pozarządowa"
+msgid "Organizacjom pozarządowym"
+msgstr "non-profit organization"
+
+#: templates/index.html:83
+msgid "Lokalnym zbiórkom"
+msgstr ""
+
+#: templates/index.html:88
+msgid ""
+"W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi "
+"współpracujemy. Możesz sprawdzić, czym się zajmują, komu pomagają i czego "
+"potrzebują."
+msgstr ""
+
+#: templates/index.html:121
+#, fuzzy
+#| msgid "organizacja pozarządowa"
+msgid "Są też organizacje pozarządowe."
+msgstr "non-profit organization"
+
+#: templates/index.html:152
+msgid "Oraz lokalnie organizowane zbiórki."
+msgstr ""
+
+#: templates/login.html:5
+msgid "Logowanie"
+msgstr ""
+
+#: templates/login.html:14 templates/login.html:27 templates/register.html:40
+msgid "Zaloguj się"
+msgstr ""
+
+#: templates/login.html:21
+msgid "Hasło"
+msgstr ""
+
+#: templates/login.html:22
+msgid "Przypomnij hasło"
+msgstr ""
+
+#: templates/partials/_footer.html:6
+msgid "Skontaktuj się z nami"
+msgstr ""
+
+#: templates/partials/_footer.html:7
+msgid "Formularz kontaktowy"
+msgstr ""
+
+#: templates/partials/_footer.html:9
+msgid "Imię"
+msgstr ""
+
+#: templates/partials/_footer.html:10
+msgid "Nazwisko"
+msgstr ""
+
+#: templates/partials/_footer.html:12
+msgid "Wiadomość"
+msgstr ""
+
+#: templates/partials/_footer.html:14
+msgid "Wyślij"
+msgstr ""
+
+#: templates/partials/_menu.html:7 templates/profile.html:16
 msgid "Witaj"
 msgstr "Hello"
+
+#: templates/partials/_menu.html:9 templates/profile.html:5
+msgid "Profil"
+msgstr ""
+
+#: templates/partials/_menu.html:11
+msgid "Ustawienia"
+msgstr ""
+
+#: templates/partials/_menu.html:16
+msgid "Admin"
+msgstr ""
+
+#: templates/partials/_menu.html:18
+msgid "Wyloguj"
+msgstr ""
+
+#: templates/partials/_menu.html:22
+msgid "Zaloguj"
+msgstr ""
+
+#: templates/partials/_menu.html:28
+msgid "Start"
+msgstr ""
+
+#: templates/partials/_menu.html:29
+msgid "O co chodzi?"
+msgstr ""
+
+#: templates/partials/_menu.html:31
+msgid "Fundacje i organizacje"
+msgstr ""
+
+#: templates/partials/_menu.html:32
+msgid "Przekaż dary"
+msgstr ""
+
+#: templates/partials/_menu.html:33
+msgid "Kontakt"
+msgstr ""
+
+#: templates/profile.html:17
+msgid "To są informacje o Tobie."
+msgstr ""
+
+#: templates/profile.html:21
+msgid "Imię:"
+msgstr ""
+
+#: templates/profile.html:25
+msgid "Nazwisko:"
+msgstr ""
+
+#: templates/profile.html:29
+msgid "Email:"
+msgstr ""
+
+#: templates/profile.html:38
+msgid "A poniżej lista przekazanych przez Ciebie darów:"
+msgstr ""
+
+#: templates/profile.html:41
+msgid "Organizacja"
+msgstr ""
+
+#: templates/profile.html:42
+msgid "Worki"
+msgstr ""
+
+#: templates/profile.html:43
+msgid "Data odbioru"
+msgstr ""
+
+#: templates/profile.html:44
+msgid "Kategorie"
+msgstr ""
+
+#: templates/profile.html:45
+msgid "Odebrane"
+msgstr ""
+
+#: templates/profile.html:63
+msgid "Zamknij"
+msgstr ""
+
+#: templates/profile.html:67
+msgid "Brak darów do wyświetlenia"
+msgstr ""
+
+#: templates/profile.html:87
+msgid "Przywróć"
+msgstr ""
+
+#: templates/register.html:5
+msgid "Zarejestruj"
+msgstr ""

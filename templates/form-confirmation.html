@@ -1,6 +1,8 @@
 {% extends '_base.html' %}
+{% load i18n %}
+
 {% block title %}
-Donation added
+{% trans 'Dar dodano' %}
 {% endblock title %}
 
 {% block container %}
@@ -8,8 +10,7 @@ Donation added
     {% include 'partials/_menu.html' %}
     <div class="slogan container container--90">
         <h2>
-            Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie
-            informacje o odbiorze.
+            {% trans 'Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie informacje o odbiorze.' %}
         </h2>
     </div>
 </header>
