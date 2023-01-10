@@ -8,7 +8,7 @@
             <ul class="dropdown">
                 <li><a href="{% url 'app:profile' %}">{% trans 'Profil' %}</a></li>
                 {% block option %}
-                <li><a href="#">{% trans 'Ustawienia' %}</a></li>
+                <li><a href="{% url 'app:settings' %}">{% trans 'Ustawienia' %}</a></li>
                 {% endblock option %}
                 <!--                <li><a href="#">Moje zbiórki</a></li>-->
                 <!--                dla form-confirmation-->

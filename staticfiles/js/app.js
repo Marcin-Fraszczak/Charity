@@ -1,4 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    function getCookie(name) {
+        if (!document.cookie) {
+            return null;
+        }
+
+        const xsrfCookies = document.cookie.split(';')
+            .map(c => c.trim())
+            .filter(c => c.startsWith(name + '='));
+
+        if (xsrfCookies.length === 0) {
+            return null;
+        }
+        return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+    }
+
     /**
      * HomePage - Help section
      */
@@ -535,23 +551,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-
-            function getCookie(name) {
-                if (!document.cookie) {
-                    return null;
-                }
-
-                const xsrfCookies = document.cookie.split(';')
-                    .map(c => c.trim())
-                    .filter(c => c.startsWith(name + '='));
-
-                if (xsrfCookies.length === 0) {
-                    return null;
-                }
-                return decodeURIComponent(xsrfCookies[0].split('=')[1]);
-            }
-
-
             function submitFetch(url) {
                 const csrfToken = getCookie('csrftoken');
 
@@ -582,10 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // console.log(data)
                     }).catch(error => console.error('Error:', error));
             }
-
-
         });
-
     }
 
 
@@ -772,4 +768,191 @@ document.addEventListener("DOMContentLoaded", function () {
     if (form !== null) {
         new FormSteps(form);
     }
+
+    /**
+     * Only for accounts/profile/ endpoint (Warning: hardcoded)
+     * Displaying users donations
+     */
+    if (window.location.pathname === "accounts/profile/") {
+        const donationsContainer = document.querySelector("#donation-container");
+        const activeDonationsContainer = donationsContainer.querySelector(".active-donations");
+        const inactiveDonationsContainer = donationsContainer.querySelector(".inactive-donations");
+        activateButtons();
+
+        function activateButtons() {
+            const takenButtons = donationsContainer.querySelectorAll(".taken-button");
+            takenButtons.forEach(button => {
+                button.addEventListener("click", e => {
+                    e.preventDefault();
+                    let donationId = e.target.dataset.id;
+                    let takenStatus = e.target.dataset.status;
+                    fetchDonation(window.location.href, donationId, takenStatus);
+                });
+            });
+
+        }
+
+
+        function fetchDonation(url, pk, takenStatus) {
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({
+                    donationId: pk,
+                    takenStatus: takenStatus,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'X-CSRFTOKEN': getCookie('csrftoken'),
+                }
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    // console.log(data.donation);
+                    BobTheBuilder(data.donation);
+                }).catch(error => console.error('Error:', error));
+        }
+
+
+        // removing particular row and creating new one below
+        // function BobTheBuilder(donation) {
+        //     [...activeDonationsContainer.children].forEach(child => {
+        //         if (child.querySelector(".taken-button").dataset.id == donation.pk) {
+        //             activeDonationsContainer.removeChild(child);
+        //
+        //             let h4 = document.createElement("h4");
+        //             h4.classList.add("row", "m-3");
+        //
+        //             let institutionDiv = document.createElement("div");
+        //             institutionDiv.classList.add("col-0", "col-md-3", "text-decoration-line-through");
+        //             institutionDiv.textContent = donation.institution;
+        //             h4.appendChild(institutionDiv);
+        //
+        //             let quantityDiv = document.createElement("div");
+        //             quantityDiv.classList.add("col-0", "col-md-1", "text-center", "text-decoration-line-through");
+        //             quantityDiv.textContent = donation.quantity;
+        //             h4.appendChild(quantityDiv);
+        //
+        //             let dateDiv = document.createElement("div");
+        //             dateDiv.classList.add("col-0", "col-md-3", "text-decoration-line-through");
+        //             let dateArray = donation.pick_up_date.split("-");
+        //             let date = `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`
+        //             let timeArray = donation.pick_up_time.split(":");
+        //             let time = `${timeArray[0]}:${timeArray[1]}`
+        //             dateDiv.textContent = `${date} ${time}`;
+        //             h4.appendChild(dateDiv);
+        //
+        //             let categoryDiv = document.createElement("div");
+        //             categoryDiv.classList.add("col-0", "col-md-4", "text-decoration-line-through");
+        //             categoryDiv.textContent = donation.categories.join(", ");
+        //             h4.appendChild(categoryDiv);
+        //
+        //             let statusDiv = document.createElement("div");
+        //             statusDiv.classList.add("col-0", "col-md-1", "text-center", "p-0");
+        //             statusDiv.setAttribute("id", donation.pk);
+        //             statusDiv.textContent = "Odebrane";
+        //             h4.appendChild(statusDiv);
+        //
+        //             inactiveDonationsContainer.appendChild(h4);
+        //         }
+        //     });
+        // }
+
+        // Cloning whole node, possible backward fetch
+        function BobTheBuilder(donation) {
+            if (donation.status === 'true') {
+                [...activeDonationsContainer.children].forEach(child => {
+                    if (child.querySelector(".taken-button").dataset.id == donation.pk) {
+                        let toClone = child.cloneNode(true);
+                        let input = toClone.querySelector("input.btn");
+                        input.value = "Przywróć";
+                        input.dataset.status = "false";
+                        let divs = [...toClone.querySelectorAll("div")];
+                        divs.forEach(div => {
+                            div.classList.add("text-decoration-line-through");
+                        });
+
+                        activeDonationsContainer.removeChild(child);
+                        inactiveDonationsContainer.appendChild(toClone);
+                        activateButtons();
+                    }
+                });
+            } else {
+                [...inactiveDonationsContainer.children].forEach(child => {
+                    if (child.querySelector(".taken-button").dataset.id == donation.pk) {
+                        let toClone = child.cloneNode(true);
+                        let input = toClone.querySelector("input.btn");
+                        input.value = "Zamknij";
+                        input.dataset.status = "true";
+                        let divs = [...toClone.querySelectorAll("div")];
+                        divs.forEach(div => {
+                            div.classList.remove("text-decoration-line-through");
+                        });
+
+                        inactiveDonationsContainer.removeChild(child);
+                        activeDonationsContainer.appendChild(toClone);
+                        activateButtons();
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Only for accounts/settings/ endpoint (Warning: hardcoded)
+     * Display form with user data
+     */
+    if (window.location.pathname === "/accounts/settings/") {
+        const submitButton = document.querySelector(".btn[type='submit']");
+        submitButton.addEventListener("click", submitListener)
+
+        function submitListener(e) {
+            e.preventDefault();
+            const passInput1 = document.querySelector("#pass1").querySelector("input");
+            const passInput2 = document.querySelector("#pass2").querySelector("input");
+            const confMessage = document.querySelector(".confirmation-message");
+            const spacer = document.querySelector(".spacer");
+
+            // if password was not given yet
+            if ([...passInput1.classList].includes("d-none")) {
+                spacer.remove();
+                confMessage.classList.remove("d-none");
+                passInput1.classList.remove("d-none");
+                submitButton.textContent = "Wyślij";
+                // if password was already given
+            } else if (passInput1.value) {
+                passInput2.value = passInput1.value;
+                submitButton.removeEventListener("click", submitListener);
+                submitButton.click();
+            }
+        }
+    }
+
+    /**
+     * Only for accounts/close/ endpoint (Warning: hardcoded)
+     * Display form with user data
+     */
+    if (window.location.pathname === "/accounts/close/") {
+        const submitButton = document.querySelector(".btn[type='submit']");
+        const message = document.querySelector(".confirmation-message");
+        const passInput1 = document.querySelector("#pass1").querySelector("input");
+        const passInput2 = document.querySelector("#pass2").querySelector("input");
+
+        submitButton.addEventListener("click", closeListener);
+
+        function closeListener(e) {
+            e.preventDefault();
+            if (passInput1.value) {
+                passInput2.value = passInput1.value;
+                submitButton.removeEventListener("click", closeListener);
+                submitButton.click();
+            } else {
+                message.style.background = "red";
+            }
+        }
+
+
+    }
+
 });

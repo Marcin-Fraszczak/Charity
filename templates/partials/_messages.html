@@ -1,18 +1,20 @@
 {% if messages %}
 
-    {% for message in messages %}
-        {% if message.tags == 'error' %}
-        <div class="text-center timed-message">
-            <p class="alert alert-danger">{{message}}</p>
-        {% else %}
-            <p class="alert alert-{{message.tags}}">{{message}}</p>
-        </div>
-        {% endif %}
-    {% endfor %}
+{% for message in messages %}
+
+<div class="text-center timed-message">
+    {% if message.tags == 'error' %}
+    <p class="alert alert-danger">{{message}}</p>
+    {% else %}
+    <p class="alert alert-{{message.tags}}">{{message}}</p>
+</div>
+{% endif %}
+{% endfor %}
 
 <script>
     setTimeout(function () {
-        document.querySelector('.timed-message').remove()
+        let messageTag = document.querySelector('.timed-message');
+        messageTag.style.display = "none";
     }, 2000);
 </script>
 

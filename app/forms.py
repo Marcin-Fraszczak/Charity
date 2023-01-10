@@ -4,13 +4,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 from . import models, functions
 
-pass_help_text = """
-<br>- Przynajmniej 8 znaków 
-<br>- Musi zawierać przynajmniej jedną wielką literę 
-<br>- Nie może być zbyt pospolite lub podobne do pozostałych danych
-<br>- Nie może być w całości numeryczne
-"""
-
 
 class CustomUserCreationForm(UserCreationForm):
     name = forms.CharField(label='', widget=forms.TextInput(attrs={"placeholder": "Imię"}))
@@ -55,6 +48,3 @@ class DonationForm(forms.ModelForm):
             # "pick_up_comment",
         ]
 
-
-
-# pick_up_time = forms.TimeField(widget=forms.widgets.TimeInput(attrs={'type': 'time', "minutes": False, "default": datetime.today().time()}))

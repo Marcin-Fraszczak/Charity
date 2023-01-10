@@ -159,6 +159,8 @@ class RegisterView(View):
             email = form.cleaned_data.get("email")
             password1 = form.cleaned_data.get("password1")
             password2 = form.cleaned_data.get("password2")
+            first_name = form.cleaned_data.get("name")
+            last_name = form.cleaned_data.get("surname")
 
             user_exists = get_user_model().objects.filter(email=email)
             if user_exists:
@@ -171,6 +173,8 @@ class RegisterView(View):
             user = form.save(commit=False)
             user.set_password(password1)
             user.username = email.split("@")[0]
+            user.first_name = first_name
+            user.last_name = last_name
             user.save()
             messages.success(request, _("Utworzono nowe konto"))
             return redirect('app:login')
@@ -187,15 +191,15 @@ class LogoutView(View):
 
 def json_donation(donation, status):
     donation = {
-            "pk": donation.pk,
-            "quantity": donation.quantity,
-            "categories": [cat.name for cat in donation.categories.all()],
-            "institution": donation.institution.name,
-            "pick_up_date": donation.pick_up_date,
-            "pick_up_time": donation.pick_up_time,
-            "is_taken": donation.is_taken,
-            "status": status,
-        }
+        "pk": donation.pk,
+        "quantity": donation.quantity,
+        "categories": [cat.name for cat in donation.categories.all()],
+        "institution": donation.institution.name,
+        "pick_up_date": donation.pick_up_date,
+        "pick_up_time": donation.pick_up_time,
+        "is_taken": donation.is_taken,
+        "status": status,
+    }
 
     data = {
         "donation": donation,
@@ -227,3 +231,84 @@ class ProfileView(View):
         else:
             messages.error(request, _("Nie masz uprawnień do modyfikacji"))
             return redirect('app:home')
+
+
+class SettingsView(LoginRequiredMixin, View):
+    def get(self, request):
+        User = get_user_model()
+        user = get_object_or_404(User, pk=request.user.pk)
+        form = forms.CustomUserCreationForm(initial={
+            "name": user.first_name,
+            "surname": user.last_name,
+            "email": user.email,
+        })
+        return render(request, 'settings.html', context={"form": form})
+
+    def post(self, request):
+
+        form = forms.CustomUserCreationForm(request.POST)
+        print(form)
+        if form.is_valid():
+            print("valid")
+            user = request.user
+            data = form.cleaned_data
+            email = data.get("email")
+            first_name = data.get("name")
+            last_name = data.get("surname")
+            password = data.get("password1")
+
+            # First, check if a new email is laready taken
+            email_exists = get_user_model().objects.filter(email=email)
+            for e_e in email_exists:
+                if e_e.pk != user.pk:
+                    messages.error(request, _("Inny użytkownik ma już taki adres email"))
+                    return redirect('app:settings')
+            # Then, check if the password is correct and make changes
+            user = get_object_or_404(get_user_model(), pk=user.pk)
+            if user.check_password(password):
+                user.first_name = first_name
+                user.last_name = last_name
+                user.email = email
+                user.username = email.split("@")[0]
+                user.save()
+                messages.success(request, _("Poprawnie zmieniono dane"))
+                return redirect('app:profile')
+            else:
+                messages.error(request, _("Podano niepoprawne dane"))
+                return redirect("app:settings")
+
+        messages.error(request, _("Podano niepoprawne dane"))
+        return redirect("app:settings")
+
+
+class CloseView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        form = forms.CustomUserCreationForm(initial={
+            "email": user.email,
+        })
+        return render(request, "close.html", context={"form": form})
+
+    def post(self, request):
+        user = request.user
+        form = forms.CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get("password1")
+            if user.check_password(password):
+                user.is_active = False
+                user.save()
+                messages.success(request, _("Konto zostało zamknięte."))
+                return redirect("app:home")
+        messages.error(request, _("Niepoprawne dane"))
+        return redirect("app:close")
+
+
+class ChangePasswordView(LoginRequiredMixin, View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+

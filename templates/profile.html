@@ -19,11 +19,19 @@
     <div class="display-6 p-4">
         <div class="row">
             <div class="col-0 col-sm-2">{% trans 'Imię:' %}</div>
-            <div class="col-0 col-sm-4">{{user.name | default:"{% trans '-Nie podano-' %}"}}</div>
+            {% if user.first_name %}
+            <div class="col-0 col-sm-4">{{ user.first_name }}</div>
+            {% else %}
+            <div class="col-0 col-sm-4">{% trans '-Nie podano-' %}</div>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col-0 col-sm-2">{% trans 'Nazwisko:' %}</div>
-            <div class="col-0 col-sm-2">{{user.surname | default:"{% trans '-Nie podano-' %}"}}</div>
+            {% if user.last_name %}
+            <div class="col-0 col-sm-2">{{user.last_name}}</div>
+            {% else %}
+            <div class="col-0 col-sm-2">{% trans '-Nie podano-' %}</div>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col-0 col-sm-2">{% trans 'Email:' %}</div>
@@ -52,19 +60,21 @@
             {% for donation in donations %}
             {% if not donation.is_taken %}
             <h4 class="row m-3">
-                    <div class="col-0 col-md-3">{{ donation.institution }}</div>
-                    <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
-                    <div class="col-0 col-md-3">
-                        {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
-                    </div>
-                    <div class="col-0 col-md-4">{{ donation.categories.all|join:", " }}</div>
-                    <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
-                           data-id="{{ donation.pk }}"
-                           data-status="true" value="{% trans 'Zamknij' %}">
+                <div class="col-0 col-md-3">{{ donation.institution }}</div>
+                <div class="col-0 col-md-1 text-center">{{ donation.quantity }}</div>
+                <div class="col-0 col-md-3">
+                    {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
+                </div>
+                <div class="col-0 col-md-4">{{ donation.categories.all|join:", " }}</div>
+                <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
+                       data-id="{{ donation.pk }}"
+                       data-status="true" value="{% trans 'Zamknij' %}">
             </h4>
             {% endif %}
             {% empty %}
-            <div class="row text-center">{% trans 'Brak darów do wyświetlenia' %}</div>
+            <div class="row text-center">
+                <h4>{% trans 'Brak darów do wyświetlenia' %}</h4>
+            </div>
             {% endfor %}
         </div>
 
@@ -75,16 +85,16 @@
             {% for donation in donations %}
             {% if donation.is_taken %}
             <h4 class="row m-3">
-                    <div class="col-0 col-md-3 text-decoration-line-through">{{ donation.institution }}</div>
-                    <div class="col-0 col-md-1 text-decoration-line-through text-center">{{ donation.quantity }}</div>
-                    <div class="col-0 col-md-3 text-decoration-line-through">
-                        {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
-                    </div>
-                    <div class="col-0 col-md-4 text-decoration-line-through">{{ donation.categories.all|join:", " }}
-                    </div>
-                    <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
-                           data-id="{{ donation.pk }}"
-                           data-status="false" value="{% trans 'Przywróć' %}">
+                <div class="col-0 col-md-3 text-decoration-line-through">{{ donation.institution }}</div>
+                <div class="col-0 col-md-1 text-decoration-line-through text-center">{{ donation.quantity }}</div>
+                <div class="col-0 col-md-3 text-decoration-line-through">
+                    {{ donation.pick_up_date|date:"d/m/Y" }} {{donation.pick_up_time|time:"G:i" }}
+                </div>
+                <div class="col-0 col-md-4 text-decoration-line-through">{{ donation.categories.all|join:", " }}
+                </div>
+                <input type="submit" class="col-0 col-md-1 btn text-center p-0 taken-button"
+                       data-id="{{ donation.pk }}"
+                       data-status="false" value="{% trans 'Przywróć' %}">
             </h4>
             {% endif %}
             {% endfor %}

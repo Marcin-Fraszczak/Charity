@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-10 09:55+0100\n"
+"POT-Creation-Date: 2023-01-10 16:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,6 +65,10 @@ msgstr "Error saving form"
 #: app/views.py:228
 msgid "Nie masz uprawnień do modyfikacji"
 msgstr "You don't have permission to modify this"
+
+#: templates/_base.html:12
+msgid "Dokument"
+msgstr ""
 
 #: templates/form-confirmation.html:5
 msgid "Dar dodano"
@@ -470,47 +474,51 @@ msgstr ""
 msgid "Imię:"
 msgstr ""
 
-#: templates/profile.html:25
-msgid "Nazwisko:"
+#: templates/profile.html:25 templates/profile.html:33
+msgid "-Nie podano-"
 msgstr ""
 
 #: templates/profile.html:29
+msgid "Nazwisko:"
+msgstr ""
+
+#: templates/profile.html:37
 msgid "Email:"
 msgstr ""
 
-#: templates/profile.html:38
+#: templates/profile.html:46
 msgid "A poniżej lista przekazanych przez Ciebie darów:"
 msgstr ""
 
-#: templates/profile.html:41
+#: templates/profile.html:49
 msgid "Organizacja"
 msgstr ""
 
-#: templates/profile.html:42
+#: templates/profile.html:50
 msgid "Worki"
 msgstr ""
 
-#: templates/profile.html:43
+#: templates/profile.html:51
 msgid "Data odbioru"
 msgstr ""
 
-#: templates/profile.html:44
+#: templates/profile.html:52
 msgid "Kategorie"
 msgstr ""
 
-#: templates/profile.html:45
+#: templates/profile.html:53
 msgid "Odebrane"
 msgstr ""
 
-#: templates/profile.html:63
+#: templates/profile.html:71
 msgid "Zamknij"
 msgstr ""
 
-#: templates/profile.html:67
+#: templates/profile.html:75
 msgid "Brak darów do wyświetlenia"
 msgstr ""
 
-#: templates/profile.html:87
+#: templates/profile.html:95
 msgid "Przywróć"
 msgstr ""
 
