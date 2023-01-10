@@ -301,14 +301,3 @@ class CloseView(LoginRequiredMixin, View):
                 return redirect("app:home")
         messages.error(request, _("Niepoprawne dane"))
         return redirect("app:close")
-
-
-class ChangePasswordView(LoginRequiredMixin, View):
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        pass
-
-
-
