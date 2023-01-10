@@ -19,7 +19,7 @@
         </div>
         <div class="form-group form-wider">
             <input type="password" name="password" placeholder="{% trans 'Hasło' %}"/>
-            <a href="#" class="btn btn--small btn--without-border reset-password">{% trans 'Przypomnij hasło' %}</a>
+            <a href="{% url 'password_reset' %}" class="btn btn--small btn--without-border reset-password">{% trans 'Przypomnij hasło' %}</a>
         </div>
 
         <div class="form-group form-group--buttons">

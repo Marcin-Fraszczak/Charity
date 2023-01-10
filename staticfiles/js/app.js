@@ -773,7 +773,7 @@ document.addEventListener("DOMContentLoaded", function () {
      * Only for accounts/profile/ endpoint (Warning: hardcoded)
      * Displaying users donations
      */
-    if (window.location.pathname === "accounts/profile/") {
+    if (window.location.pathname === "/accounts/profile/") {
         const donationsContainer = document.querySelector("#donation-container");
         const activeDonationsContainer = donationsContainer.querySelector(".active-donations");
         const inactiveDonationsContainer = donationsContainer.querySelector(".inactive-donations");
@@ -915,10 +915,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const spacer = document.querySelector(".spacer");
 
             // if password was not given yet
-            if ([...passInput1.classList].includes("d-none")) {
+            if ([...passInput1.parentElement.classList].includes("d-none")) {
                 spacer.remove();
                 confMessage.classList.remove("d-none");
-                passInput1.classList.remove("d-none");
+                passInput1.parentElement.classList.remove("d-none");
                 submitButton.textContent = "Wyślij";
                 // if password was already given
             } else if (passInput1.value) {
