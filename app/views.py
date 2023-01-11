@@ -5,8 +5,10 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
+from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.encoding import force_bytes
@@ -337,3 +339,22 @@ class CloseView(LoginRequiredMixin, View):
                 return redirect("app:home")
         messages.error(request, _("Niepoprawne dane"))
         return redirect("app:close")
+
+
+class CheckEmailView(View):
+    def post(self, request):
+        email = json.loads(request.body).get("email")
+
+        try:
+            validate_email(email)
+            valid = True
+        except ValidationError:
+            valid = False
+
+        if valid:
+            exists = get_user_model().objects.filter(email=email)
+
+        return JsonResponse({"email": email, "valid": valid, "exists": len(exists)})
+
+
+

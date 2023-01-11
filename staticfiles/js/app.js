@@ -951,8 +951,81 @@ document.addEventListener("DOMContentLoaded", function () {
                 message.style.background = "red";
             }
         }
-
-
     }
+
+    /**
+     * Only for accounts/close/ endpoint (Warning: hardcoded)
+     * Check if email exists in database
+     */
+    if (window.location.pathname === "/accounts/password_reset/") {
+        const submitButton = document.querySelector(".btn[type='submit']");
+        const message = document.querySelector(".confirmation-message");
+        const emailInput = document.querySelector("#id_email");
+        const redirect = document.querySelector("#email-redirect");
+        const spacer = document.querySelector(".spacer");
+
+        submitButton.addEventListener("click", emailListener);
+
+        function emailListener(e) {
+            e.preventDefault();
+            if (emailInput.value) {
+                fetchEmail(redirect.href, emailInput.value);
+            }
+
+            function fetchEmail(url, email) {
+                fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: email,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                        'X-CSRFTOKEN': getCookie('csrftoken'),
+                    }
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        // console.log(data);
+                        if (data.exists) {
+                            submitButton.removeEventListener("click", emailListener);
+                            submitButton.click();
+                        } else {
+                            spacer.remove();
+                            message.classList.remove("d-none");
+                            message.style.background = "red";
+                        }
+                    }).catch(error => console.error('Error:', error));
+            }
+        }
+    }
+
+    /**
+     * Only for accounts/reset/.../set-password/ endpoint (Warning: hardcoded)
+     * Checks if both password are similar
+     */
+    if (window.location.pathname.includes("set-password")) {
+        const submitButton = document.querySelector(".btn[type='submit']");
+        const message = document.querySelector(".confirmation-message");
+        const spacer = document.querySelector(".spacer");
+        const passInput1 = document.querySelector("#id_new_password1");
+        const passInput2 = document.querySelector("#id_new_password2");
+
+        submitButton.addEventListener("click", passwordListener);
+
+        function passwordListener(e) {
+            e.preventDefault();
+            if (passInput1.value === passInput2.value) {
+                submitButton.removeEventListener("click", passwordListener);
+                submitButton.click();
+            } else {
+                spacer.remove();
+                message.style.background = "red";
+                message.classList.remove("d-none");
+            }
+        }
+    }
+
 
 });
