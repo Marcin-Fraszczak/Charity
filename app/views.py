@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
@@ -11,7 +12,9 @@ from django.core.paginator import Paginator
 from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.utils.encoding import force_bytes
+from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from . import models, forms, functions
@@ -121,6 +124,30 @@ class AddDonationView(LoginRequiredMixin, View):
                 donation.save()
                 donation.categories.set(categories)
                 donation.save()
+
+                # Send email
+                now = datetime.now()
+                mail_subject = _("Potwierdzenie przekazania daru")
+                message = _(f"""
+                To jest automatyczne potwierdzenie, nie odpowiadaj na nie.
+                
+                Cześć {user.username}!
+                Dnia {now.date()} o godzinie {now.strftime("%H:%M")} zarejestrowaliśmy nową darowiznę przekazaną z Twojego konta.
+                Szczegóły poniżej:
+                
+                Kategorie: {', '.join([cat.name for cat in categories])}
+                Organizacja: {institution}
+                Liczba worków: {bags}
+                Adres odbioru: {', '.join([address, zip_code, city])}
+                Termin odbioru: {str(pick_up_date) + str(pick_up_time)}
+                Dane kontaktowe: {', '.join([user.first_name, user.last_name, phone_number])}
+                
+                Dziękujemy!
+                """)
+                to_email = user.email
+                donation_email = EmailMessage(mail_subject, message, to=[to_email])
+                donation_email.send()
+
                 return redirect('app:donation_confirmation')
             else:
                 messages.error(request, _("Formularz nie został zapisany. Popraw dane"))
@@ -353,8 +380,41 @@ class CheckEmailView(View):
 
         if valid:
             exists = get_user_model().objects.filter(email=email)
+        else:
+            exists = []
 
         return JsonResponse({"email": email, "valid": valid, "exists": len(exists)})
 
 
+class ContactView(View):
+    def post(self, request):
+        name = request.POST.get("name")
+        surname = request.POST.get("surname")
+        message = request.POST.get("message")
+        origin_site = request.headers.get("referer")
+        if name and surname and message:
+            if len(name) >= 3 and len(surname) >= 3 and len(message) >= 10:
+                name = escape(name)
+                surname = escape(surname)
+                message = escape(message)
 
+                # Send email
+                now = datetime.now()
+                admins = get_user_model().objects.filter(is_staff=1)
+                mail_subject = _("Formularz kontaktowy: nowa wiadomość")
+                message = _(f"""
+                                {now.strftime('%Y/%m/%d %H:%M:%s')}
+                                Nowa wiadomość od {name} {surname}:
+                                
+                                {message}
+                                """)
+
+                to_email = (admin for admin in admins)
+                message = EmailMessage(mail_subject, message, to=[to_email])
+                message.send()
+
+                messages.success(request, _("Wiadomość wysłano pomyślnie"))
+                return redirect(origin_site)
+
+        messages.error(request, _("Wiadomość nie została wysłana. Niepoprawnie wypełniony formularz"))
+        return redirect(origin_site)

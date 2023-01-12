@@ -48,3 +48,9 @@ class DonationForm(forms.ModelForm):
             # "pick_up_comment",
         ]
 
+
+# class MessageForm(forms.ModelForm):
+#     model = models.Message
+#
+#     class Meta:
+#         fields = ["name", "surname", "email", "message"]

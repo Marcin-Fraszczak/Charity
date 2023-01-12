@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -44,3 +45,12 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.address}, {self.pick_up_date}"
+
+
+# class Message(models.Model):
+#     name = models.CharField(max_length=60, validators=[MinLengthValidator(3)])
+#     surname = models.CharField(max_length=60, validators=[MinLengthValidator(3)])
+#     email = models.EmailField()
+#     message = models.TextField(validators=[MinLengthValidator(10)])
+#     sent_when = models.DateTimeField(auto_now=True)
+#
