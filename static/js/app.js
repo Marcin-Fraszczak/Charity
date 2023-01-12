@@ -435,14 +435,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 errors.push("Wpisz poprawny numer telefonu");
             }
             if (!dateInput.value) {
-                errors.push("Wpisz poprawną datę");
+                errors.push("Wpisz poprawną datę (najwcześniej jutro)");
             } else if (!validateDate(dateInput.value)) {
-                errors.push("Wpisz poprawną datę");
+                errors.push("Wpisz poprawną datę (najwcześniej jutro)");
             }
             if (!timeInput.value) {
-                errors.push("Wpisz poprawny czas");
+                errors.push("Wpisz poprawny czas (9-20)");
             } else if (!validateTime(timeInput.value)) {
-                errors.push("Wpisz poprawny czas");
+                errors.push("Wpisz poprawny czas (9-20)");
             }
 
             // display message only when input is wrong
@@ -517,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const date = summaryContainer.querySelector(".date");
                 if (!validateDate(dateInput.value)) {
-                    date.textContent = "Wróć do kroku 4 i wpisz poprawną datę";
+                    date.textContent = "Wróć do kroku 4 i wpisz poprawną datę (najwcześniej jutro)";
                     errorCount++;
                 } else {
                     date.textContent = dateInput.value;
@@ -525,7 +525,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const time = summaryContainer.querySelector(".time");
                 if (!validateTime(timeInput.value)) {
-                    time.textContent = "Wróć do kroku 4 i wpisz poprawny czas";
+                    time.textContent = "Wróć do kroku 4 i wpisz poprawny czas (9-20)";
                     errorCount++;
                 } else {
                     time.textContent = timeInput.value;

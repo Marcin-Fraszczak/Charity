@@ -57,15 +57,15 @@ msgstr "local collection"
 
 #: app/views.py:69
 msgid "Polska"
-msgstr "Poland"
+msgstr ""
 
 #: app/views.py:70
 msgid "Niemcy"
-msgstr "Germany"
+msgstr ""
 
 #: app/views.py:71
 msgid "Ukraina"
-msgstr "Ukraine"
+msgstr ""
 
 #: app/views.py:130
 msgid "Potwierdzenie przekazania daru"
