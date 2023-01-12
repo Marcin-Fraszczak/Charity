@@ -12,4 +12,5 @@ db.sqlite3
 templates/partials/_navbar.html
 
 app/migrations
-users/migrations
+users/migrationssendgrid.env
+sendgrid.env

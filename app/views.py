@@ -12,13 +12,13 @@ from django.core.paginator import Paginator
 from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from . import models, forms, functions
 from django.utils.translation import gettext_lazy as _
+from . import sendgrid
 
 
 class HomeView(View):
@@ -127,8 +127,8 @@ class AddDonationView(LoginRequiredMixin, View):
 
                 # Send email
                 now = datetime.now()
-                mail_subject = _("Potwierdzenie przekazania daru")
-                message = _(f"""
+                subject = "Potwierdzenie przekazania daru"
+                content = f"""
                 To jest automatyczne potwierdzenie, nie odpowiadaj na nie.
                 
                 Cześć {user.username}!
@@ -143,10 +143,13 @@ class AddDonationView(LoginRequiredMixin, View):
                 Dane kontaktowe: {', '.join([user.first_name, user.last_name, phone_number])}
                 
                 Dziękujemy!
-                """)
+                """
                 to_email = user.email
-                donation_email = EmailMessage(mail_subject, message, to=[to_email])
-                donation_email.send()
+                sendgrid.send_mail(to_email, subject, content)
+
+                # Old, console version
+                # donation_email = EmailMessage(subject, content, to=[to_email])
+                # donation_email.send()
 
                 return redirect('app:donation_confirmation')
             else:
@@ -213,15 +216,18 @@ class RegisterView(View):
             user.save()
 
             # Send email
-            mail_subject = _("Aktywacja konta")
+            subject = "Aktywacja konta"
             current_site = get_current_site(request)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
             activation_link = f"http://{current_site}/accounts/activate/{uid}/{token}/"
-            message = _(f"Cześć {user.username}!\n Kliknij w poniższy link, by aktywować konto:\n{activation_link}")
+            content = f"Cześć {user.username}!\n Kliknij w poniższy link, by aktywować konto:\n{activation_link}"
             to_email = email
-            activation = EmailMessage(mail_subject, message, to=[to_email])
-            activation.send()
+            sendgrid.send_mail(to_email, subject, content)
+
+            # Old, console version
+            # activation = EmailMessage(subject, content, to=[to_email])
+            # activation.send()
 
             messages.success(request, _("Utworzono nowe konto"))
             return render(request, "registration/activation_link_sent.html")
@@ -238,7 +244,7 @@ class ActivateView(View):
         except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             user = None
         if user is not None and default_token_generator.check_token(user, token):
-            # activate user and login:
+            # activate user and log in:
             user.is_active = True
             user.save()
             login(request, user)
@@ -322,13 +328,13 @@ class SettingsView(LoginRequiredMixin, View):
             last_name = data.get("surname")
             password = data.get("password1")
 
-            # First, check if a new email is laready taken
+            # check if a new email is already taken
             email_exists = get_user_model().objects.filter(email=email)
             for e_e in email_exists:
                 if e_e.pk != user.pk:
                     messages.error(request, _("Inny użytkownik ma już taki adres email"))
                     return redirect('app:settings')
-            # Then, check if the password is correct and make changes
+            # check if the password is correct and make changes
             user = get_object_or_404(get_user_model(), pk=user.pk)
             if user.check_password(password):
                 user.first_name = first_name
@@ -401,17 +407,21 @@ class ContactView(View):
                 # Send email
                 now = datetime.now()
                 admins = get_user_model().objects.filter(is_staff=1)
-                mail_subject = _("Formularz kontaktowy: nowa wiadomość")
-                message = _(f"""
+                subject = "Formularz kontaktowy: nowa wiadomość"
+                content = f"""
                                 {now.strftime('%Y/%m/%d %H:%M:%s')}
                                 Nowa wiadomość od {name} {surname}:
                                 
                                 {message}
-                                """)
+                                """
 
-                to_email = (admin for admin in admins)
-                message = EmailMessage(mail_subject, message, to=[to_email])
-                message.send()
+                to_emails = (admin.email for admin in admins)
+                for to_email in to_emails:
+                    sendgrid.send_mail(to_email, subject, content)
+
+                # Old, console version
+                # message = EmailMessage(subject, content, to=[to_email])
+                # message.send()
 
                 messages.success(request, _("Wiadomość wysłano pomyślnie"))
                 return redirect(origin_site)
