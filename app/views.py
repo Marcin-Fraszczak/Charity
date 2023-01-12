@@ -172,7 +172,7 @@ class LoginView(View):
         # print(request.POST)
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=email.split("@")[0], password=password)
+        user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('app:profile')
@@ -206,7 +206,7 @@ class RegisterView(View):
 
             user = form.save(commit=False)
             user.set_password(password1)
-            user.username = email.split("@")[0]
+            user.username = email
             user.first_name = first_name
             user.last_name = last_name
             user.is_active = False
@@ -334,7 +334,7 @@ class SettingsView(LoginRequiredMixin, View):
                 user.first_name = first_name
                 user.last_name = last_name
                 user.email = email
-                user.username = email.split("@")[0]
+                user.username = email
                 user.save()
                 messages.success(request, _("Poprawnie zmieniono dane"))
                 return redirect('app:profile')
