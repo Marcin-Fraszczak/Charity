@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-10 16:21+0100\n"
+"POT-Creation-Date: 2023-01-12 10:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,56 +18,180 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/models.py:8
+#: app/admin.py:21
+msgid "Nie możesz usunąć samego siebie"
+msgstr ""
+
+#: app/admin.py:25
+msgid "Nie może zostać mniej niż dwóch adminów"
+msgstr ""
+
+#: app/admin.py:34
+msgid "To nie jest obiekt użytkownika"
+msgstr ""
+
+#: app/admin.py:37
+msgid "Wystąpił nieznany błąd"
+msgstr ""
+
+#: app/admin.py:50
+msgid "Użytkownik pomyślnie usunięty"
+msgstr ""
+
+#: app/admin.py:63
+#, python-brace-format
+msgid "Liczba pomyślnie usuniętych wpisów: {all_deletions}"
+msgstr ""
+
+#: app/models.py:9
 msgid "fundacja"
 msgstr "foundation"
 
-#: app/models.py:9
+#: app/models.py:10
 msgid "organizacja pozarządowa"
 msgstr "non-profit organization"
 
-#: app/models.py:10
+#: app/models.py:11
 msgid "zbiórka lokalna"
 msgstr "local collection"
 
-#: app/views.py:59
+#: app/views.py:69
 msgid "Polska"
 msgstr "Poland"
 
-#: app/views.py:60
+#: app/views.py:70
 msgid "Niemcy"
 msgstr "Germany"
 
-#: app/views.py:61
+#: app/views.py:71
 msgid "Ukraina"
 msgstr "Ukraine"
 
-#: app/views.py:119
+#: app/views.py:130
+msgid "Potwierdzenie przekazania daru"
+msgstr ""
+
+#: app/views.py:131
+msgid ""
+"\n"
+"                To jest automatyczne potwierdzenie, nie odpowiadaj na nie.\n"
+"                \n"
+"                Cześć {user.username}!\n"
+"                Dnia {now.date()} o godzinie {now.strftime(\"%H:%M\")} "
+"zarejestrowaliśmy nową darowiznę przekazaną z Twojego konta.\n"
+"                Szczegóły poniżej:\n"
+"                \n"
+"                Kategorie: {', '.join([cat.name for cat in categories])}\n"
+"                Organizacja: {institution}\n"
+"                Liczba worków: {bags}\n"
+"                Adres odbioru: {', '.join([address, zip_code, city])}\n"
+"                Termin odbioru: {str(pick_up_date) + str(pick_up_time)}\n"
+"                Dane kontaktowe: {', '.join([user.first_name, user."
+"last_name, phone_number])}\n"
+"                \n"
+"                Dziękujemy!\n"
+"                "
+msgstr ""
+
+#: app/views.py:153
 msgid "Formularz nie został zapisany. Popraw dane"
 msgstr "Form was not saved. Correct your input"
 
-#: app/views.py:146
+#: app/views.py:180 app/views.py:367
 msgid "Niepoprawne dane"
 msgstr "Incorrect data"
 
-#: app/views.py:165
+#: app/views.py:201
 msgid "Taki użytkownik już istnieje"
 msgstr "User already exists"
 
-#: app/views.py:175
+#: app/views.py:216
+msgid "Aktywacja konta"
+msgstr ""
+
+#: app/views.py:221
+#, python-brace-format
+msgid ""
+"Cześć {user.username}!\n"
+" Kliknij w poniższy link, by aktywować konto:\n"
+"{activation_link}"
+msgstr ""
+
+#: app/views.py:226
 msgid "Utworzono nowe konto"
 msgstr "New account has been created"
 
-#: app/views.py:178
+#: app/views.py:229
 msgid "Błąd podczas zapisywania formularza"
 msgstr "Error saving form"
 
-#: app/views.py:228
+#: app/views.py:245
+msgid "Pomyślnie aktywowano konto"
+msgstr ""
+
+#: app/views.py:247
+msgid "Błędny link aktywacyjny"
+msgstr ""
+
+#: app/views.py:297
 msgid "Nie masz uprawnień do modyfikacji"
 msgstr "You don't have permission to modify this"
 
+#: app/views.py:329
+#, fuzzy
+#| msgid "Taki użytkownik już istnieje"
+msgid "Inny użytkownik ma już taki adres email"
+msgstr "User already exists"
+
+#: app/views.py:339
+#, fuzzy
+#| msgid "Niepoprawne dane"
+msgid "Poprawnie zmieniono dane"
+msgstr "Incorrect data"
+
+#: app/views.py:342 app/views.py:345
+#, fuzzy
+#| msgid "Niepoprawne dane"
+msgid "Podano niepoprawne dane"
+msgstr "Incorrect data"
+
+#: app/views.py:365
+msgid "Konto zostało zamknięte."
+msgstr ""
+
+#: app/views.py:404
+msgid "Formularz kontaktowy: nowa wiadomość"
+msgstr ""
+
+#: app/views.py:405
+msgid ""
+"\n"
+"                                {now.strftime('%Y/%m/%d %H:%M:%s')}\n"
+"                                Nowa wiadomość od {name} {surname}:\n"
+"                                \n"
+"                                {message}\n"
+"                                "
+msgstr ""
+
+#: app/views.py:416
+msgid "Wiadomość wysłano pomyślnie"
+msgstr ""
+
+#: app/views.py:419
+msgid "Wiadomość nie została wysłana. Niepoprawnie wypełniony formularz"
+msgstr ""
+
 #: templates/_base.html:12
 msgid "Dokument"
+msgstr ""
+
+#: templates/close.html:5 templates/close.html:15 templates/close.html:28
+#: templates/settings.html:32
+msgid "Zamknij konto"
+msgstr ""
+
+#: templates/close.html:21
+msgid "Potwierdź zamknięcie konta hasłem"
 msgstr ""
 
 #: templates/form-confirmation.html:5
@@ -330,8 +454,8 @@ msgid "kurier przyjedzie w dogodnym terminie"
 msgstr ""
 
 #: templates/index.html:65 templates/login.html:26
-#: templates/partials/_menu.html:23 templates/register.html:15
-#: templates/register.html:41
+#: templates/partials/_menu.html:23 templates/register.html:14
+#: templates/register.html:38
 msgid "Załóż konto"
 msgstr ""
 
@@ -386,7 +510,7 @@ msgstr ""
 msgid "Logowanie"
 msgstr ""
 
-#: templates/login.html:14 templates/login.html:27 templates/register.html:40
+#: templates/login.html:14 templates/login.html:27 templates/register.html:37
 msgid "Zaloguj się"
 msgstr ""
 
@@ -394,7 +518,7 @@ msgstr ""
 msgid "Hasło"
 msgstr ""
 
-#: templates/login.html:22
+#: templates/login.html:22 templates/registration/password_reset_form.html:15
 msgid "Przypomnij hasło"
 msgstr ""
 
@@ -406,19 +530,20 @@ msgstr ""
 msgid "Formularz kontaktowy"
 msgstr ""
 
-#: templates/partials/_footer.html:9
+#: templates/partials/_footer.html:10
 msgid "Imię"
 msgstr ""
 
-#: templates/partials/_footer.html:10
+#: templates/partials/_footer.html:11
 msgid "Nazwisko"
 msgstr ""
 
-#: templates/partials/_footer.html:12
+#: templates/partials/_footer.html:13
 msgid "Wiadomość"
 msgstr ""
 
-#: templates/partials/_footer.html:14
+#: templates/partials/_footer.html:15
+#: templates/registration/password_reset_form.html:31
 msgid "Wyślij"
 msgstr ""
 
@@ -430,7 +555,7 @@ msgstr "Hello"
 msgid "Profil"
 msgstr ""
 
-#: templates/partials/_menu.html:11
+#: templates/partials/_menu.html:11 templates/settings.html:5
 msgid "Ustawienia"
 msgstr ""
 
@@ -443,6 +568,7 @@ msgid "Wyloguj"
 msgstr ""
 
 #: templates/partials/_menu.html:22
+#: templates/registration/password_reset_complete.html:16
 msgid "Zaloguj"
 msgstr ""
 
@@ -514,14 +640,88 @@ msgstr ""
 msgid "Zamknij"
 msgstr ""
 
-#: templates/profile.html:75
+#: templates/profile.html:76
 msgid "Brak darów do wyświetlenia"
 msgstr ""
 
-#: templates/profile.html:95
+#: templates/profile.html:97
 msgid "Przywróć"
 msgstr ""
 
 #: templates/register.html:5
 msgid "Zarejestruj"
+msgstr ""
+
+#: templates/registration/activation_link_sent.html:5
+#: templates/registration/password_reset_done.html:5
+msgid "Email wysłany"
+msgstr ""
+
+#: templates/registration/activation_link_sent.html:14
+msgid ""
+"Wysłaliśmy Tobie wiadomość z instrukcjami jak aktywować konto. Sprawdź swoją "
+"skrzynkę pocztową."
+msgstr ""
+
+#: templates/registration/password_change_done.html:5
+#: templates/registration/password_change_form.html:5
+msgid "Zmiana hasła"
+msgstr ""
+
+#: templates/registration/password_change_done.html:14
+#: templates/registration/password_change_form.html:14
+#: templates/registration/password_change_form.html:30
+#: templates/settings.html:31
+msgid "Zmień hasło"
+msgstr ""
+
+#: templates/registration/password_change_done.html:17
+msgid "Hasło pomyślnie zmieniono"
+msgstr ""
+
+#: templates/registration/password_change_done.html:21
+msgid "Twoje konto"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:5
+#: templates/registration/password_reset_confirm.html:5
+msgid "Nowe hasło"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:15
+msgid "Pomyślnie ustawiono nowe hasło. Możesz zalogować się do swojego konta."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:15
+msgid "Podaj nowe hasło"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:30
+msgid "Podane hasła nie są jednakowe"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:34
+msgid "Zatwierdź"
+msgstr ""
+
+#: templates/registration/password_reset_done.html:14
+msgid ""
+"Wysłaliśmy Tobie wiadomość z instrukcjami jak ustawić nowe hasło. Sprawdź "
+"swoją skrzynkę pocztową."
+msgstr ""
+
+#: templates/registration/password_reset_form.html:5
+msgid "Reset hasła"
+msgstr ""
+
+#: templates/registration/password_reset_form.html:26
+msgid "Podany adres nie istnieje w bazie danych"
+msgstr ""
+
+#: templates/settings.html:15 templates/settings.html:33
+msgid "Zmień dane"
+msgstr ""
+
+#: templates/settings.html:25
+msgid "Potwierdź zmiany hasłem"
 msgstr ""
