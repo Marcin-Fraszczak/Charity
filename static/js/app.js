@@ -1005,7 +1005,7 @@ document.addEventListener("DOMContentLoaded", function () {
      * Only for accounts/reset/.../set-password/ endpoint (Warning: hardcoded)
      * Checks if both password are similar
      */
-    if (window.location.pathname.includes("set-password")) {
+    if (window.location.pathname.includes("set-password") || window.location.pathname.includes("password_change")) {
         const submitButton = document.querySelector(".btn[type='submit']");
         const message = document.querySelector(".confirmation-message");
         const spacer = document.querySelector(".spacer");
