@@ -9,8 +9,8 @@ env/.env
 
 db.sqlite3
 
+templates/partials/_navbar.html
+
 app/migrations
 
-static/
-
-templates/partials/_navbar.html
+users/migrations
