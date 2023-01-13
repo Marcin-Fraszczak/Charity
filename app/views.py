@@ -318,9 +318,7 @@ class SettingsView(LoginRequiredMixin, View):
     def post(self, request):
 
         form = forms.CustomUserCreationForm(request.POST)
-        print(form)
         if form.is_valid():
-            print("valid")
             user = request.user
             data = form.cleaned_data
             email = data.get("email")
@@ -428,3 +426,68 @@ class ContactView(View):
 
         messages.error(request, _("Wiadomość nie została wysłana. Niepoprawnie wypełniony formularz"))
         return redirect(origin_site)
+
+
+class PasswordResetView(View):
+    def get(self, request):
+        form = forms.PasswordResetForm
+        return render(request, "registration/password_reset_form.html", context={"form": form})
+
+    def post(self, request):
+        form = forms.PasswordResetForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            exists = get_user_model().objects.filter(email=email)
+            if exists:
+
+                # Send email
+                user = exists[0]
+                subject = "Przypomnienie hasła"
+                current_site = get_current_site(request)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+                password_reset_link = f"http://{current_site}/accounts/reset/{uid}/{token}/"
+                content = f"Cześć {user.username}!\n Kliknij w poniższy link, by odzyskać hasło:\n{password_reset_link}"
+                to_email = email
+                sendgrid.send_mail(to_email, subject, content)
+
+                return redirect('password_reset_done')
+
+        messages.error(request, _("Nie ma takiego użytkownika w bazie danych"))
+        return redirect('password_reset')
+
+
+class PasswordResetConfirmView(View):
+    def get(self, request, uid, token):
+        User = get_user_model()
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and default_token_generator.check_token(user, token):
+            form = forms.SetPasswordForm(user)
+            return render(request, 'registration/password_reset_confirm.html', context={"form": form})
+
+        messages.error(request, _("Błędny link aktywacyjny"))
+        return redirect("app:login")
+
+    def post(self, request, uid, token):
+
+        form = forms.SetPasswordForm(request.POST)
+        if form.is_valid():
+            User = get_user_model()
+            try:
+                uid = urlsafe_base64_decode(uid).decode()
+                user = User.objects.get(pk=uid)
+            except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+                user = None
+            if user is not None:
+                form.save()
+                login(request, user)
+                messages.success(request, _("Pomyślnie zmieniono hasło"))
+                return redirect('password_reset_complete')
+
+        messages.error(request, _("Nieprawidłowe dane"))
+        return redirect('app:login')
+
