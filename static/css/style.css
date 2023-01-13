@@ -451,6 +451,10 @@ h2:after {
 .container--90 {
     width: 90vw;
 }
+.container--100 {
+    width: 100vw;
+    margin: auto;
+}
 
 /* line 36, scss/modules/_base.scss */
 .uppercase {
@@ -1343,14 +1347,15 @@ header nav ul li:last-of-type {
 
 /* line 16, scss/modules/homepage-sections/_about-us.scss */
 .about-us--text p {
-    width: 70%;
+    width: 80%;
     font-size: 2.2rem;
     line-height: 2em;
 }
 
 /* line 22, scss/modules/homepage-sections/_about-us.scss */
 .about-us--text-signature {
-    width: 200px;
+    /*width: 200px;*/
+    width: 30vh;
     margin-right: 50px;
     -ms-flex-item-align: end;
     align-self: flex-end;
@@ -1901,6 +1906,18 @@ form .form-wider textarea {
     max-width: 350px;
     width: 100%;
     font-size: 1.8rem;
+}
+
+/*my custom navbar*/
+#navbar {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.nav-container:hover #navbar {
+    transform: translateY(0);
 }
 
 

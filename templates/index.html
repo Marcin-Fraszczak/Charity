@@ -8,7 +8,7 @@
 
 {% block container %}
 <header class="header--main-page">
-    {% include 'partials/_menu.html' %}
+    {% include 'partials/_menu2.html' %}
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
@@ -20,17 +20,24 @@
 </header>
 
 <section id="stats" class="stats">
-    <div class="container container--85">
-        <div class="stats--item">
-            <em class="total_bags">{{ total_bags }}</em>
-            <h3>{% trans 'Oddanych worków' %}</h3>
-            <p>{% trans 'Długi paragraf opisujący zalety worków na śmieci. Teksty typu: nie kupuj kota w worku.' %}</p>
+    <!--    <div class="container container&#45;&#45;90">-->
+    <div class="row container">
+        <div class="col-0 col-md-6">
+            <div class="stats--item">
+                <em class="total_bags">{{ total_bags }}</em>
+                <h3>{% trans 'Oddanych worków' %}</h3>
+                <p>{% trans 'Długi paragraf opisujący zalety worków na śmieci. Teksty typu: nie kupuj kota w worku.'
+                    %}</p>
+            </div>
         </div>
 
-        <div class="stats--item">
-            <em class="total_institutions">{{ total_institutions }}</em>
-            <h3>{% trans 'Wspartych organizacji' %}</h3>
-            <p>{% trans 'W 2022 roku tylko 12% organizacji współpracujących z naszym serwisem było organizacjami przestępczymi.' %}</p>
+        <div class="col-0 col-md-6">
+            <div class="stats--item">
+                <em class="total_institutions">{{ total_institutions }}</em>
+                <h3>{% trans 'Wspartych organizacji' %}</h3>
+                <p>{% trans 'W 2022 roku tylko 12% organizacji współpracujących z naszym serwisem było organizacjami
+                    przestępczymi.' %}</p>
+            </div>
         </div>
 
     </div>
@@ -39,26 +46,38 @@
 <section id="steps" class="steps">
     <h2>{% trans 'Wystarczą 4 proste kroki' %}</h2>
 
-    <div class="steps--container">
-        <div class="steps--item">
-            <span class="icon icon--hands"></span>
-            <h3>{% trans 'Wybierz rzeczy' %}</h3>
-            <p>{% trans 'Ubrania, zabwaki, sprzęt i inne' %}</p>
+    <div class="steps--container row">
+
+        <div class="col-0 col-sm-6 col-lg-3 mt-4 mb-4">
+            <div class="steps--item">
+                <span class="icon icon--hands"></span>
+                <h3>{% trans 'Wybierz rzeczy' %}</h3>
+                <p>{% trans 'Ubrania, zabwaki, sprzęt i inne' %}</p>
+            </div>
         </div>
-        <div class="steps--item">
-            <span class="icon icon--arrow"></span>
-            <h3>{% trans 'Spakuj je' %}</h3>
-            <p>{% trans 'skorzystaj z worków na śmieci' %}</p>
+
+        <div class="col-0 col-sm-6 col-lg-3 mt-4 mb-4">
+            <div class="steps--item">
+                <span class="icon icon--arrow"></span>
+                <h3>{% trans 'Spakuj je' %}</h3>
+                <p>{% trans 'skorzystaj z worków na śmieci' %}</p>
+            </div>
         </div>
-        <div class="steps--item">
-            <span class="icon icon--glasses"></span>
-            <h3>{% trans 'Zdecyduj komu chcesz pomóc' %}</h3>
-            <p>{% trans 'wybierz zaufane miejsce' %}</p>
+
+        <div class="col-0 col-sm-6 col-lg-3 mt-4 mb-4">
+            <div class="steps--item">
+                <span class="icon icon--glasses"></span>
+                <h3>{% trans 'Zdecyduj komu chcesz pomóc' %}</h3>
+                <p>{% trans 'wybierz zaufane miejsce' %}</p>
+            </div>
         </div>
-        <div class="steps--item">
-            <span class="icon icon--courier"></span>
-            <h3>{% trans 'Zamów kuriera' %}</h3>
-            <p>{% trans 'kurier przyjedzie w dogodnym terminie' %}</p>
+
+        <div class="col-0 col-sm-6 col-lg-3 mt-4 mb-4">
+            <div class="steps--item">
+                <span class="icon icon--courier"></span>
+                <h3>{% trans 'Zamów kuriera' %}</h3>
+                <p>{% trans 'kurier przyjedzie w dogodnym terminie' %}</p>
+            </div>
         </div>
     </div>
 
@@ -66,26 +85,45 @@
 </section>
 
 <section id="about-us" class="about-us">
+
+
     <div class="about-us--text">
         <h2>{% trans 'O nas' %}</h2>
-        <p>{% trans 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero optio esse quisquam illo omnis.' %}</p>
-        <img src="{% static 'images/signature.svg' %}" class="about-us--text-signature" alt="Signature"/>
+        <p>{% trans 'Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet' %}</p>
+        <div class="about-us--text-signature">
+            <img src="{% static 'images/signature.svg' %}" alt="Signature"/>
+        </div>
     </div>
-    <div class="about-us--image"><img src="{% static 'images/about-us.jpg' %}" alt="People in circle"/></div>
+
+    <div class="about-us--image">
+        <img src="{% static 'images/about-us.jpg' %}" alt="People in circle"/>
+    </div>
+
+
 </section>
 
 <section id="help" class="help">
     <h2>{% trans 'Komu pomagamy?' %}</h2>
 
     <ul class="help--buttons">
-        <li data-id="1"><a href="#" class="btn btn--without-border active">{% trans 'Fundacjom' %}</a></li>
-        <li data-id="2"><a href="#" class="btn btn--without-border">{% trans 'Organizacjom pozarządowym' %}</a></li>
-        <li data-id="3"><a href="#" class="btn btn--without-border">{% trans 'Lokalnym zbiórkom' %}</a></li>
+        <div class="row">
+            <div class="col-0 col-sm-4">
+                <li data-id="1"><a href="#" class="btn btn--without-border active">{% trans 'Fundacjom' %}</a></li>
+            </div>
+            <div class="col-0 col-sm-4">
+                <li data-id="2"><a href="#" class="btn btn--without-border">{% trans 'Organizacjom pozarządowym' %}</a>
+                </li>
+            </div>
+            <div class="col-0 col-sm-4">
+                <li data-id="3"><a href="#" class="btn btn--without-border">{% trans 'Lokalnym zbiórkom' %}</a></li>
+            </div>
+        </div>
     </ul>
 
     <!-- SLIDE 1 -->
     <div class="help--slides active" data-id="1">
-        <p>{% trans 'W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić, czym się zajmują, komu pomagają i czego potrzebują.' %}</p>
+        <p>{% trans 'W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy.' %}
+            {% trans 'Możesz sprawdzić, czym się zajmują, komu pomagają i czego potrzebują.' %}</p>
 
         <ul class="help--slides-items">
             {% for page, values in pf_dict.items %}
