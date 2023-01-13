@@ -9,7 +9,6 @@ env/.env
 
 db.sqlite3
 
-templates/partials/_menu2.html
 
 app/migrations
 users/migrationssendgrid.env
