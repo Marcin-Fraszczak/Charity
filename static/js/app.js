@@ -16,6 +16,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
+     * Menu - hide and show navbar
+     */
+    const menuButton = document.querySelector("#menu-trigger");
+    const navbar = document.querySelector("#navbar");
+    menuButton.addEventListener("mouseover", menuShow);
+    navbar.addEventListener("mouseleave", menuHide);
+
+    function menuShow(e) {
+        navbar.style.transform = 'translateY(0)';
+    }
+    function menuHide(e) {
+        navbar.style.transform = 'translateY(-100%)';
+    }
+
+
+
+
+    /**
      * HomePage - Help section
      */
     class Help {

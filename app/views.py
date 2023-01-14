@@ -38,7 +38,7 @@ class HomeView(View):
         foundations = models.Institution.objects.filter(type=1).order_by("name")
         organizations = models.Institution.objects.filter(type=2).order_by("name")
         collections = models.Institution.objects.filter(type=3).order_by("name")
-        results_per_page = 5
+        results_per_page = 3
 
         paginated_foundations = Paginator(foundations, results_per_page)
         pf_dict = {page: paginated_foundations.page(page) for page in paginated_foundations.page_range}
