@@ -41,4 +41,11 @@
     </nav>
 
 </div>
- <div class="p-5"></div>
+<div class="p-5"></div>
+
+{% block messages %}
+<div class="" style="z-index: 99;">
+    {% include 'partials/_messages.html' %}
+</div>
+<div></div>
+{% endblock messages %}
