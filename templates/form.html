@@ -41,10 +41,12 @@
         <div class="form--steps-container">
             <h3>{% trans 'Ważne!' %}</h3>
             <p data-step="1" class="active">
-                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je
+                przekazać.' %}
             </p>
             <p data-step="2">
-                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je
+                przekazać.' %}
             </p>
             <p data-step="3">
                 {% trans 'Wybierz jedną, do której trafi Twoja przesyłka.' %}
@@ -55,7 +57,7 @@
 
     <div class="form--steps-container">
         <div class="form--steps-counter">{% trans 'Krok' %} <span>1</span>/5</div>
-        <div class="form--steps-counter error-message"> </div>
+        <div class="form--steps-counter error-message"></div>
 
         <form method="post">
             {% csrf_token %}
@@ -120,16 +122,24 @@
                                 <input type="radio" name="organization" value=""/>
                                 <span class="checkbox radio"></span>
                                 <span class="description">
-                      <div class="title">{{ institution.name }}</div>
-                      <div class="subtitle">
-                        {{ institution.description}}
-                      </div>
-                      <div class="d-none inst-type" data-type="{{ institution.type }}" data-pk="{{ institution.pk }}"></div>
-                      <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
-                    </span>
+                                    <div class="title">{{ institution.name }}</div>
+                                    <div class="subtitle">
+                                    {{ institution.description}}
+                                    </div>
+                                    <div class="d-none inst-type" data-type="{{ institution.type }}"
+                                         data-pk="{{ institution.pk }}"></div>
+                                    <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">
+                                        {{ institution.categories.all|join:', ' }}</div>
+                                </span>
                             </label>
                         </div>
                         {% endfor %}
+                        <h4 class="mb-4 error-message">
+                            <span>
+                            {% trans 'Brak wyników. Wróć do kroku 1 i podziel przesyłkę na paczki' %}
+                            {% trans 'z mniejszą liczbą kategorii kategorii.' %}
+                            </span>
+                        </h4>
                     </div>
 
                     <h4 class="mb-4">{% trans 'Organizacje, obsługujące niektóre z wybranych kategorii:' %}</h4>
@@ -137,16 +147,19 @@
                         {% for institution in institutions %}
                         <div class="form-group form-group--checkbox">
                             <label>
-                                <input type="radio" name="organization" value="old"/>
-                                <span class="checkbox radio"></span>
+                                <!--                                <input type="radio" name="organization" value="old"/>-->
+                                <!--                                <span class="checkbox radio"></span>-->
                                 <span class="description">
-                      <div class="title">{{ institution.name }}</div>
-                      <div class="subtitle">
-                        {{ institution.description}}
-                      </div>
-                      <div class="d-none inst-type" data-type="{{ institution.type }}" data-pk="{{ institution.pk }}"></div>
-                      <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">{{ institution.categories.all|join:', ' }}</div>
-                    </span>
+                                    <div class="title">{{ institution.name }}</div>
+                                    <div class="subtitle">
+                                    {{ institution.description}}
+                                    </div>
+                                    <div class="d-none inst-type" data-type="{{ institution.type }}"
+                                         data-pk="{{ institution.pk }}"></div>
+                                    <div class="categories" data-cat="{{ institution.categories.all|join:', ' }}">
+                                        {{ institution.categories.all|join:', ' }}
+                                    </div>
+                                </span>
                             </label>
                         </div>
                         {% endfor %}
@@ -167,25 +180,21 @@
                     <div class="form-section--column">
                         <h4>{% trans 'Adres odbioru' %}</h4>
                         <div class="form-group form-group--inline">
-                            <!--                            <label> Ulica <input type="text" name="address"/> </label>-->
                             <label> {% trans 'Adres' %} {{form.address}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <!--                            <label> Miasto <input type="text" name="city"/> </label>-->
                             <label> {% trans 'Miasto' %} {{form.city}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                <!--                                Kod pocztowy <input type="text" name="postcode"/>-->
                                 {% trans 'Kod pocztowy' %} {{form.zip_code}}
                             </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                <!--                                Numer telefonu <input type="phone" name="phone"/>-->
                                 {% trans 'Numer telefonu' %} {{form.phone_number}}
                             </label>
                         </div>
@@ -195,7 +204,8 @@
                                 {% trans 'Kraj' %}
                                 <select name="country">
                                     {% for country in countries %}
-                                        <option value="{{ country.number }}"> {{country.number }} {{ country.country }} </option>
+                                    <option value="{{ country.number }}"> {{country.number }} {{ country.country }}
+                                    </option>
                                     {% endfor %}
                                 </select>
                             </label>
@@ -206,19 +216,16 @@
                     <div class="form-section--column">
                         <h4>{% trans 'Termin odbioru' %}</h4>
                         <div class="form-group form-group--inline">
-                            <!--                            <label> Data <input type="date" name="date"/> </label>-->
                             <label> {% trans 'Data' %} {{form.pick_up_date}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <!--                            <label> Godzina <input type="time" name="time"/> </label>-->
                             <label> {% trans 'Godzina' %} {{form.pick_up_time}} </label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
                                 {% trans 'Uwagi dla kuriera' %}
-                                <!--                                <textarea name="more_info" rows="5"></textarea>-->
                                 {{form.pick_up_comment}}
                             </label>
                         </div>

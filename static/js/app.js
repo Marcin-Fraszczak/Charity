@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const $btn = e.target;
 
             // Buttons Active class change
-            [...this.$buttonsContainer.children].forEach(btn => btn.firstElementChild.classList.remove("active"));
+            [...this.$buttonsContainer.querySelectorAll("li")].forEach(btn => btn.firstElementChild.classList.remove("active"));
             $btn.classList.add("active");
 
             // Current slide
@@ -74,9 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
             triggerButton.click();
         }
 
-        /**
-         * TODO: callback to page change event
-         */
         changePage(e) {
             e.preventDefault();
             const page = e.target.dataset.page;
@@ -155,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (command === "show") {
                 errorMsg.innerHTML = '';
                 messages.forEach(message => {
-                    errorMsg.innerHTML += `<div>${message}</div>`;
+                    errorMsg.innerHTML += `<span>${message}</span>`;
                 });
                 errorMsg.style.display = "block";
             } else {
@@ -204,6 +201,9 @@ document.addEventListener("DOMContentLoaded", function () {
             if (bagsInput.value && bagsValidator(bagsInput.value)) {
                 bags = Number(bagsInput.value);
                 manageError("hide");
+                // Listing institutions in STEP 3 that matches the criteria from STEP 1
+                const institutionsContainer = document.querySelector(".data-step-3");
+                displayInstitutions(institutionsContainer, chosenCategoriesNames);
             } else {
                 e.stopImmediatePropagation();
                 manageError("show", ["Podaj poprawną liczbę worków"]);
@@ -250,19 +250,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 displayEmptyContainer(institutionsContainerAll);
-                displayEmptyContainer(institutionsContainerSome);
+                // displayEmptyContainer(institutionsContainerSome);
             }
 
             function displayEmptyContainer(container) {
-                let infoTag = container.querySelectorAll("h4.text-bg-danger");
-                if (infoTag.length === 0) {
-                    const infoTag = document.createElement("h4");
-                    infoTag.textContent = "Brak wyników";
-                    infoTag.setAttribute("class", "text-bg-danger mb-4");
-                    infoTag.setAttribute("style", "display: none;");
-                    container.appendChild(infoTag);
-                }
-
+                let infoTag = container.querySelector("h4.error-message");
                 let displayedData = [];
 
                 [...container.children].forEach(child => {
@@ -271,18 +263,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 if (displayedData.length === 0) {
-                    const infoTag = container.querySelector("h4.text-bg-danger");
-                    infoTag.style.display = "flex";
+                    infoTag.style.display = "flex"
                 } else {
-                    const infoTag = container.querySelector("h4.text-bg-danger");
                     infoTag.style.display = "none";
                 }
             }
-
-            const institutionsContainer = document.querySelector(".data-step-3");
-
-            // Listing institutions in STEP 3 that matches the criteria from STEP 1
-            displayInstitutions(institutionsContainer, chosenCategoriesNames);
         });
 
 
@@ -296,12 +281,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const institutionsContainer = document.querySelector(".data-step-3");
             [...institutionsContainer.querySelectorAll(".form-group--checkbox")].forEach(box => {
                 let input = box.querySelector("input");
-                if (input.checked) {
+                if (input && input.checked) {
                     chosenInstitutionName[0] = box.querySelector(".title").textContent;
                     chosenInstitutionName[1] = box.querySelector(".inst-type").dataset.type;
                     chosenInstitutionId = box.querySelector(".inst-type").dataset.pk;
                 }
             });
+
 
             // validating selection
             if (chosenInstitutionName.length !== 2) {

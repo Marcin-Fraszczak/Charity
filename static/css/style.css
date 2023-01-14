@@ -1354,9 +1354,8 @@ header nav ul li:last-of-type {
 
 /* line 22, scss/modules/homepage-sections/_about-us.scss */
 .about-us--text-signature {
-    /*width: 200px;*/
-    width: 30vh;
-    margin-right: 50px;
+    resize: block;
+    margin: auto;
     -ms-flex-item-align: end;
     align-self: flex-end;
 }
@@ -1396,7 +1395,7 @@ header nav ul li:last-of-type {
 }
 
 /* line 13, scss/modules/homepage-sections/_help.scss */
-.help--buttons li {
+.help--buttons > div > div > li {
     margin: 0 10px;
 }
 
@@ -1885,6 +1884,9 @@ footer .bottom-line--icons a img {
 /*My custom form error warnings*/
 .error-message {
     display: none;
+}
+.error-message span{
+    display: table;
     background-color: red;
 }
 /*my wider inout fields in login and register pages*/
@@ -1914,6 +1916,9 @@ form .form-wider textarea {
     background-color: rgba(255, 255, 255, 0.9);
     transform: translateY(-100%);
     transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+.navbar > li > a {
+    font-size: 2rem;
 }
 
 .nav-container:hover #navbar {

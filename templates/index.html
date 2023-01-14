@@ -26,8 +26,7 @@
             <div class="stats--item">
                 <em class="total_bags">{{ total_bags }}</em>
                 <h3>{% trans 'Oddanych worków' %}</h3>
-                <p>{% trans 'Długi paragraf opisujący zalety worków na śmieci. Teksty typu: nie kupuj kota w worku.'
-                    %}</p>
+                <p>{% trans 'Długi paragraf opisujący zalety worków na śmieci.' %}</p>
             </div>
         </div>
 
@@ -35,8 +34,8 @@
             <div class="stats--item">
                 <em class="total_institutions">{{ total_institutions }}</em>
                 <h3>{% trans 'Wspartych organizacji' %}</h3>
-                <p>{% trans 'W 2022 roku tylko 12% organizacji współpracujących z naszym serwisem było organizacjami
-                    przestępczymi.' %}</p>
+                <p>{% trans 'W 2022 roku tylko 12% organizacji współpracujących' %}
+                    {% trans 'z naszym serwisem było organizacjami przestępczymi.' %}</p>
             </div>
         </div>
 
@@ -108,14 +107,19 @@
     <ul class="help--buttons">
         <div class="row">
             <div class="col-0 col-sm-4">
-                <li data-id="1"><a href="#" class="btn btn--without-border active">{% trans 'Fundacjom' %}</a></li>
-            </div>
-            <div class="col-0 col-sm-4">
-                <li data-id="2"><a href="#" class="btn btn--without-border">{% trans 'Organizacjom pozarządowym' %}</a>
+                <li data-id="1">
+                    <a href="#" class="btn btn--without-border active">{% trans 'Fundacjom' %}</a>
                 </li>
             </div>
             <div class="col-0 col-sm-4">
-                <li data-id="3"><a href="#" class="btn btn--without-border">{% trans 'Lokalnym zbiórkom' %}</a></li>
+                <li data-id="2">
+                    <a href="#" class="btn btn--without-border">{% trans 'Organizacjom pozarządowym' %}</a>
+                </li>
+            </div>
+            <div class="col-0 col-sm-4">
+                <li data-id="3">
+                    <a href="#" class="btn btn--without-border">{% trans 'Lokalnym' %}<br>{% trans 'zbiórkom' %}</a>
+                </li>
             </div>
         </div>
     </ul>
