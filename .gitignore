@@ -9,7 +9,7 @@ env/.env
 
 db.sqlite3
 
-
+staticfiles
 app/migrations
-users/migrationssendgrid.env
+users/migrations
 sendgrid.env
