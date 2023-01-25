@@ -13,3 +13,11 @@ staticfiles
 app/migrations
 users/migrations
 sendgrid.env
+
+.coverage
+.tox
+.coverage.*
+.pytest_cache/
+nosetests.xml
+coverage.xml
+htmlcov

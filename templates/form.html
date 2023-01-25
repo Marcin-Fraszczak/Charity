@@ -41,12 +41,12 @@
         <div class="form--steps-container">
             <h3>{% trans 'Ważne!' %}</h3>
             <p data-step="1" class="active">
-                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je
-                przekazać.' %}
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy.' %}
+                {% trans 'Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
             </p>
             <p data-step="2">
-                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej je
-                przekazać.' %}
+                {% trans 'Uzupełnij szczegóły dotyczące Twoich rzeczy.' %}
+                {% trans 'Dzięki temu będziemy wiedzieć komu najlepiej je przekazać.' %}
             </p>
             <p data-step="3">
                 {% trans 'Wybierz jedną, do której trafi Twoja przesyłka.' %}
@@ -97,7 +97,6 @@
                 <div class="form-group narrow-form form-group--inline">
                     <label>
                         {% trans 'Liczba 60l worków:' %}
-                        <!--                        <input type="number" name="bags" step="1" min="1"/>-->
                         {{form.bags}}
                     </label>
                 </div>
