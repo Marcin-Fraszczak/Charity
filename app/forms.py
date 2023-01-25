@@ -65,7 +65,7 @@ class SetPasswordForm(forms.Form):
     password
     """
     error_messages = {
-        'password_mismatch': _('The two password fields didn’t match.'),
+        'password_mismatch': _("The two password fields didn't match."),
     }
     new_password1 = forms.CharField(
         label=_("New password"),

@@ -14,6 +14,20 @@ def client():
 
 
 @pytest.fixture
+def full_user():
+    user = get_user_model()(
+        email="test@gmail.com",
+        username="test@gmail.com",
+        password="Testpass123"
+    )
+    user.save()
+    user.set_password('Testpass123')
+    user.save()
+
+    return user
+
+
+@pytest.fixture
 def user():
     user = get_user_model()(username=name)
     user.save()

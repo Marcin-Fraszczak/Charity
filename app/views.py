@@ -203,8 +203,9 @@ class RegisterView(View):
                 messages.error(request, _("Taki użytkownik już istnieje"))
                 return render(request, 'register.html', context={"form": form})
 
-            if password1 != password2:
-                return render(request, 'register.html', context={"form": form})
+            # if password1 != password2:
+            #     messages.error(request, _("Hasła nie są zgodne"))
+            #     return render(request, 'register.html', context={"form": form})
 
             user = form.save(commit=False)
             user.set_password(password1)
