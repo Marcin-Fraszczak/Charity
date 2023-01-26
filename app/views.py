@@ -449,7 +449,13 @@ class PasswordResetView(View):
                 password_reset_link = f"http://{current_site}/accounts/reset/{uid}/{token}/"
                 content = f"Cześć {user.username}!\n Kliknij w poniższy link, by odzyskać hasło:\n{password_reset_link}"
                 to_email = email
-                sendgrid.send_mail(to_email, subject, content)
+
+                # Sendgrid version
+                # sendgrid.send_mail(to_email, subject, content)
+
+                # Old, console version
+                message = EmailMessage(subject, content, to=[to_email])
+                message.send()
 
                 return redirect('password_reset_done')
 
@@ -457,37 +463,38 @@ class PasswordResetView(View):
         return redirect('password_reset')
 
 
-class PasswordResetConfirmView(View):
-    def get(self, request, uid, token):
-        User = get_user_model()
-        try:
-            uid = urlsafe_base64_decode(uid).decode()
-            user = User.objects.get(pk=uid)
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user is not None and default_token_generator.check_token(user, token):
-            form = forms.SetPasswordForm(user)
-            return render(request, 'registration/password_reset_confirm.html', context={"form": form})
+# Uncomment only for Sendgrid functionality
 
-        messages.error(request, _("Błędny link aktywacyjny"))
-        return redirect("app:login")
-
-    def post(self, request, uid, token):
-
-        form = forms.SetPasswordForm(request.POST)
-        if form.is_valid():
-            User = get_user_model()
-            try:
-                uid = urlsafe_base64_decode(uid).decode()
-                user = User.objects.get(pk=uid)
-            except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-                user = None
-            if user is not None:
-                form.save()
-                login(request, user)
-                messages.success(request, _("Pomyślnie zmieniono hasło"))
-                return redirect('password_reset_complete')
-
-        messages.error(request, _("Nieprawidłowe dane"))
-        return redirect('app:login')
-
+# class PasswordResetConfirmView(View):
+#     def get(self, request, uid, token):
+#         User = get_user_model()
+#         try:
+#             uid = urlsafe_base64_decode(uid).decode()
+#             user = User.objects.get(pk=uid)
+#         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+#             user = None
+#         if user is not None and default_token_generator.check_token(user, token):
+#             form = forms.SetPasswordForm(user)
+#             return render(request, 'registration/password_reset_confirm.html', context={"form": form})
+#
+#         messages.error(request, _("Błędny link aktywacyjny"))
+#         return redirect("app:login")
+#
+#     def post(self, request, uid, token):
+#         form = forms.SetPasswordForm(request.POST)
+#         if form.is_valid():
+#             User = get_user_model()
+#             try:
+#                 uid = urlsafe_base64_decode(uid).decode()
+#                 user = User.objects.get(pk=uid)
+#             except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+#                 user = None
+#             if user is not None:
+#                 form.save()
+#                 login(request, user)
+#                 messages.success(request, _("Pomyślnie zmieniono hasło"))
+#                 return redirect('password_reset_complete')
+#
+#         messages.error(request, _("Nieprawidłowe dane"))
+#         return redirect('app:login')
+#

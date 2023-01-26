@@ -18,6 +18,6 @@ urlpatterns = [
     path('accounts/close/', views.CloseView.as_view(), name='close'),
     path('accounts/email/check/', views.CheckEmailView.as_view(), name='check_email'),
     path('accounts/password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    path('accounts/reset/<str:uid>/<str:token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('accounts/reset/<str:uid>/<str:token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
 ]
