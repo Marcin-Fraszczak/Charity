@@ -29,7 +29,11 @@ def full_user():
 
 @pytest.fixture
 def user():
-    user = get_user_model()(username=name)
+    user = get_user_model()(
+        username=name
+    )
+    user.save()
+    user.set_password('Testpass123')
     user.save()
     return user
 

@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -392,7 +393,7 @@ class ContactView(View):
         name = request.POST.get("name")
         surname = request.POST.get("surname")
         message = request.POST.get("message")
-        origin_site = request.headers.get("referer")
+        origin_site = request.headers.get("referer", reverse('app:home'))
         if name and surname and message:
             if len(name) >= 3 and len(surname) >= 3 and len(message) >= 10:
                 name = escape(name)
@@ -411,12 +412,14 @@ class ContactView(View):
                                 """
 
                 to_emails = (admin.email for admin in admins)
-                for to_email in to_emails:
-                    sendgrid.send_mail(to_email, subject, content)
 
-                # Old, console version
-                # message = EmailMessage(subject, content, to=[to_email])
-                # message.send()
+                for to_email in to_emails:
+                    # Sendgrid version
+                    # sendgrid.send_mail(to_email, subject, content)
+
+                    # Old, console version
+                    message = EmailMessage(subject, content, to=[to_email])
+                    message.send()
 
                 messages.success(request, _("Wiadomość wysłano pomyślnie"))
                 return redirect(origin_site)

@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.messages import get_messages
+from django.contrib import auth
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
@@ -20,7 +21,7 @@ def test_correct_template_loaded(client):
 
 
 @pytest.mark.django_db
-def test_login_with_correct_data(client, full_user):
+def test_login_with_correct_data_then_logout(client, full_user):
     response = client.post(
         reverse('app:login'),
         {"email": full_user.email,
@@ -28,6 +29,15 @@ def test_login_with_correct_data(client, full_user):
          })
     assert response.status_code == 302
     assert response.url == reverse('app:profile')
+    user = auth.get_user(client)
+    assert user.is_authenticated
+
+    # Immediate logout
+    response = client.get(reverse('app:logout'))
+    assert response.status_code == 302
+    assert response.url == reverse('app:home')
+    user = auth.get_user(client)
+    assert not user.is_authenticated
 
 
 @pytest.mark.django_db

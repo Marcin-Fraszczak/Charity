@@ -70,3 +70,38 @@ def test_change_personal_data_invalid_password(client, full_user):
     assert response.status_code == 302
     assert len(user) == 0
     assert str(messages[0]) == "Podano niepoprawne dane"
+
+
+@pytest.mark.django_db
+def test_change_email_already_exists(client, full_user, user):
+    client.force_login(user)
+    response = client.post(
+        reverse("app:settings"), {
+            "name": "aaaa",
+            "surname": "bbbb",
+            "password1": "Testpass1234",
+            "password2": "Testpass1234",
+            "email": f"{full_user.email}",
+        })
+    messages = list(get_messages(response.wsgi_request))
+    assert response.status_code == 302
+    assert response.url == reverse('app:settings')
+    assert str(messages[0]) == "Inny użytkownik ma już taki adres email"
+
+
+
+@pytest.mark.django_db
+def test_change_personal_data_with_wrong_input(client, full_user):
+    client.force_login(full_user)
+    response = client.post(
+        reverse("app:settings"), {
+            "name": "aaaa",
+            "surname": "bbbb",
+            "password1": "Testpass1234",
+            "password2": "Testpass1234",
+            "email": f"aaaaa",
+        })
+    messages = list(get_messages(response.wsgi_request))
+    assert response.status_code == 302
+    assert response.url == reverse('app:settings')
+    assert str(messages[0]) == "Podano niepoprawne dane"

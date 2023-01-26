@@ -84,3 +84,30 @@ def test_add_donation_form_with_wrong_data(client, prepare_data):
     assert response.status_code == 302
     assert response.url == reverse('app:home')
     assert len(messages) > 0
+
+
+
+@pytest.mark.django_db
+def test_add_donation_form_with_no_input(client, prepare_data):
+    user = prepare_data.get("user")
+    client.force_login(user)
+    data = {
+        "categories": '',
+        "bags": '',
+        "institution": '',
+        "address": "",
+        "phone_number": '',
+        "city": '',
+        "zip_code": '',
+        "pick_up_date": '',
+        "pick_up_time": '',
+    }
+    response = client.post(
+        reverse('app:add_donation'),
+        data=json.dumps(data),
+        content_type="application/json",
+    )
+    messages = list(get_messages(response.wsgi_request))
+    assert response.status_code == 302
+    assert response.url == reverse('app:add_donation')
+    assert len(messages) > 0
