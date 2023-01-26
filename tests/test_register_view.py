@@ -56,6 +56,31 @@ def test_sign_up_form_and_activation_link(client):
     assert str(messages[0]) == "Pomyślnie aktywowano konto"
 
 
+
+@pytest.mark.django_db
+def test_sign_up_form_and_bad_activation_link(client):
+    response = client.post(
+        reverse("app:register"), {
+            "email": "test@gmail.com",
+            "password1": "Testpass123",
+            "password2": "Testpass123",
+        })
+    messages = list(get_messages(response.wsgi_request))
+    assert response.status_code == 200
+    assert str(messages[0]) == "Utworzono nowe konto"
+
+    # Proceed wth activation - wrong link
+    user = get_user_model().objects.get(email="test@gmail.com")
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    response = client.get(
+        reverse('app:activate', args=[f"aaa", f"{token}"]))
+    messages = list(get_messages(response.wsgi_request))
+    assert response.status_code == 302
+    assert response.url == reverse('app:register')
+    assert str(messages[0]) == "Błędny link aktywacyjny"
+
+
 @pytest.mark.django_db
 def test_user_already_exists(client, full_user):
     response = client.post(

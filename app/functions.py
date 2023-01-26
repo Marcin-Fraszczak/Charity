@@ -12,14 +12,9 @@ def extract(data, symbols_list=[]):
 def validate_date_and_time(input_date, input_time):
     start_hour = time(9, 0)
     close_hour = time(20, 0)
-
-    try:
-        if input_date >= get_tomorrow() and start_hour < input_time < close_hour:
-            return True
-
-    except ValueError as e:
-        print(e)
-        return False
+    if input_date >= get_tomorrow() and start_hour < input_time < close_hour:
+        return True
+    return False
 
 
 def validate_zip_code(data):

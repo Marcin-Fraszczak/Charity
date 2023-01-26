@@ -28,3 +28,5 @@ def test_correct_content_loaded(client, full_user):
     response = client.get(reverse("app:profile"))
     content = response.content.decode('utf-8')
     assert f'Witaj {full_user.email}' in content
+
+

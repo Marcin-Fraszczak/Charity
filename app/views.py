@@ -98,11 +98,9 @@ class AddDonationView(LoginRequiredMixin, View):
                 institution = None
 
             input_categories = data.get("categories")
-            if input_categories:
-                cleaned_input_categories = [int(cat) for cat in input_categories if cat.isdigit()]
-                categories = [models.Category.objects.get(pk=pk) for pk in cleaned_input_categories]
-            else:
-                categories = None
+            cleaned_input_categories = [int(cat) for cat in input_categories if cat.isdigit()]
+            categories = [models.Category.objects.filter(pk=pk)[0] for pk in cleaned_input_categories
+                          if models.Category.objects.filter(pk=pk)]
 
             if (categories and institution and
                     functions.validate_phone_number(phone_number) and
@@ -127,6 +125,7 @@ class AddDonationView(LoginRequiredMixin, View):
 
                 # Send email
                 now = datetime.now()
+                to_email = user.email
                 subject = "Potwierdzenie przekazania daru"
                 content = f"""
                 To jest automatyczne potwierdzenie, nie odpowiadaj na nie.
@@ -144,20 +143,18 @@ class AddDonationView(LoginRequiredMixin, View):
                 
                 Dziękujemy!
                 """
-                to_email = user.email
-                sendgrid.send_mail(to_email, subject, content)
+                # Sendgrid service
+                # sendgrid.send_mail(to_email, subject, content)
 
-                # Old, console version
-                # donation_email = EmailMessage(subject, content, to=[to_email])
-                # donation_email.send()
+                # Old, console version, for testing
+                donation_email = EmailMessage(subject, content, to=[to_email])
+                donation_email.send()
 
                 return redirect('app:donation_confirmation')
             else:
                 messages.error(request, _("Formularz nie został zapisany. Popraw dane"))
                 return redirect('app:home')
         else:
-            # print("not valid")
-            # print(form.errors)
             messages.error(request, form.errors)
             return redirect('app:add_donation')
 
