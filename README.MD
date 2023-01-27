@@ -119,3 +119,19 @@ Testpass123
         </p>
     </div>
 </footer>
+
+
+
+# How to run it locally:
+1. Fork the repository
+2. Clone the repository to your local machine
+3. Create and activate virtual environment
+4. In the main folder, use command:
+`pip install -r requirements.txt`
+to install all needed packages
+5. Go to config / settings.py and in `database` section uncomment option `3. SQLite`. Comment out both other options.
+6. While in the main folder, run commands:
+`python manage.py makemigrations`
+`python manage.py migrate`
+7. Use command `python manage.py runserver` to run development server
+8. Optionally, you can use command: `python manage.py createsuperuser` to create admin entity and populate the database with example data
