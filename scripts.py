@@ -79,7 +79,7 @@ def create_institutions():
         random_cats = choices(categories, k=randint(1, 4))
         institution.categories.set(random_cats)
         institution.save()
-        print(inst)
+        print(f'{inst[0]}: {inst[1]}')
 
 
 def populate():

@@ -125,9 +125,12 @@ Testpass123
 # How to run it locally:
 1. Fork the repository
 2. Clone the repository to your local machine, for example:
-`git clone 'your_repo_url'`
-3. Create and activate virtual environment
-4. In the main project folder (where manage.py is located), with virtual environment active, use command:
+`git clone <your_repo_url>`
+3. Create and activate virtual environment, for example for virtualenv:
+`virtualenv -p python3.11 venv`
+and then
+`source venv/bin/activate`
+4. In the main project folder (where manage.py is located), with virtual environment activated, use command:
 
 `bash start.sh`
 
