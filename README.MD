@@ -125,16 +125,15 @@ Testpass123
 # How to run it locally:
 1. Fork the repository
 2. Clone the repository to your local machine, for example:
-
-git clone 'your_repo_url'
+`git clone 'your_repo_url'`
 3. Create and activate virtual environment
 4. In the main project folder (where manage.py is located), with virtual environment active, use command:
 
 `bash start.sh`
 
-That will run the script, which does the following.
+That will run the script, which does the following:
 - installs required packages
-- prepares and runs migrations (db file created in main directory)
+- prepares and runs migrations (database file is created in main directory)
 - flushes the database, in case script is run for the second time
 - populates the database with starting data:
     - one user
