@@ -146,6 +146,7 @@ That will run the script, which does the following:
 - runs django development server, by default at http://127.0.0.1:8000/
 - saves all the above info with details, passwords, test coverage, etc. to `log.txt` file in the main directory
 
+
 ### In case you run this script multiple times without killing the previous process, you'll get `port already in use` message
 
 One easy way to free this port is:
