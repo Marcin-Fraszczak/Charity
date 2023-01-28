@@ -124,14 +124,23 @@ Testpass123
 
 # How to run it locally:
 1. Fork the repository
-2. Clone the repository to your local machine
+2. Clone the repository to your local machine, for example:
+
+git clone 'your_repo_url'
 3. Create and activate virtual environment
-4. In the main folder, use command:
-`pip install -r requirements.txt`
-to install all needed packages
-5. Go to config / settings.py and in `database` section uncomment option `3. SQLite`. Comment out both other options.
-6. While in the main folder, run commands:
-`python manage.py makemigrations`
-`python manage.py migrate`
-7. Use command `python manage.py runserver` to run development server
-8. Optionally, you can use command: `python manage.py createsuperuser` to create admin entity and populate the database with example data
+4. In the main project folder (where manage.py is located), with virtual environment active, use command:
+
+`bash start.sh`
+
+That will run the script, which does the following.
+- installs required packages
+- prepares and runs migrations (db file created in main directory)
+- flushes the database, in case script is run for the second time
+- populates the database with starting data:
+    - one user
+    - one superuser
+    - couple of categories and institutions
+- runs django development server, by default at http://127.0.0.1:8000/
+- saves all above info with details, passwords, etc. to `log.txt` file in the main directory
+
+
