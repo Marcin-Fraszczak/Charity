@@ -10,8 +10,6 @@ env/.env
 db.sqlite3
 
 staticfiles
-app/migrations
-users/migrations
 sendgrid.env
 
 .coverage
