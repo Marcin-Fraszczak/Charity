@@ -143,6 +143,6 @@ That will run the script, which does the following:
     - one superuser
     - couple of categories and institutions
 - runs django development server, by default at http://127.0.0.1:8000/
-- saves all above info with details, passwords, etc. to `log.txt` file in the main directory
+- saves all the above info with details, passwords, etc. to `log.txt` file in the main directory
 
 
