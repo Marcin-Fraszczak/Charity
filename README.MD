@@ -141,8 +141,19 @@ That will run the script, which does the following:
 - populates the database with starting data:
     - one user
     - one superuser
-    - couple of categories and institutions
+    - couple of instances of all necessary models
+- tests code with pytest
 - runs django development server, by default at http://127.0.0.1:8000/
-- saves all above info with details, passwords, etc. to `log.txt` file in the main directory
+- saves all the above info with details, passwords, test coverage, etc. to `log.txt` file in the main directory
 
+### In case you run this script multiple times without killing the previous process, you'll get `port already in use` message
 
+One easy way to free this port is:
+
+`sudo lsof -t -i:8000`
+
+or any other port number. This will output ID of the process that is running on this port,
+
+for example `21987`, then
+
+`sudo kill 21987`
