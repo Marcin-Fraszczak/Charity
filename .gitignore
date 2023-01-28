@@ -19,3 +19,5 @@ sendgrid.env
 nosetests.xml
 coverage.xml
 htmlcov
+
+log.txt

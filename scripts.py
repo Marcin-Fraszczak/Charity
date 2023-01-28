@@ -100,6 +100,7 @@ def populate():
     print("Created institutions:")
     create_institutions()
     print(f'=' * 60)
+    print("END OF DATA\n\n")
 
 
 def say_hello():
