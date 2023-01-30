@@ -133,6 +133,7 @@ Testpass123
 and then
 
 `source venv/bin/activate`
+
 4. In the main project folder (where manage.py is located), with virtual environment activated, use command:
 
 `bash start.sh`
@@ -144,7 +145,7 @@ That will run the script, which does the following:
 - populates the database with starting data:
     - one user
     - one superuser
-    - couple of instances of all necessary models
+    - couple of instances of all the necessary models
 - tests code with pytest
 - runs django development server, by default at http://127.0.0.1:8000/
 - saves all the above info with details, passwords, test coverage, etc. to `log.txt` file in the main directory
