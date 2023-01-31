@@ -126,7 +126,7 @@ Testpass123
 1. Fork the repository
 2. Clone the repository to your local machine, for example:
 `git clone <your_repo_url>`
-3. Create and activate virtual environment, for example for virtualenv:
+3. Inside the project folder, create and activate virtual environment, for example for virtualenv:
 
 `virtualenv -p python3.11 venv`
 
