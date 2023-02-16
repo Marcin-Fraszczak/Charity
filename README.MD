@@ -1,23 +1,42 @@
 # 'Charity' app as a course project
 Application for donating various items (available in Polish language, for now)
+## Local version (best with Docker Compose)
 
-## Working app available at:
-https://eurobyvelo.eu.pythonanywhere.com/
+1) Clone the repo:
 
-main focus of this project was to handle 5-step input form available at:
+    `git clone git@github.com:Marcin-Fraszczak/Charity.git`
 
-https://eurobyvelo.eu.pythonanywhere.com/add-donation/
+2) Enter the main directory:
 
-You have to be logged in to see it work, test user credentials:
+    `cd Charity/`
 
-email:
+3) build and start the container:
 
-chrity.user@gmail.com
+    `docker compose up`
+    
+    It should take around 30-40 seconds and 200 MB of disk space. You can delete the container and the image later.
+4) Pytest results and objects populating database (along with users) will be displayed in the terminal.
+5) Open your browser and visit:
 
-password:
+    http://0.0.0.0:8000/
+6) Use user credentials to log in:
 
-Testpass123
+    Username: `user1@gmail.com`
 
+    Password: `Testpass123`
+7) Avoid using `Ctrl+C` inside the container for copying. If it happens, you can always restart the container:
+
+    `docker restart <container_name>`
+## Live version (pythonanywhere.com)
+1) Visit this website:
+
+    https://eurobyvelo.eu.pythonanywhere.com/
+2) To log in use credentials:
+    
+    Username: `chrity.user@gmail.com`
+
+    Password: `Testpass123`
+3) Enjoy using the app.
 ## Almost completely covered with tests:
 
 <header>
@@ -119,46 +138,3 @@ Testpass123
         </p>
     </div>
 </footer>
-
-
-
-# How to run it locally:
-1. Fork the repository
-2. Clone the repository to your local machine, for example:
-`git clone <your_repo_url>`
-3. Inside the project folder, create and activate virtual environment, for example for virtualenv:
-
-`virtualenv -p python3.11 venv`
-
-and then
-
-`source venv/bin/activate`
-
-4. In the main project folder (where manage.py is located), with virtual environment activated, use command:
-
-`bash start.sh`
-
-That will run the script, which does the following:
-- installs required packages
-- prepares and runs migrations (database file is created in main directory)
-- flushes the database, in case script is run for the second time
-- populates the database with starting data:
-    - one user
-    - one superuser
-    - couple of instances of all the necessary models
-- tests code with pytest
-- runs django development server, by default at http://127.0.0.1:8000/
-- saves all the above info with details, passwords, test coverage, etc. to `log.txt` file in the main directory
-
-
-### In case you run this script multiple times without killing the previous process, you'll get `port already in use` message
-
-One easy way to free this port is:
-
-`sudo lsof -t -i:8000`
-
-or any other port number. This will output ID of the process that is running on this port,
-
-for example `21987`, then
-
-`sudo kill 21987`

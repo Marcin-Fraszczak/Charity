@@ -1,0 +1,10 @@
+.git
+.cache
+venv*
+htmlcov
+*.*cache
+.pytest_cache
+env
+locale
+db.sqlite3
+.gitignore

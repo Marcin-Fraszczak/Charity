@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
-import dj_database_url
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +36,7 @@ SECRET_KEY = '4fsw5ey0@!&s9ff=$2cv^ztqb+0y4h-l==^!^ebrl3mmq^#7$1'
 # DEBUG = int(os.environ.get('DJ_DEBUG', default=0))
 DEBUG = 1
 
-ALLOWED_HOSTS = ['eurobyvelo.eu.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['eurobyvelo.eu.pythonanywhere.com', '127.0.0.1', 'localhost', "0.0.0.0"]
 
 # Application definition
 
