@@ -14,14 +14,14 @@ Application for donating various items (available in Polish language, for now)
 
     `docker compose up`
     
-    It should take around 30-40 seconds and 200 MB of disk space. You can delete the container and the image later.
-4) Pytest results and objects populating database (along with users) will be displayed in the terminal.
+    It should take around 20 seconds and 120 MB of disk space. You can delete the container and the image later.
+4) Objects populating database (along with users) will be displayed in the terminal.
 5) Open your browser and visit:
 
     http://0.0.0.0:8000/
 6) Use user credentials to log in:
 
-    Username: `user1@gmail.com`
+    Username: `admin1@gmail.com`
 
     Password: `Testpass123`
 7) Avoid using `Ctrl+C` inside the container for copying. If it happens, you can always restart the container:

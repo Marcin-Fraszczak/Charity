@@ -101,6 +101,7 @@ def populate():
     create_institutions()
     print(f'=' * 60)
     print("END OF DATA\n\n")
+    print("SCROLL UP TO SEE THE DETAILS\n\n")
 
 
 def say_hello():

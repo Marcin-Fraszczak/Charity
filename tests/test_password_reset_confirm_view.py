@@ -1,3 +1,8 @@
+"""
+Only for Sendgrid
+"""
+
+
 # import pytest
 # from django.contrib.auth.tokens import default_token_generator
 # from django.contrib.messages import get_messages
