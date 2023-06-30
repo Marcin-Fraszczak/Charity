@@ -4,7 +4,7 @@ Application for donating various items (available in Polish language, for now)
 
 1) Clone the repo:
 
-    `git clone git@github.com:Marcin-Fraszczak/Charity.git`
+    `git clone https://github.com/Marcin-Fraszczak/Charity.git`
 
 2) Enter the main directory:
 
